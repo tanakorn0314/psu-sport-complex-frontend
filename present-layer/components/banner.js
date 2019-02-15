@@ -9,7 +9,7 @@ const Banner = props => (
           <p className='slide-logo'>SPORT</p>
           <p className='slide-logo'>COMPLEX</p>
         </div>
-        <Button className='button'>BOOK NOW</Button>
+        <Button className='button' onClick={props.onClick}>BOOK NOW</Button>
       </div>
       <style jsx>{`
           .slide-container {

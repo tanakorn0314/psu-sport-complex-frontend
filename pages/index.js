@@ -1,5 +1,7 @@
-import Layout from '../components/layout';
-import Banner from '../components/banner';
+import React, { Component } from 'react';
+import Layout from '../present-layer/components/layout';
+import Banner from '../present-layer/components/banner';
+import { connect } from 'react-redux';
 
 const bannerHeight = 400;
 
@@ -9,28 +11,30 @@ const imgUrl = [
   'https://static.wixstatic.com/media/84770f_98e3c16564e8460f928638971295c790.jpg/v1/fill/w_980,h_735,al_c,q_85,usm_0.66_1.00_0.01/84770f_98e3c16564e8460f928638971295c790.webp'
 ];
 
-const Index = props => {
-  return (
-    <Layout>
-      <Banner id='home' height={bannerHeight} img={imgUrl[0]}/>
-      <h4 id='aoubt'>About</h4>
-      <h4 id='services'>Services</h4>
-      <h4 id='contact'>Contact</h4>
-      <h4 id='aoubt'>About</h4>
-      <h4 id='services'>Services</h4>
-      <h4 id='contact'>Contact</h4>
-      <h4 id='aoubt'>About</h4>
-      <h4 id='services'>Services</h4>
-      <h4 id='contact'>Contact</h4>
-      <h4 id='aoubt'>About</h4>
-      <h4 id='services'>Services</h4>
-      <h4 id='contact'>Contact</h4>
-      <h4 id='aoubt'>About</h4>
-      <h4 id='services'>Services</h4>
-      <h4 id='contact'>Contact</h4>
-    </Layout>
-  );
+class Index extends Component {
+  static getInitialProps() {
+    
+  }
+
+  componentDidMount() {
+    console.log(this.props)
+  }
+
+  render() {
+    const { user, token } = this.props;
+    return (
+      <Layout>
+        <Banner id='home' height={bannerHeight} img={imgUrl[0]} />
+        <h4 id='aoubt'>About</h4>
+        <h4 id='services'>Services</h4>
+        <h4 id='contact'>Contact</h4>
+      </Layout>
+    )
+  }
 }
 
+const mapStateToProps = state => ({
+  token: state.token
+})
 
-export default Index;
+export default connect(mapStateToProps)(Index);

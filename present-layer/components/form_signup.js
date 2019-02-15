@@ -3,22 +3,22 @@ import InputWithLabel from './input_with_label';
 import Link from 'next/link';
 import ButtonPrimary from '../components/button_primary';
 
-const FormSignUp = () => (
+const FormSignUp = props => (
     <div className='container'>
         <h1>Sign Up</h1>
         <form>
             <div className='pair-field'>
-                <InputWithLabel type='text' label='Fistname' />
-                <InputWithLabel type='text' label='Lastname' />
+                <InputWithLabel name='firstname' type='text' label='Fistname' onChange={props.onInput}/>
+                <InputWithLabel name='lastname' type='text' label='Lastname' onChange={props.onInput}/>
             </div>
-            <InputWithLabel type='text' label='Username' />
+            <InputWithLabel name='username' type='text' label='Username' onChange={props.onInput}/>
             <div className='pair-field'>
-                <InputWithLabel type='password' label='Password' />
-                <InputWithLabel type='password' label='Confirm' />
+                <InputWithLabel name='password' type='password' label='Password' onChange={props.onInput}/>
+                <InputWithLabel name='confirmPassword' type='password' label='Confirm' onChange={props.onInput}/>
             </div>
             <div className='action-container'>
                 <Link href='/signin'><a className='link'>Sign in</a></Link>
-                <ButtonPrimary>Create account</ButtonPrimary>
+                <ButtonPrimary onClick={props.onSubmit}>Create account</ButtonPrimary>
             </div>
         </form>
         <style jsx>{`

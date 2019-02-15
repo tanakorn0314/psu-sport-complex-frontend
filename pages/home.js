@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import Head from '../components/head'
-import Navbar from '../components/navbar';
+import Head from '../present-layer/components/head'
+import Navbar from '../present-layer/components/navbar';
 
 const Home = () => (
   <div>

@@ -1,7 +1,7 @@
 import React from 'react';
-import Layout from '../components/layout';
-import Banner from '../components/banner';
-import Button from '../components/button_primary';
+import Layout from '../present-layer/components/layout';
+import Banner from '../present-layer/components/banner';
+import Button from '../present-layer/components/button_primary';
 
 const stadiums = ['tennis', 'basketball', 'table tennis', 'badminton'];
 

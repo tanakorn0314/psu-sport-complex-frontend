@@ -3,7 +3,7 @@ import React from 'react';
 const hoverColor = '#DBDB00';
 
 const Button = props => (
-    <div className='container'>
+    <div className='container' onClick={props.onClick}>
         {props.children}
         <style jsx>{`
             .container {
