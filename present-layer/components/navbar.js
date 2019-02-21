@@ -43,7 +43,12 @@ const Navbar = props => {
                 flex-direction: row;
                 flex: 1;
                 background-color: ${primaryColor};
-                padding: 20px 10px 20px 10px
+                padding: 20px 10px 20px 10px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100;
+                width: 100%;
             }
             .menu-container {
                 display: flex;

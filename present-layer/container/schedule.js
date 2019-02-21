@@ -1,78 +1,50 @@
 import React from 'react';
+import { todayIndex } from '../../utils/date-utils';
 
 const unitHeight = 50;
 
-const timeline = ['9.00', '9.30', '10.00', '10.30', '11.00', '11.30', '12.00'];
-const eventGroups = [
-    {
-        topInfo: 'Monday',
-        events: [
-            {
-                eventName: 'golf',
-                startTime: 9,
-                finishTime: '',
-            },
-            {
-                eventName: 'football',
-                startTime: 11,
-                finishTime: '',
-            },
-            {
-                eventName: 'basketball',
-                startTime: 14,
-                finishTime: '',
-            },
-        ]
-    },
-    {
-        topInfo: 'Tuesday',
-        events: [
-            {
-                eventName: 'golf2',
-                startTime: 9,
-                finishTime: '',
-            },
-            {
-                eventName: 'football2',
-                startTime: 12,
-                finishTime: '',
-            },
-            {
-                eventName: 'basketball2',
-                startTime: 13,
-                finishTime: '',
-            },
-        ]
-    }
-]
-
 const Events = props => {
-    const { topInfo, events } = props;
+    const { topInfo, bookings } = props;
     return (
         <li className='events-group'>
-            <div><span>{topInfo}</span></div>
-            <ul>
-                {events.map((event, index) => <Event key={index} title={event.eventName} startTime={event.startTime}/>)}
+            <div className='top-info'><span>{topInfo}</span></div>
+            <ul>{bookings.map((booking, index) =>
+                <Event
+                    key={index}
+                    index={index}
+                    title={booking.userName}
+                    startTime={booking.startTime}
+                    finishTime={booking.finishTime}
+                />)}
             </ul>
             <style jsx>{`
-                li {
-                    list-style: none;
-                }
                 .events-group {
-                    width: 20%;
                     float: left;
+                    border: 1px solid #eaeaea;
+                    margin-bottom: 0px; 
+                    min-width: 150px;
                 }
-                .events-group > div {
-                    display: flex;
+                .events-group > .top-info {
+                    display: table;
                     height: ${unitHeight}px;
-                    justify-content: center;
-                    align-items: center;
+                    border-bottom: 1px solid #eaeaea;
+                    padding: 0px;
+                    width: 100%;
+                }
+                .events-group > .top-info > span {
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding: 0 .5em;
+                    text-align: center;
+                    font-weight: 400;
+                    margin-bottom: 0;
                 }
                 .events-group > ul {
                     position: relative;
-                    padding: 0;
-                    height: 950px;
+                    height: ${props.times.length * unitHeight}px;
+                    display: block;
                     overflow: visible;
+                    padding: 0;
                 }
             `}</style>
         </li>
@@ -81,22 +53,32 @@ const Events = props => {
 
 
 const Event = props => {
-    const { title, startTime } = props;
+    const { title, startTime, finishTime } = props;
+    const startTimeSlot = startTime.getHours() * 2 + (startTime.getMinutes() === 30 ? 1 : 0);
+    const finishTimeSlot = finishTime.getHours() * 2 + (finishTime.getMinutes() === 30 ? 1 : 0);
+    const length = finishTimeSlot - startTimeSlot;
+    console.log(startTimeSlot, finishTime.getMinutes(), length);
     return (
         <li className='single-event'>
             <a href='#'>
-                <em>{title}</em>
+               {title}
             </a>
             <style jsx>{`
-                    li {
-                        list-style: none;
-                    }
                     .single-event {
-                        top: ${(startTime - 9) * unitHeight}px;
-                        background-color: red;
                         position: absolute;
-                        height: ${unitHeight * 2}px;
-                        width: 100%;
+                        top: ${(startTimeSlot - 30) * unitHeight}px;
+                        height: ${length * unitHeight - 6}px;
+                        width: calc(100% - 6px);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: red;
+                        border-radius: 5px;
+                        margin: 3px;
+                    }
+                    .single-event > a {
+                        color: #fff;
+                        font-family: sans-serif;
                     }
                 `}</style>
         </li>
@@ -104,25 +86,41 @@ const Event = props => {
 }
 
 class Schedule extends React.Component {
+
     render() {
+        const { times, eventGroups } = this.props;
+        const events = [];
+        for (let i = todayIndex, j = 0; j < 7; i++ , j++) {
+            const index = i % 7;
+            events.push(
+                <Events key={index} times={times} topInfo={eventGroups[index].day} bookings={eventGroups[index].bookings} />
+            )
+        }
         return (
             <div className='schedule'>
                 <div className='timeline'>
                     <ul>
-                        {timeline.map((item, index) => <li key={index}><span>{item}</span></li>)}
+                        {times.map((item, index) => <li key={index}><span>{item}</span></li>)}
                     </ul>
                 </div>
                 <div className='events'>
                     <ul>
-                        {eventGroups.map((eventGroup, index) => (<Events key={index} topInfo={eventGroup.topInfo} events={eventGroup.events} />))}
+                        {events}
                     </ul>
                 </div>
                 <style jsx>{`
-                    li {
+                    :global(li) {
                         list-style: none;
                     }
+                    :global(ul) {
+                        padding: 0;
+                        margin: 0;
+                    }
+                    :global(a) {
+                        text-decoration: none;
+                    }
                     .schedule {
-                        width: 90%;
+                        max-width: 1400px;
                         position: relative;
                     }
                     .timeline {
@@ -130,17 +128,34 @@ class Schedule extends React.Component {
                         position: absolute;
                         top: 0;
                         left: 0;
+                        height: 100%;
+                        width: 100%;
                         padding-top: ${unitHeight}px;
                     }
                     .timeline > ul > li {
+                        position: relative;
                         height: ${unitHeight}px;
                     }
-                    .events {
-                        margin-left: 60px;
-                        width: calc(100% - 60px);
+                    .timeline > ul > li > span {
                         position: relative;
+                        top: -10px;
+                    }
+                    .timeline > ul > li ::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0px;
+                        left: 60px;
+                        height: 1px;
+                        width: calc(100% - 60px);
+                        background-color: #eaeaea;
+                        box-sizing: border-box;
+                    }
+                    .events {
+                        position: relative;
+                        margin-left: 60px;
                         z-index: 1;
                         float: left;
+                        width: calc(100% - 60px);
                     }
                 `}</style>
             </div>
