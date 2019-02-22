@@ -64,7 +64,7 @@ const durations = [
     ['2 hours', 2, 0],
     ['2 hours 30 minutes', 2, 30],
     ['3 hours', 3, 0],
-    ['3 hours 30 minuts', 3 ,30],
+    ['3 hours 30 minuts', 3, 30],
     ['4 hours', 4, 0]
 ];
 
@@ -105,6 +105,7 @@ class BookOnline extends React.Component {
         super(props);
         this.state = {
             stadium: stadiums[0],
+            date: new Date().toISOString().substring(0, 10),
             startTime: times[0],
             durationIndex: 0,
             eventGroups: initEventGroup
@@ -130,15 +131,20 @@ class BookOnline extends React.Component {
                                 </optgroup>
                             )}
                         </select>
+                        <input name='date' type='date' className='input-date' defaultValue={this.state.date} onChange={this.handleSelect}/>
                         <select name='startTime' className='input' onChange={this.handleSelect}>
-                            {times.map((time, index) => <option key={index} value={time}>{time}</option>)}
+                            <optgroup label='start time'>
+                                {times.map((time, index) => <option key={index} value={time}>{time}</option>)}
+                            </optgroup>
                         </select>
                         <select name='durationIndex' className='input' onChange={this.handleSelect}>
-                            {durations.map(([duration], index) => <option key={index} value={index}>{duration}</option>)}
+                            <optgroup label='duration'>
+                                {durations.map(([duration], index) => <option key={index} value={index}>{duration}</option>)}
+                            </optgroup>
                         </select>
                         <Button onClick={this.handleClick}>book</Button>
                     </form>
-                    <Schedule times={times} eventGroups={this.state.eventGroups}/>
+                    <Schedule times={times} eventGroups={this.state.eventGroups} />
                 </main>
                 <style jsx>{`
                     main {
@@ -156,7 +162,7 @@ class BookOnline extends React.Component {
                     .title {
                         font-weight: 400;
                     }
-                    .input {
+                    .input, .input-date {
                         width: 100%;
                         border-radius: 20px;
                         border: 1px solid #dedede;
@@ -168,16 +174,21 @@ class BookOnline extends React.Component {
                         justify-content: center;
                         outline: none;
                     }
-                    .input:focus {
+                    .input:focus, input-date:focus {
                         box-shadow: 0 0 1px 1px #46AFFF;
                     }
+                    .input-date {
+                        width: 80%;
+                        padding: 3px 20px;
+                    }
+                    
                 `}</style>
             </Layout>
         );
     }
 
     handleSelect = (e) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
         this.setState({
             [name]: value
         });
@@ -188,20 +199,30 @@ class BookOnline extends React.Component {
     }
 
     bookOnline = async () => {
-        const { startTime, durationIndex } = this.state;
+        const { startTime, durationIndex, eventGroups } = this.state;
         const [inputHour, inputMinute] = startTime.split('.');
 
-        const startDate = new Date();
-        startDate.setHours(0,0,0,0,0);
+        const startDate = new Date(this.state.date);
+        startDate.setHours(0, 0, 0, 0, 0);
         startDate.setHours(parseInt(inputHour));
         startDate.setMinutes(parseInt(inputMinute));
 
-        const finishDate = new Date();
-        finishDate.setHours(0,0,0,0,0);
+        const finishDate = new Date(this.state.date);
+        finishDate.setHours(0, 0, 0, 0, 0);
         finishDate.setHours(durations[durationIndex][1] + parseInt(inputHour));
         finishDate.setMinutes(durations[durationIndex][2] + parseInt(inputMinute));
 
         await BookingService.book(1, startDate, finishDate);
+
+        let sBooking = {
+            userName: `Tanakorn Karode`,
+            startTime: startDate,
+            finishTime: finishDate
+        }
+
+        eventGroups[startDate.getDay()].bookings.push(sBooking);
+
+        this.setState({eventGroups});
     }
 
     fetchData = async () => {
@@ -210,7 +231,7 @@ class BookOnline extends React.Component {
         const res = await BookingService.get();
         const bookings = res.data;
         if (bookings) {
-            bookings.forEach( booking => {
+            bookings.forEach(booking => {
                 let sBooking = {
                     userName: `${booking.user.firstName} ${booking.user.lastName}`,
                     startTime: new Date(booking.startTime),
@@ -225,12 +246,7 @@ class BookOnline extends React.Component {
             });
         }
 
-
-        this.setState({
-            eventGroups
-        });
-
-        
+        this.setState({eventGroups});
     }
 }
 
