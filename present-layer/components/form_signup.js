@@ -1,51 +1,123 @@
 import React from 'react';
-import InputWithLabel from './input_with_label';
-import Link from 'next/link';
 import ButtonPrimary from '../components/button_primary';
+import { colors } from '../styles/constants/colors';
+import Radio from './radio';
 
-const FormSignUp = props => (
-    <div className='container'>
-        <h1>Sign Up</h1>
-        <form>
-            <div className='pair-field'>
-                <InputWithLabel name='firstname' type='text' label='Fistname' onChange={props.onInput}/>
-                <InputWithLabel name='lastname' type='text' label='Lastname' onChange={props.onInput}/>
-            </div>
-            <InputWithLabel name='username' type='text' label='Username' onChange={props.onInput}/>
-            <div className='pair-field'>
-                <InputWithLabel name='password' type='password' label='Password' onChange={props.onInput}/>
-                <InputWithLabel name='confirmPassword' type='password' label='Confirm' onChange={props.onInput}/>
-            </div>
-            <div className='action-container'>
-                <Link href='/signin'><a className='link'>Sign in</a></Link>
-                <ButtonPrimary onClick={props.onSubmit}>Create account</ButtonPrimary>
-            </div>
-        </form>
+const RadioGroup = (props) => (
+    <div className='radio-container'>
+        <label>{props.label}</label>
+        <div className='radio-group'>
+            <Radio label='Male' value='M' name='gender' onChange={props.onChange} />
+            <Radio label='Female' value='F' name='gender' onChange={props.onChange} />
+        </div>
         <style jsx>{`
-        .container {
-            display: flex;
-            flex-direction: column;
-            max-width: 400px;
-            min-width: 300px;
-            border: solid 1px black;
-            border-radius: 3px;
-            padding: 20px;
-        }
-        .pair-field {
-            display: flex;
-            flex-direction: row;
-        }
-        .action-container {
-            display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                margin-top: 10px;
-        }
-        .link {
-            text-decoration: none;
-        }
-    `}</style>
+                .radio-container {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+        `}</style>
     </div>
 );
+
+class FormSignUp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fname: '',
+            lname: '',
+            dob: '',
+            gender: '',
+            email: '',
+            username: '',
+            password: '',
+            confirm: '',
+            neverInputPassword: true,
+            neverConfirm: true,
+        }
+    }
+    render() {
+        return (
+            <form className='form-container'>
+                <input className='input' type='text' name='fname' placeholder='Firstname' onChange={this.handleChange} />
+                <input className='input' type='text' name='lname' placeholder='Lastname' onChange={this.handleChange} />
+                <input className='input' type='date' name='dob' placeholder='Date of birth' onChange={this.handleChange} />
+                <RadioGroup label='Gender' onChange={this.handleChange} />
+                <input className='input' type='email' name='email' placeholder='Email' onChange={this.handleChange} />
+                <input className='input' type='text' name='username' placeholder='Username' onChange={this.handleChange} />
+                <input className='input' type='password' name='password' placeholder='Password' onBlur={this.handleChange} />
+                {!this.state.neverInputPassword && this.state.password.length < 6 && <div className='alert'>At least 6 characters password</div>}
+                <input className='input' type='password' name='confirm' placeholder='Confirm password' onBlur={this.handleChange} />
+                {!this.state.neverConfirm && this.state.password !== this.state.confirm && <div className='alert'>incorrect confirm password</div>}
+                <ButtonPrimary className='btn' onClick={this.handleSubmit}>Signup</ButtonPrimary>
+                <style jsx global>{`
+                    * {
+                        font-size: 16px;
+                    }
+                    .form-container {
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+                        max-width: 800px;
+                        border: solid 1px ${colors.border};
+                        border-radius: 30px;
+                        padding: 20px 50px 20px 50px;
+                        align-items: center;
+                    }
+                    .input {
+                        width: 100%;
+                        padding: 5px 8px 5px 8px;
+                        border: solid 1px ${colors.lightBorder};
+                        border-radius: 10px;
+                        margin-bottom: 10px;
+                        outline: none;
+                    }
+                    .input: focus {
+                        box-shadow: 0 0 1px 1px ${colors.lightBlue};
+                    }
+                    .btn {
+                        margin: 0 auto 0 auto;
+                    }
+                    .alert {
+                        color: red;
+                        width: 100%;
+                        margin-bottom: 10px;
+                    }
+                `}</style>
+            </form>
+        );
+    }
+
+    handleChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({ [name]: value });
+        if (name === 'password')
+            this.setState({ neverInputPassword: false })
+        if (name === 'confirm')
+            this.setState({ neverConfirm: false })
+        if (this.props.onInput)
+            this.props.onInput(e);
+    }
+
+    handleSubmit = (e) => {
+        if (this.checkValid() && this.props.onSubmit) {
+            this.props.onSubmit(e);
+        }
+    }
+
+    checkValid = () => {
+        const {
+            fname,
+            lname,
+            dob,
+            gender,
+            email,
+            username,
+            password,
+            confirm
+        } = this.state;
+        return fname.length > 0 && lname.length > 0 && dob.length > 0 && gender.length > 0 &&
+            email.length > 0 && username.length > 0 && password.length >= 6 && password === confirm;
+    }
+}
 
 export default FormSignUp;

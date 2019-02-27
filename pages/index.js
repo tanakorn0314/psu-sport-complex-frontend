@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../present-layer/components/layout';
 import Banner from '../present-layer/components/banner';
-import { connect } from 'react-redux';
 
 const bannerHeight = 400;
 
@@ -12,16 +11,8 @@ const imgUrl = [
 ];
 
 class Index extends Component {
-  static getInitialProps() {
-    
-  }
-
-  componentDidMount() {
-    console.log(this.props)
-  }
 
   render() {
-    const { user, token } = this.props;
     return (
       <Layout>
         <Banner id='home' height={bannerHeight} img={imgUrl[0]} />
@@ -33,8 +24,4 @@ class Index extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  token: state.token
-})
-
-export default connect(mapStateToProps)(Index);
+export default Index;

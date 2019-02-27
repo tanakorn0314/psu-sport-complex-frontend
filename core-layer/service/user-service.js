@@ -2,7 +2,7 @@ import axios from 'axios';
 import { userApi } from '../api/api';
 
 const createUser = async (user) => {
-    return await axios.post(userApi, user);
+    return await axios.post(`${userApi}/signup`, user);
 }
 
 const get = async () => {

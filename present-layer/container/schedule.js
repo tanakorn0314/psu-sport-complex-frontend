@@ -1,21 +1,31 @@
 import React from 'react';
 import { todayIndex } from '../../utils/date-utils';
+import { colors } from '../styles/constants/colors';
 
 const unitHeight = 50;
+const colorMap = {};
 
 const Events = props => {
     const { topInfo, bookings } = props;
     return (
         <li className='events-group'>
             <div className='top-info'><span>{topInfo}</span></div>
-            <ul>{bookings.map((booking, index) =>
-                <Event
-                    key={index}
-                    index={index}
-                    title={booking.userName}
-                    startTime={booking.startTime}
-                    finishTime={booking.finishTime}
-                />)}
+            <ul>{bookings.map((booking, index) => {
+                if (!colorMap[booking.userName]) {
+                    const len = colors.pool.length;
+                    const idx = Math.floor(Math.random() * len);
+                    colorMap[booking.userName] = colors.pool[idx];
+                }
+                return (
+                    <Event
+                        key={index}
+                        index={index}
+                        title={booking.userName}
+                        startDate={booking.startDate}
+                        finishDate={booking.finishDate}
+                        bg={colorMap[booking.userName]}
+                    />)
+            })}
             </ul>
             <style jsx>{`
                 .events-group {
@@ -53,26 +63,26 @@ const Events = props => {
 
 
 const Event = props => {
-    const { title, startTime, finishTime } = props;
-    const startTimeSlot = startTime.getHours() * 2 + (startTime.getMinutes() === 30 ? 1 : 0);
-    const finishTimeSlot = finishTime.getHours() * 2 + (finishTime.getMinutes() === 30 ? 1 : 0);
-    const length = finishTimeSlot - startTimeSlot;
-    console.log(startTimeSlot, finishTime.getMinutes(), length);
+    const { title, startDate, finishDate, bg } = props;
+    const startDateSlot = startDate.getHours() * 2 + (startDate.getMinutes() === 30 ? 1 : 0);
+    const finishDateSlot = finishDate.getHours() * 2 + (finishDate.getMinutes() === 30 ? 1 : 0);
+    const length = finishDateSlot - startDateSlot;
+    console.log(startDateSlot, finishDate.getMinutes(), length);
     return (
         <li className='single-event'>
             <a href='#'>
-               {title}
+                {title}
             </a>
             <style jsx>{`
                     .single-event {
                         position: absolute;
-                        top: ${(startTimeSlot - 30) * unitHeight}px;
+                        top: ${(startDateSlot - 30) * unitHeight}px;
                         height: ${length * unitHeight - 6}px;
                         width: calc(100% - 6px);
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        background-color: red;
+                        background-color: ${bg};
                         border-radius: 5px;
                         margin: 3px;
                     }

@@ -1,10 +1,11 @@
 import React from 'react';
-import Head from '../present-layer/components/head';
 import FormSignIn from '../present-layer/components/form_signin';
 import authService from '../core-layer/service/auth-service';
-import { storeToken } from '../action/auth-action';
+import { storeUser } from '../action/auth-action';
 import { connect } from 'react-redux';
 import Router from 'next/router';
+import Link from 'next/link';
+import { STORAGE } from '../core-layer/storage/local-storage';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -17,17 +18,48 @@ class SignIn extends React.Component {
 
     render() {
         return (
-            <div className='container'>
-                <Head />
-                <FormSignIn onInput={this.handleInput} onSubmit={this.handleSubmit} />
-                <style jsx>{`
-                    .container {
+            <div className='root'>
+                <div className='container'>
+                    <h1 className='header'>
+                        Login
+                    </h1>
+                    <FormSignIn onInput={this.handleInput} onSubmit={this.handleSubmit} />
+                    <div className='links'>
+                        <Link href='/'><a className='link'>To home page</a></Link>
+                        <Link href='/signup'><a className='link'>Register</a></Link>
+                    </div>
+                </div>
+                <style jsx global>{`
+                    * {
+                        font-family: 'Roboto', sans-serif;
+                    }
+                    .root {
                         display: flex;
-                        flex-direction: row;
                         flex: 1;
                         height: 100vh;
                         justify-content: center;
                         align-items: center;
+                    }
+                    .header {
+                        font-size: 48px;
+                        font-weight: 400;
+                    }
+                    .container {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        max-width: 800px;
+                        min-width: 300px;
+                    }
+                    .links {
+                        display: flex;
+                        width: 100%;
+                        justify-content: space-between;
+                        margin-top: 20px;
+                    }
+                    .link {
+                        text-decoration: none;
                     }
                 `}</style>
             </div>
@@ -42,20 +74,28 @@ class SignIn extends React.Component {
     }
 
     handleSubmit = async () => {
-        const { data, status, statusText } = await authService.signIn(this.state.username, this.state.password);
-        if (data.accessToken) {
-            this.props.saveToken(data.accessToken);
+        try {
+            const { data } = await authService.signIn(this.state.username, this.state.password);
+            if (data.token.accessToken) {
+                const { accessToken } = data.token;
+                STORAGE.storeAccessToken(accessToken);
+                this.props.saveUser(accessToken);
+                Router.push('/');
+            }
+        } catch (e) {
+            console.log(e.message);
+            alert('Username or password incorrect');
         }
-        Router.push('/');
+        
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        saveToken: (token) => {
-            dispatch(storeToken(token));
+        saveUser: (token) => {
+            dispatch(storeUser(token));
         }
     }
 }
 
-export default connect(()=>({}), mapDispatchToProps)(SignIn);
+export default connect(() => ({}), mapDispatchToProps)(SignIn);

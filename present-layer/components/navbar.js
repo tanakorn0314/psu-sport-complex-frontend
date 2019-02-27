@@ -1,5 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import { connect } from 'react-redux';
+import { storeUser } from '../../action/auth-action';
+import { STORAGE } from '../../core-layer/storage/local-storage';
 
 const appName = 'PSU Sport Complex';
 const menus = [
@@ -14,26 +17,44 @@ const primaryColor = '#FFF';
 const fontColor = '#616161';
 const fontColorHover = '#DBDB00';
 
-const Navbar = props => {
-    const { classes } = props;
-    return (
-        <div className='root'>
-            <div className='menu-container'>
-                {menus.map((item, index) => {
-                    const url = item !== `book online` ? `/#${item}` : `/${item.replace(' ', '_')}`;
-                    return (
-                        <Link href={url} key={index}>
-                            <div className='menu-item'>{item.toUpperCase()}</div>
-                        </Link>
-                    )
-                })}
-            </div>
-            <div className='right-menu-container'>
-                <Link href='/signin'>
-                    <div className='menu-item'>SIGN IN</div>
-                </Link>
-            </div>
-            <style jsx>{`
+const SignIn = () => (
+    <Link href='/signin'>
+        <div className='menu-item'>SIGN IN</div>
+    </Link>
+);
+
+const SignOut = props => (
+    <div className='menu-item' onClick={props.onClick}>SIGN OUT</div>
+)
+
+class Navbar extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        this.props.initUser();
+    }
+
+    render() {
+        const { user, clearUser } = this.props;
+        return (
+            <div className='root'>
+                <div className='menu-container'>
+                    {menus.map((item, index) => {
+                        const url = item !== `book online` ? `/#${item}` : `/${item.replace(' ', '_')}`;
+                        return (
+                            <Link href={url} key={index}>
+                                <div className='menu-item'>{item.toUpperCase()}</div>
+                            </Link>
+                        )
+                    })}
+                </div>
+                <div className='right-menu-container'>
+                    {!user.username ? <SignIn/> : <SignOut onClick={clearUser}/>}
+                </div>
+                <style jsx>{`
             :global(body) {
                 margin: 0;
                 font-family: Roboto
@@ -60,17 +81,33 @@ const Navbar = props => {
             .right-menu-container {
                 margin-left: 10px
             }
-            .menu-item {
+            :global(.menu-item) {
                 color: ${fontColor};
                 cursor: pointer;
                 margin-right: 1em
             }
-            .menu-item:hover {
+            :global(.menu-item:hover) {
                 color: ${fontColorHover};
             }
         `}</style>
-        </div >
-    )
-};
+            </div >
+        )
+    };
 
-export default Navbar
+}
+
+const mapStateToProps = state => ({
+    user: state.user
+})
+
+const mapDispatchToProps = dispatch => ({
+    clearUser: () => {
+        dispatch(storeUser(''));
+    },
+    initUser: () => {
+        const token = STORAGE.getAccessToken();
+        dispatch(storeUser(token));
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

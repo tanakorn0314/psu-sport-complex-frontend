@@ -1,20 +1,17 @@
 import actionTypes from '../action/action-types';
 import { createStore } from 'redux';
 
-const initialState = {};
+const initialState = {
+    user: {}
+};
 
 function reducer(state = initialState, action) {
     switch (action.type) {
-        case actionTypes.CREATE_USER:
+        case actionTypes.STORE_USER:
             return {
                 ...state,
                 user: action.payload
             };
-        case actionTypes.STORE_TOKEN:
-            return {
-                ...state,
-                token: action.payload
-            }
         default: return state;
     }
 }

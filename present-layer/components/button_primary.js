@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors } from '../../styles/colors';
+import { colors } from '../styles/constants/colors';
 
 const ButtonPrimary = props => (
     <div className='container' onClick={props.onClick}>

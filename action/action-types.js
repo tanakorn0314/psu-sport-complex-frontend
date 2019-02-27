@@ -1,4 +1,3 @@
 export default {
-    CREATE_USER: 'CREATE_USER',
-    STORE_TOKEN: 'STORE_TOKEN'
+    STORE_USER: 'STORE_USER'
 }

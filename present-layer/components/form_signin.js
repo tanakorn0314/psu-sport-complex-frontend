@@ -1,44 +1,51 @@
 import React from 'react';
-import Link from 'next/link';
-import InputWithLabel from './input_with_label';
 import ButtonPrimary from './button_primary';
+import { colors } from '../styles/constants/colors';
 
-const FormSignIn = props => (
-    <div className='container'>
-        <h1 className='title'>Sign in</h1>
-        <form>
-            <InputWithLabel label='Username' name='username' type='text' onChange={props.onInput} />
-            <InputWithLabel label='Password' name='password' type='password' onChange={props.onInput}/>
-            <div className='action-container'>
-                <Link href='/signup'><a className='link'>Create account</a></Link>
-                <ButtonPrimary onClick={props.onSubmit}>Login</ButtonPrimary>
-            </div>
-        </form>
-        <style jsx>{`
-            .container {
-                display: flex;
-                flex-direction: column;
-                padding: 20px;
-                border: solid 1px black;
-                border-radius: 3px;
-                min-width: 300px;
-                max-width: 400px;
-                max-height: 400px;
-            }
-            .title {
-                text-align: center;
-            }
-            .action-container {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                margin-top: 10px;
-            }
-            .link {
-                text-decoration: none;
-            }
-        `}</style>
-    </div>
-)
+class FormSignIn extends React.Component {
+    render() {
+        return (
+            <form className='form-container'>
+                <input className='input' type='text' name='username' placeholder='Username or email' onChange={this.props.onInput} />
+                <input className='input' type='password' name='password' placeholder='Password' onChange={this.props.onInput} />
+                <ButtonPrimary className='btn' onClick={this.props.onSubmit}>Login</ButtonPrimary>
+                <style jsx global>{`
+                    * {
+                        font-size: 16px;
+                    }
+                    .form-container {
+                        display: flex;
+                        flex-direction: column;
+                        width: 100%;
+                        max-width: 800px;
+                        border: solid 1px ${colors.border};
+                        border-radius: 30px;
+                        padding: 20px 50px 20px 50px;
+                        align-items: center;
+                    }
+                    .input {
+                        width: 100%;
+                        padding: 5px 8px 5px 8px;
+                        border: solid 1px ${colors.lightBorder};
+                        border-radius: 10px;
+                        margin-bottom: 10px;
+                        outline: none;
+                    }
+                    .input: focus {
+                        box-shadow: 0 0 1px 1px ${colors.lightBlue};
+                    }
+                    .btn {
+                        margin: 0 auto 0 auto;
+                    }
+                    .alert {
+                        color: red;
+                        width: 100%;
+                        margin-bottom: 10px;
+                    }
+                `}</style>
+            </form>
+        );
+    }
+}
 
 export default FormSignIn;
