@@ -14,7 +14,8 @@ class SignUp extends React.Component {
             email: '',
             username: '',
             password: '',
-            confirm: ''
+            confirm: '',
+            idNumber: '',
         }
     }
 
@@ -38,7 +39,7 @@ class SignUp extends React.Component {
                     .root {
                         display: flex;
                         flex: 1;
-                        height: 100vh;
+                        padding: 20px;
                         justify-content: center;
                         align-items: center;
                     }
@@ -79,6 +80,7 @@ class SignUp extends React.Component {
         const user = {
             fname: this.state.fname,
             lname: this.state.lname,
+            idNumber: this.state.idNumber,
             dob: new Date(this.state.dob).toISOString(),
             gender: this.state.gender,
             email: this.state.email,

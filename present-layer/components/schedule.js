@@ -132,6 +132,7 @@ class Schedule extends React.Component {
                     .schedule {
                         max-width: 1400px;
                         position: relative;
+                        margin-bottom: 20px;
                     }
                     .timeline {
                         display: block;

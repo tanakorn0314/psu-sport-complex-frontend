@@ -74,19 +74,15 @@ class SignIn extends React.Component {
     }
 
     handleSubmit = async () => {
-        try {
-            const { data } = await authService.signIn(this.state.username, this.state.password);
-            if (data.token.accessToken) {
-                const { accessToken } = data.token;
-                STORAGE.storeAccessToken(accessToken);
-                this.props.saveUser(accessToken);
-                Router.push('/');
-            }
-        } catch (e) {
-            console.log(e.message);
-            alert('Username or password incorrect');
+        const { data } = await authService.signIn(this.state.username, this.state.password);
+        if (data.accessToken) {
+            STORAGE.storeAccessToken(data.accessToken);
+            this.props.saveUser(data.accessToken);
+            Router.push('/');
         }
-        
+        else {
+            alert(data);
+        }
     }
 }
 

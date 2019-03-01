@@ -38,7 +38,7 @@ class Navbar extends React.Component {
     }
 
     render() {
-        const { user, clearUser } = this.props;
+        const { user } = this.props;
         return (
             <div className='root'>
                 <div className='menu-container'>
@@ -52,7 +52,7 @@ class Navbar extends React.Component {
                     })}
                 </div>
                 <div className='right-menu-container'>
-                    {!user.username ? <SignIn/> : <SignOut onClick={clearUser}/>}
+                    {!user.username ? <SignIn/> : <SignOut onClick={this.clearUser}/>}
                 </div>
                 <style jsx>{`
             :global(body) {
@@ -94,6 +94,10 @@ class Navbar extends React.Component {
         )
     };
 
+    clearUser = () => {
+        STORAGE.storeAccessToken('');
+        this.props.clearUser();
+    }
 }
 
 const mapStateToProps = state => ({

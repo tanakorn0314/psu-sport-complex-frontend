@@ -31,6 +31,7 @@ class FormSignUp extends React.Component {
             username: '',
             password: '',
             confirm: '',
+            idNumber: '',
             neverInputPassword: true,
             neverConfirm: true,
         }
@@ -38,16 +39,29 @@ class FormSignUp extends React.Component {
     render() {
         return (
             <form className='form-container'>
+                <div className='input-container'>
+                    <label htmlFor='username'>Username</label>
+                    <input id='username' className='input' type='text' name='username' placeholder='Username' onChange={this.handleChange} />
+                </div>
+                <div className='input-container'>
+                    <label htmlFor='password'>Password</label>
+                    <input id='password' className='input' type='password' name='password' placeholder='Password' onBlur={this.handleChange} />
+                    {!this.state.neverInputPassword && this.state.password.length < 6 && <div className='alert'>At least 6 characters password</div>}
+                </div>
+                <div className='input-container'>
+                    <label htmlFor='confirm'>Confirm Password</label>
+                    <input id='confirm' className='input' type='password' name='confirm' placeholder='Confirm password' onBlur={this.handleChange} />
+                    {!this.state.neverConfirm && this.state.password !== this.state.confirm && <div className='alert'>incorrect confirm password</div>}
+                </div>
+                <div className='input-container'>
+                    <label htmlFor='email'>Email</label>
+                    <input id='email' className='input' type='email' name='email' placeholder='Email' onChange={this.handleChange} />
+                </div>
                 <input className='input' type='text' name='fname' placeholder='Firstname' onChange={this.handleChange} />
                 <input className='input' type='text' name='lname' placeholder='Lastname' onChange={this.handleChange} />
                 <input className='input' type='date' name='dob' placeholder='Date of birth' onChange={this.handleChange} />
+                <input className='input' type='text' name='idNumber' placeholder='identification number or passport id' onChange={this.handleChange}/>
                 <RadioGroup label='Gender' onChange={this.handleChange} />
-                <input className='input' type='email' name='email' placeholder='Email' onChange={this.handleChange} />
-                <input className='input' type='text' name='username' placeholder='Username' onChange={this.handleChange} />
-                <input className='input' type='password' name='password' placeholder='Password' onBlur={this.handleChange} />
-                {!this.state.neverInputPassword && this.state.password.length < 6 && <div className='alert'>At least 6 characters password</div>}
-                <input className='input' type='password' name='confirm' placeholder='Confirm password' onBlur={this.handleChange} />
-                {!this.state.neverConfirm && this.state.password !== this.state.confirm && <div className='alert'>incorrect confirm password</div>}
                 <ButtonPrimary className='btn' onClick={this.handleSubmit}>Signup</ButtonPrimary>
                 <style jsx global>{`
                     * {
@@ -62,6 +76,9 @@ class FormSignUp extends React.Component {
                         border-radius: 30px;
                         padding: 20px 50px 20px 50px;
                         align-items: center;
+                    }
+                    .input-container {
+                        width: 100%;
                     }
                     .input {
                         width: 100%;

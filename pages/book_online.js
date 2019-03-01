@@ -1,9 +1,10 @@
 import React from 'react';
 import Layout from '../present-layer/components/layout';
 import Button from '../present-layer/components/button_primary';
-import Schedule from '../present-layer/container/schedule';
+import Schedule from '../present-layer/components/schedule';
 import BookingService from '../core-layer/service/booking-service';
 import { connect } from 'react-redux';
+import Link from 'next/link';
 
 const stadiums = [
     {
@@ -124,6 +125,8 @@ class BookOnline extends React.Component {
             <Layout>
                 <main className='main'>
                     <h1 className='title'>BOOKING</h1>
+                    <Schedule times={times} eventGroups={this.state.eventGroups} />
+                    <Link href='booking_list'><a className='link-to-list'>View your bookings list</a></Link>
                     <form className='input-form'>
                         <select name='court' className='input' onChange={this.handleSelect}>
                             {stadiums.map((stadium, index) =>
@@ -149,7 +152,6 @@ class BookOnline extends React.Component {
                         <input type='text' name='description' className='input-text' onChange={this.handleSelect} placeholder='description' />
                         <Button onClick={this.handleClick}>book</Button>
                     </form>
-                    <Schedule times={times} eventGroups={this.state.eventGroups} />
                 </main>
                 <style jsx>{`
                     main {
@@ -160,6 +162,7 @@ class BookOnline extends React.Component {
                         margin-top: 50px;
                     }
                     .input-form {
+                        position: relative;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
@@ -187,6 +190,10 @@ class BookOnline extends React.Component {
                     }
                     .input-text {
                         width: 80%;
+                    }
+                    .link-to-list {
+                        margin-top: 20px;
+                        position: relative;
                     }
                 `}</style>
             </Layout>
@@ -224,8 +231,6 @@ class BookOnline extends React.Component {
         finishTime.setHours(0, 0, 0, 0, 0);
         finishTime.setHours(durations[durationIndex][1] + parseInt(inputHour));
         finishTime.setMinutes(durations[durationIndex][2] + parseInt(inputMinute));
-
-        console.log(user);
 
         await BookingService.book(title, description, user.userId, 1, startTime.toISOString(), finishTime.toISOString());
 
