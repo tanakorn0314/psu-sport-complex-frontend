@@ -1,18 +1,38 @@
+import fetch from 'isomorphic-unfetch';
 import axios from 'axios';
 import { bookingApi } from '../api/api';
-import { STORAGE } from '../storage/local-storage';
 
-const get = async () => {
-    const config = {
-        headers: {'Authorization': 'bearer ' + STORAGE.getAccessToken()}
+const get = async (accessToken) => {
+    const url = bookingApi;
+    const options = {
+        headers: { 'Authorization': 'bearer ' + accessToken }
     }
-    return await axios.get(bookingApi, config);
+    const response = await fetch(url, options);
+    return await response.json();
 }
 
-const book = async (title, description, userId, courtId, startDate, endDate) => {
-    const config = {
-        headers: {'Authorization': 'bearer ' + STORAGE.getAccessToken()}
+const getById = async (accessToken, id) => {
+    const url = `${bookingApi}/id/${id}`;
+    const options = {
+        headers: { 'Authorization': 'bearer ' + accessToken }
     }
+    const response = await fetch(url, options);
+    return await response.json();
+}
+
+const getByUserId = async (accessToken, userId) => {
+    const url = `${bookingApi}/user/${userId}`;
+    const options = {
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+        }
+    }
+    const response = await fetch(url, options);;
+    return await response.json();
+}
+
+const book = async (accessToken, title, description, userId, courtId, startDate, endDate) => {
+    const url = bookingApi;
     const body = {
         title,
         description,
@@ -21,12 +41,33 @@ const book = async (title, description, userId, courtId, startDate, endDate) => 
         startDate,
         endDate
     }
-    console.log(body);
-    const result = await axios.post(bookingApi, body, config);
-    return result;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+    const response = await fetch(url, options);
+    return await response.json();
+}
+
+const uploadSlip = async (accessToken, formData) => {
+    const url = `${bookingApi}/upload_slip/1`;
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    const response = await axios.post(url, formData, config);
+    return response;
 }
 
 export default {
     get,
-    book
+    getById,
+    getByUserId,
+    book,
+    uploadSlip
 }

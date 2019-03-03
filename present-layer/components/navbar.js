@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { connect } from 'react-redux';
 import { storeUser } from '../../action/auth-action';
-import { STORAGE } from '../../core-layer/storage/local-storage';
 
 const appName = 'PSU Sport Complex';
 const menus = [
@@ -31,10 +30,6 @@ class Navbar extends React.Component {
 
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-        this.props.initUser();
     }
 
     render() {
@@ -95,7 +90,7 @@ class Navbar extends React.Component {
     };
 
     clearUser = () => {
-        STORAGE.storeAccessToken('');
+        document.cookie = `accessToken=''`;
         this.props.clearUser();
     }
 }
@@ -108,8 +103,7 @@ const mapDispatchToProps = dispatch => ({
     clearUser: () => {
         dispatch(storeUser(''));
     },
-    initUser: () => {
-        const token = STORAGE.getAccessToken();
+    initUser: (token) => {
         dispatch(storeUser(token));
     }
 })

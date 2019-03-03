@@ -5,7 +5,9 @@ export function storeUser(token) {
     let user = {};
     try {
         user = jwtDecode(token);
-    } catch (e) {}
+    } catch (e) {
+        console.error(e);
+    }
     return {
         type: actionTypes.STORE_USER,
         payload: user

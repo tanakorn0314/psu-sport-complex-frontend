@@ -2,8 +2,12 @@ import React from 'react';
 import FormSignUp from '../present-layer/components/form_signup';
 import Link from 'next/link';
 import authService from '../core-layer/service/auth-service';
+import cookies from 'next-cookies';
+import redirect from '../src/lib/redirect';
+import { withBlockAuth } from '../container/withBlockAuth';
 
 class SignUp extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,7 +30,7 @@ class SignUp extends React.Component {
                     <h1 className='header'>
                         Register
                     </h1>
-                    <FormSignUp onInput={this.handleInput} onSubmit={this.handleSubmit}/>
+                    <FormSignUp onInput={this.handleInput} onSubmit={this.handleSubmit} />
                     <div className='links'>
                         <Link href='/'><a className='link'>To home page</a></Link>
                         <Link href='/signin'><a className='link'>Login</a></Link>
@@ -92,14 +96,18 @@ class SignUp extends React.Component {
         }
 
         try {
-            await authService.signup(user);
-            alert('Success registration');
-        } catch(e) {
+            const { data } = await authService.signup(user);
+            console.log(data);
+            if (typeof data === 'string' && data.includes('exist')) {
+                alert(data)
+            } else {
+                alert('Register success');
+            }
+        } catch (e) {
             console.log(e.message)
-            alert('User is alredy exist');
         }
 
     }
 }
 
-export default SignUp;
+export default withBlockAuth(SignUp);

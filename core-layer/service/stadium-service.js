@@ -1,8 +1,9 @@
-import axios from 'axios';
+import fetch from 'isomorphic-unfetch';
 import { stadiumApi } from '../api/api';
 
-const get = async () => {
-    return await axios.get(stadiumApi);
+const get = () => {
+    const url = stadiumApi;
+    return fetch(url);
 }
 
 export default {

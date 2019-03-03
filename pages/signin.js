@@ -5,9 +5,13 @@ import { storeUser } from '../action/auth-action';
 import { connect } from 'react-redux';
 import Router from 'next/router';
 import Link from 'next/link';
-import { STORAGE } from '../core-layer/storage/local-storage';
+import cookies from 'next-cookies';
+import redirect from '../src/lib/redirect';
+import { storeCookie } from '../core-layer/storage/cookie-storage';
+import { withBlockAuth } from '../container/withBlockAuth';
 
 class SignIn extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -73,11 +77,12 @@ class SignIn extends React.Component {
         });
     }
 
-    handleSubmit = async () => {
+    handleSubmit = async e => {
         const { data } = await authService.signIn(this.state.username, this.state.password);
-        if (data.accessToken) {
-            STORAGE.storeAccessToken(data.accessToken);
-            this.props.saveUser(data.accessToken);
+        if (data && data.accessToken && data.expiresIn) {
+            const { accessToken, expiresIn } = data;
+            storeCookie('accessToken', accessToken, expiresIn);
+            this.props.saveUser(accessToken);
             Router.push('/');
         }
         else {
@@ -94,4 +99,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(() => ({}), mapDispatchToProps)(SignIn);
+export default withBlockAuth(connect(() => ({}), mapDispatchToProps)(SignIn));

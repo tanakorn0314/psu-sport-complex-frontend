@@ -1,10 +1,10 @@
-import Navbar from '../components/navbar';
+import Navbar from '../components/bootstrap_nav';
 import Head from '../components/head';
 
 const NavLayout = props => (
     <div>
         <Head/>
-        <Navbar/>
+        <Navbar accessToken={props.accessToken}/>
         {props.children}
     </div>
 );

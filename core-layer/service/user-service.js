@@ -1,12 +1,15 @@
+import fetch from 'isomorphic-unfetch';
 import axios from 'axios';
 import { userApi } from '../api/api';
 
-const createUser = async (user) => {
-    return await axios.post(`${userApi}/signup`, user);
+const createUser = (user) => {
+    const url = `${userApi}/signup`;
+    return axios.post(url, user);
 }
 
-const get = async () => {
-    return await axios.get(userApi);
+const get = () => {
+    const url = userApi;
+    return fetch(url);
 }
 
 export default {

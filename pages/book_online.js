@@ -1,10 +1,19 @@
 import React from 'react';
-import Layout from '../present-layer/components/layout';
+import Layout from '../present-layer/layout/layout_nav';
 import Button from '../present-layer/components/button_primary';
 import Schedule from '../present-layer/components/schedule';
 import BookingService from '../core-layer/service/booking-service';
-import { connect } from 'react-redux';
 import Link from 'next/link';
+import Router from 'next/router';
+import cookies from 'next-cookies';
+import {
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button as BootstrapBTN
+} from 'reactstrap';
+import { withAuth } from '../container/withAuth';
 
 const stadiums = [
     {
@@ -103,6 +112,14 @@ const initEventGroup = [
 
 class BookOnline extends React.Component {
 
+    static async getInitialProps(ctx) {
+        const { accessToken } = cookies(ctx);
+        const eventGroups = await BookingService.get(accessToken);
+        return {
+            eventGroups
+        }
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -112,21 +129,31 @@ class BookOnline extends React.Component {
             durationIndex: 0,
             eventGroups: initEventGroup,
             title: '',
-            description: ''
+            description: '',
+            modal: {
+                title: '',
+                body: '',
+                isOpen: '',
+                action: '',
+                cancel: '',
+                isOpen: false
+            },
+            lastBooking : {}
         }
     }
 
     componentDidMount() {
-        this.fetchData();
+        this.bindSchedule(this.props.eventGroups);
     }
 
     render() {
+        const { user } = this.props;
         return (
             <Layout>
                 <main className='main'>
                     <h1 className='title'>BOOKING</h1>
                     <Schedule times={times} eventGroups={this.state.eventGroups} />
-                    <Link href='booking_list'><a className='link-to-list'>View your bookings list</a></Link>
+                    <Link href={`/booking_list?userId=${user.userId}`}><a className='link-to-list'>View your bookings list</a></Link>
                     <form className='input-form'>
                         <select name='court' className='input' onChange={this.handleSelect}>
                             {stadiums.map((stadium, index) =>
@@ -152,6 +179,16 @@ class BookOnline extends React.Component {
                         <input type='text' name='description' className='input-text' onChange={this.handleSelect} placeholder='description' />
                         <Button onClick={this.handleClick}>book</Button>
                     </form>
+                    <Modal isOpen={this.state.modal.isOpen} toggle={this.toggle}>
+                        <ModalHeader toggle={this.toggle}>{this.state.modal.title}</ModalHeader>
+                        <ModalBody>
+                            {this.state.modal.body}
+                        </ModalBody>
+                        <ModalFooter>
+                            {this.state.modal.action.length > 0 && <BootstrapBTN color="primary" onClick={this.navigateToConfirm}>{this.state.modal.action}</BootstrapBTN>}{' '}
+                            <BootstrapBTN color="secondary" onClick={this.toggle}>{this.state.modal.cancel}</BootstrapBTN>
+                        </ModalFooter>
+                    </Modal>
                 </main>
                 <style jsx>{`
                     main {
@@ -200,6 +237,28 @@ class BookOnline extends React.Component {
         );
     }
 
+    toggle = () => {
+        const { modal } = this.state;
+        modal.isOpen = !modal.isOpen;
+        this.setState({
+            modal
+        });
+    }
+
+    navigateToConfirm = () => {
+        Router.push(`/booking_confirm?id=${this.state.lastBooking.bookingId}`);
+    }
+
+    showModal = (title, body, cancel = 'cancel', action = '') => {
+        const { modal } = this.state;
+        modal.title = title;
+        modal.body = body;
+        modal.cancel = cancel;
+        modal.action = action;
+        modal.isOpen = true;
+        this.setState({ modal });
+    }
+
     handleSelect = (e) => {
         let { name, value } = e.target;
         this.setState({
@@ -219,7 +278,7 @@ class BookOnline extends React.Component {
             title,
             description
         } = this.state;
-        const { user } = this.props;
+        const { user, accessToken } = this.props;
         const [inputHour, inputMinute] = startDate.split('.');
 
         const startTime = new Date(this.state.date);
@@ -232,7 +291,14 @@ class BookOnline extends React.Component {
         finishTime.setHours(durations[durationIndex][1] + parseInt(inputHour));
         finishTime.setMinutes(durations[durationIndex][2] + parseInt(inputMinute));
 
-        await BookingService.book(title, description, user.userId, 1, startTime.toISOString(), finishTime.toISOString());
+        const result = await BookingService.book(accessToken, title, description, user.userId, 1, startTime.toISOString(), finishTime.toISOString());
+
+        if (result === 'overlap booking') {
+            this.showModal('Overlab', 'overlap booking');
+        } else {
+            this.setState({ lastBooking: result });
+            this.showModal('Booking success', 'Please confirm your booking within 1 hour.', 'Later', 'Confirm');
+        }
 
         let sBooking = {
             userName: user.username,
@@ -245,11 +311,10 @@ class BookOnline extends React.Component {
         this.setState({ eventGroups });
     }
 
-    fetchData = async () => {
+    bindSchedule = async (currentWeekBookings = []) => {
         const eventGroups = initEventGroup;
         const sBookings = [];
-        const res = await BookingService.get();
-        const { currentWeekBookings } = res.data;
+
         if (currentWeekBookings) {
             const bookings = currentWeekBookings;
             bookings.forEach(booking => {
@@ -271,8 +336,4 @@ class BookOnline extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    user: state.user
-})
-
-export default connect(mapStateToProps)(BookOnline);
+export default withAuth(BookOnline);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Layout from '../present-layer/components/layout';
+import Layout from '../present-layer/layout/layout_nav';
 import Banner from '../present-layer/components/banner';
+import { withAuth } from '../container/withAuth';
 
 const bannerHeight = 400;
 
@@ -13,8 +14,9 @@ const imgUrl = [
 class Index extends Component {
 
   render() {
+    const { accessToken } = this.props;
     return (
-      <Layout>
+      <Layout accessToken={accessToken}>
         <Banner id='home' height={bannerHeight} img={imgUrl[0]} />
         <h4 id='aoubt'>About</h4>
         <h4 id='services'>Services</h4>
@@ -24,4 +26,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default withAuth(Index);
