@@ -36,9 +36,9 @@ class BookingConfirm extends React.Component {
                 <div className='container'>
                     <h1 className='title'>CONFIRM BOOKING</h1>
                     <div>Table Tennis1</div>
-                    <div>{booking.owner.username}</div>
-                    <div>{booking.startDate}</div>
-                    <div>{booking.endDate}</div>
+                    <div>{ ''}</div>
+                    <div>{ ''}</div>
+                    <div>{ ''}</div>
                     <div>Service fees : 20 Baht</div>
                     <div>Status : unpaid </div>
                     <div>Upload picture</div>

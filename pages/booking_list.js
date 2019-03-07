@@ -35,7 +35,7 @@ class BookingList extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {bookingList.map((booking, index) => {
+                            {!!bookingList ? bookingList.map((booking, index) => {
                                 return (
                                 <tr key={index} value={index} className='list-item' onClick={this.navigateConfirm}>
                                     <td value={index} >{index + 1}</td>
@@ -45,7 +45,7 @@ class BookingList extends React.Component {
                                     <td value={index} >{booking.endDate}</td>
                                     <td value={index} >{booking.status}</td>
                                 </tr>
-                            )})}
+                            )}) : ''}
                         </tbody>
                     </Table>
                     <div className='back'>
