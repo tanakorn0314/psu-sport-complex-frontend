@@ -1,6 +1,7 @@
 const local = 'http://localhost:3001/api'
+const server = 'http://192.168.192.75:3001/api'
 
-const api = local;
+const api = server;
 
 export const userApi = `${api}/user`
 export const authApi = `${api}/auth`
