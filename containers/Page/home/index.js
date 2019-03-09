@@ -15,9 +15,9 @@ class Home extends Component {
     return (
       <>
         <Banner id='home' height={bannerHeight} img={imgUrl[0]} />
-        <h4 id='aoubt'>About</h4>
+        {/* <h4 id='aoubt'>About</h4>
         <h4 id='services'>Services</h4>
-        <h4 id='contact'>Contact</h4>
+        <h4 id='contact'>Contact</h4> */}
       </>
     )
   }

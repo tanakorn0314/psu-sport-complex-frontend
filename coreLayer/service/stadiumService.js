@@ -1,9 +1,10 @@
 import fetch from 'isomorphic-unfetch';
 import { stadiumApi } from '../api/api';
 
-const get = () => {
+const get = async () => {
     const url = stadiumApi;
-    return fetch(url);
+    const res = await fetch(url);
+    return await res.json();
 }
 
 export default {

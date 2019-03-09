@@ -42,16 +42,9 @@ const getByCourtId = async (accessToken, courtId) => {
     return await response.json();
 }
 
-const book = async (accessToken, title, description, userId, courtId, startDate, endDate) => {
+const book = async (accessToken, bookingInfo) => {
     const url = bookingApi;
-    const body = {
-        title,
-        description,
-        userId,
-        courtId,
-        startDate,
-        endDate
-    }
+    const body = {...bookingInfo};
     const options = {
         method: 'POST',
         headers: {
@@ -64,8 +57,8 @@ const book = async (accessToken, title, description, userId, courtId, startDate,
     return await response.json();
 }
 
-const uploadSlip = async (accessToken, formData) => {
-    const url = `${bookingApi}/upload_slip/1`;
+const uploadSlip = async (accessToken, formData, bookingId) => {
+    const url = `${bookingApi}/upload_slip/${bookingId}`;
     const config = {
         headers: {
             'Authorization': 'bearer ' + accessToken,

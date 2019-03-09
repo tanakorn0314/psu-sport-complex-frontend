@@ -4,23 +4,39 @@ import {
     ScheduleWrapper,
     Event
 } from './style';
-import demoData from './demoData';
-import { groupEventByDate, generateWeekdays, getnerateDateTitle, filterEvents } from './dataHandler';
+import {
+    groupEventByDate,
+    generateWeekdays,
+    getnerateDateTitle,
+    filterEvents,
+    calculateSlot
+} from './dataHandler';
 import Button, { ButtonGroup } from '../uielements/button';
 import _ from 'lodash';
+import { colors } from '../../styles/constants/colors';
+
+const userColors = {};
 
 class Schedule extends React.Component {
 
     constructor(props) {
         super(props);
-        const events = groupEventByDate(demoData);
+        const events = groupEventByDate(props.eventGroups);
         this.state = {
             date: new Date(),
             scheduleTitle: getnerateDateTitle(new Date()),
             weekDays: generateWeekdays(new Date()),
             allEvent: events,
-            eventGroups: filterEvents(new Date(), events)
+            eventGroups: filterEvents(new Date(), events),
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const events = groupEventByDate(nextProps.eventGroups);
+        this.setState({
+            allEvent: events,
+            eventGroups: filterEvents(this.state.date, events)
+        });
     }
 
     render() {
@@ -66,8 +82,17 @@ class Schedule extends React.Component {
                                 ))}
                                 <div className='schedule-content-event'>
                                     {events.map((event, i) => {
-                                        const random = Math.floor(Math.random() * 10);
-                                        return (<Event key={i} length={2} start={0}></Event>)
+                                        const slot = calculateSlot(event);
+                                        if (!userColors[event.userId]) {
+                                            const len = colors.pool.length;
+                                            const ran = Math.floor(Math.random() * len);
+                                            userColors[event.userId] = colors.pool[ran];
+                                        }
+                                        const color = userColors[event.userId];
+                                        return slot.start >= 0 ?
+                                            (<Event key={i} background={color} start={slot.start} length={slot.length}>
+                                                {event.owner.fname}
+                                            </Event>) : (<div key={i} />)
                                     })}
                                 </div>
                             </div>

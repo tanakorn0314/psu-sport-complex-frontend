@@ -1,7 +1,8 @@
 import actions from "./actions";
 
 const initState = {
-    bookings: null,
+    bookings: {},
+    myBookings: []
 };
 
 export default function bookingReducer(state = initState, action) {
@@ -11,11 +12,18 @@ export default function bookingReducer(state = initState, action) {
                 ...state,
                 bookings: action.bookings
             };
-        case actions.FETCH_BOOKING_ERROR:
+        case actions.BOOKING_SUCCESS:
             return {
                 ...state,
-                bookings: null
+                bookings: action.bookings
             };
+        case actions.FETCH_MY_BOOKING_SUCCESS:
+            return {
+                ...state,
+                myBookings: action.bookings
+            }
+        case actions.FETCH_BOOKING_ERROR:
+            return initState;
         default:
             return state;
     }

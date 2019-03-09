@@ -32,8 +32,7 @@ class NavBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: false,
-            token: props.Auth.token
+            isOpen: false
         };
     }
 
@@ -63,7 +62,7 @@ class NavBar extends React.Component {
                                     </Link>
                             </NavItem> */}
                             <form className='form-inline'>
-                                {!!this.state.token ? <SignOut onClick={this.clearUser} /> : <SignIn/>}
+                                {!!this.props.Auth.idToken ? <SignOut onClick={this.clearUser} /> : <SignIn/>}
                             </form>
                         </Nav>
                     </Collapse>

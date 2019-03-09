@@ -5,7 +5,7 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 20px;
     .input-form {
         position: relative;
         display: flex;
@@ -30,15 +30,34 @@ const StyledWrapper = styled.div`
         box-shadow: 0 0 1px 1px #46AFFF;
     }
     .input-date {
-        width: 80%;
+        width: 100%;
         padding: 3px 20px;
     }
     .input-text {
-        width: 80%;
+        width: 100%;
     }
     .link-to-list {
         margin-top: 20px;
         position: relative;
+    }
+    .select-court {
+        max-width: 300px;
+    }
+    .action {
+        display: flex;
+        flex-direction: row;
+        width: 60%;
+        max-width: 500px;
+        justify-content: space-around;
+    }
+    .action-right {
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn-container {
+        display: flex;
+        justify-content: center;
     }
 `;
 

@@ -25,13 +25,15 @@ const days = [
 
 function groupEventByDate(events) {
     const groupedEvent = {};
-    events.forEach((event) => {
-        const dateIndex = event.startDate.slice(0, 10);
-        if (!groupedEvent[dateIndex]) {
-            groupedEvent[dateIndex] = []
-        }
-        groupedEvent[dateIndex].push(event);
-    });
+    if (events) {
+        events.forEach((event) => {
+            const dateIndex = event.startDate.slice(0, 10);
+            if (!groupedEvent[dateIndex]) {
+                groupedEvent[dateIndex] = []
+            }
+            groupedEvent[dateIndex].push(event);
+        });
+    }
     return groupedEvent;
 }
 
@@ -66,7 +68,7 @@ function generateWeekdays(date) {
     for (let i = 0; i < 6; i++) {
         day.setDate(day.getDate() + 1);
         const dayStr = day.toISOString().slice(8, 10);
-        weekDays.push(`${dayStr} ${days[i+1]}`);
+        weekDays.push(`${dayStr} ${days[i + 1]}`);
     }
 
     return weekDays;
@@ -76,10 +78,13 @@ function generateDateIndex(date) {
     const sunday = new Date(date.toISOString());
     sunday.setDate(sunday.getDate() - sunday.getDay());
 
+    const day = sunday;
+
     const dateIndices = [];
-    for (let i = 0; i < 7; i++) {
-        const day = sunday;
-        day.setDate(day.getDate() + i);
+    const index = day.toISOString().slice(0, 10);
+    dateIndices.push(index);
+    for (let i = 0; i < 6; i++) {
+        day.setDate(day.getDate() + 1);
         const index = day.toISOString().slice(0, 10);
         dateIndices.push(index);
     }
@@ -93,9 +98,28 @@ function filterEvents(date, eventGroups) {
     return events;
 }
 
+function calculateSlot(event) {
+    let { startDate, endDate } = event;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    const startSlot = startDate.getHours() * 2 - (15 * 2) + (startDate.getMinutes() > 0 ? 1 : 0);
+    const endSlot = endDate.getHours() * 2 - (15 * 2) + (endDate.getMinutes() > 0 ? 1 : 0);
+    if (startSlot < 0 || endSlot > 13) {
+        return {
+            startSlot: -1,
+            length: -1
+        }
+    }
+    return {
+        start: startSlot,
+        length: endSlot - startSlot
+    }
+}
+
 export {
     groupEventByDate,
     getnerateDateTitle,
     generateWeekdays,
-    filterEvents
+    filterEvents,
+    calculateSlot
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Table } from 'reactstrap';
 import Router from 'next/router';
-import withData from './withData';
 import StyledWrapper from './style';
+import { connect } from 'react-redux';
 
 class BookingList extends React.Component {
 
     render() {
-        const { bookingList = [] } = this.props;
+        const { myBookings } = this.props.Booking;
         return (
             <StyledWrapper>
                 <h1 className='title'>BOOKING LIST</h1>
@@ -23,7 +23,7 @@ class BookingList extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {!bookingList.error ? bookingList.map((booking, index) => {
+                        {myBookings && myBookings.map((booking, index) => {
                             return (
                                 <tr key={index} value={index} className='list-item' onClick={this.navigateConfirm}>
                                     <td value={index} >{index + 1}</td>
@@ -34,7 +34,7 @@ class BookingList extends React.Component {
                                     <td value={index} >{booking.status}</td>
                                 </tr>
                             )
-                        }) : ''}
+                        })}
                     </tbody>
                 </Table>
                 <div className='back'>
@@ -46,7 +46,8 @@ class BookingList extends React.Component {
 
     navigateConfirm = e => {
         const value = e.target.getAttribute('value');
-        Router.push(`/booking_confirm?id=${this.props.bookingList[value].bookingId}`);
+        const { myBookings} = this.props.Booking;
+        Router.push(`/booking_confirm?id=${myBookings[value].bookingId}`);
     }
 
     navigateBack = e => {
@@ -55,4 +56,4 @@ class BookingList extends React.Component {
     }
 }
 
-export default withData(BookingList);
+export default connect(state => state)(BookingList);

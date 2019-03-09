@@ -7,7 +7,6 @@ const timeSlot = 13;
 const ScheduleWrapper = styled.div`
     min-width: 500px;
     position: relative;
-    margin-bottom: 20px;
     padding: 10px;
     border: solid 1px ${colors.border};
     border-radius: 10px;
@@ -79,60 +78,25 @@ const ScheduleWrapper = styled.div`
         top: 40px;
         height: 40px;
     }
-    // li {
-    //     list-style: none;
-    // }
-    // ul {
-    //     padding: 0;
-    //     margin: 0;
-    // }
-    // a {
-    //     text-decoration: none;
-    // }
-    // .timeline {
-    //     display: block;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     height: 100 %;
-    //     width: 100 %;
-    //     padding - top: ${ unitHeight} px;
-    // }
-    // .timeline > ul > li {
-    //     position: relative;
-    //     height: ${ unitHeight} px;
-    // }
-    // .timeline > ul > li > span {
-    //     position: relative;
-    //     top: -10px;
-    // }
-    // .timeline > ul > li :: after {
-    //     content: '';
-    //     position: absolute;
-    //     bottom: 0px;
-    //     left: 60px;
-    //     height: 1px;
-    //     width: calc(100 % - 60px);
-    //     background - color: #eaeaea;
-    //     box - sizing: border - box;
-    // }
-    // .events {
-    //     position: relative;
-    //     margin-left: 60px;
-    //     z-index: 1;
-    //     float: left;
-    //     width: calc(100 % - 60px);
-    // }
 `;
 
 const Event = styled.div`
-    backgroud-color: red;
-    background-color: red;
     position: absolute;
-    left: 0;
-    right: 0;
-    top: ${props => props.start * unitHeight}px;
-    height: ${props => props.length * unitHeight}px;
+    left: 1px;
+    right: 1px;
+    font-size: 11px;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    top: ${props => props.start * unitHeight + 1}px;
+    height: ${props => props.length * unitHeight - 3}px;
+    background-color: ${props => props.background};
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-overflow: ellipsis;
 `;
 
 export {

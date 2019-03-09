@@ -1,58 +1,46 @@
 import React from 'react';
-import NavLayout from '../present-layer/layout/layout_nav';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
-import cookies from 'next-cookies';
-import { storeUser } from '../action/auth-action';
-import bookingService from '../core-layer/service/booking-service';
-import axios from 'axios';
-import { withAuth } from '../container/withAuth';
+import StyledWrapper from './style';
+import BookingService from '../../../coreLayer/service/bookingService';
+import { bookingApi } from '../../../coreLayer/api/api';
 
 class BookingConfirm extends React.Component {
 
-    static async getInitialProps(ctx) {
-        const { id } = ctx.query;
-        const { accessToken } = cookies(ctx);
-        const booking = await bookingService.getById(accessToken, id);
-        return {
-            booking,
-            id
-        }
-    }
-
     constructor(props) {
         super(props);
-        this.state = {
-            file: {},
-            image: '/static/banner.jpg',
-            formData: {},
-        }
+        const { id } = this.props.query;
+        const booking = props.Booking.myBookings[+id];
+        console.log(booking);
+        const image = booking.slip ? `${bookingApi}/slip/${booking.slip}` : `/static/Placeholder.jpg`;
+            this.state = {
+                file: {},
+                booking,
+                image,
+                formData: {},
+            }
     }
 
     render() {
-        const { booking, accessToken } = this.props;
+        const { booking } = this.state;
+        const { stadium } = this.props.Stadium;
         return (
-            <NavLayout accessToken={accessToken}>
-                <div className='container'>
-                    <h1 className='title'>CONFIRM BOOKING</h1>
-                    <div>Table Tennis1</div>
-                    <div>{ ''}</div>
-                    <div>{ ''}</div>
-                    <div>{ ''}</div>
-                    <div>Service fees : 20 Baht</div>
-                    <div>Status : unpaid </div>
-                    <div>Upload picture</div>
-                    <input type='file' name='file' onChange={this.handleChange} /> <br />
-                    <img src={this.state.image} width='300px' height='200px' /> <br />
-                    <Button color='primary' onClick={this.handleSubmit}>CONFIRM</Button>
-                    <Button color='danger'>DELETE</Button>
-                </div>
-                <style jsx>{`
-                    .title {
-                        text-align: center;
-                    }
-                `}</style>
-            </NavLayout>
+            <StyledWrapper>
+                <h1 className='title'>CONFIRM BOOKING</h1>
+                <div>Stadium : {booking.court.name}</div>
+                <div>Start Date : {new Date(booking.startDate).toLocaleString()}</div>
+                <div>End Date : {new Date(booking.endDate).toLocaleString()}</div>
+                <div>Service fees : {stadium[booking.court.stadiumId].costPublic} Baht</div>
+                <div>Status : {booking.status} </div>
+                <div>Upload picture</div>
+                <label htmlFor='upload-image'>
+                    <img src={this.state.image} className='img' width='300px' height='200px' /> <br />
+                    <input id='upload-image' className='input-upload' type='file' name='file' onChange={this.handleChange} /> <br />
+                </label>
+                <br />
+                <Button color='primary' onClick={this.handleSubmit}>CONFIRM</Button>
+                <Button color='danger'>DELETE</Button>
+            </StyledWrapper>
         )
     }
 
@@ -71,16 +59,15 @@ class BookingConfirm extends React.Component {
     }
 
     handleSubmit = async () => {
+        const { idToken } = this.props.Auth;
+        const { booking } = this.state;
         const formData = new FormData();
         formData.append('file', this.state.file);
-        const config = {
-            headers: {
-				'content-type': 'multipart/form-data'
-			}
+        const response = await BookingService.uploadSlip(idToken, formData, booking.bookingId);
+        if (!response.error) {
+            alert('Upload success')
         }
-        const response = await bookingService.uploadSlip('',formData);
-        console.log(response);
     }
 }
 
-export default withAuth(BookingConfirm)
+export default connect(state => state)(BookingConfirm);

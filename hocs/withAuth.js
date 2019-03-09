@@ -13,12 +13,7 @@ export default ComposedComponent => {
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
             const token = getToken(req);
             if(token) {
-                await store.execSagaTasks(ctx.isServer, dispatch => {
-                    console.log('before exec');
-                    dispatch(AuthAction.loginJwt(token));
-                })
-
-                console.log('after exec', store.getState());
+                const result = await store.dispatch(AuthAction.loginJwt(token));
             }
 
             return pageProps;
