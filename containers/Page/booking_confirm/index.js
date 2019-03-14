@@ -11,7 +11,6 @@ class BookingConfirm extends React.Component {
         super(props);
         const { id } = this.props.query;
         const booking = props.Booking.myBookings[+id];
-        console.log(booking);
         const image = booking.slip ? `${bookingApi}/slip/${booking.slip}` : `/static/Placeholder.jpg`;
             this.state = {
                 file: {},

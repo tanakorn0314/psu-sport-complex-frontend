@@ -3,6 +3,7 @@ import { palette } from 'styled-theme';
 import { transition, borderRadius } from '../../../config/style-util';
 
 const AntDatePicker = ComponentName => styled(ComponentName)`
+  width: 100%;
   .ant-input {
     padding: 4px 10px;
     width: 100%;

@@ -40,7 +40,7 @@ const actions = {
     const result = await auth.register(userInfo);
     if (!result.error) {
       alert('Register success');
-      Router.push('/login');
+      Router.push('/signin');
     } else {
       alert(result.error)
     }

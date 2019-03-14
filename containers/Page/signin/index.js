@@ -1,9 +1,11 @@
 import React from 'react';
-import FormSignIn from '../../../components/forms/formSignin'
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import AuthAction from '../../../redux/auth/actions';
-import SignInWarpper from './style';
+import SignInStyleWrapper from './signin.style';
+import Checkbox from '../../../components/uielements/checkbox';
+import Input from '../../../components/uielements/input';
+import Button from '../../../components/uielements/button';
 
 class SignIn extends React.Component {
 
@@ -17,22 +19,71 @@ class SignIn extends React.Component {
 
     render() {
         return (
-            <SignInWarpper>
-                <div className='container'>
-                    <h1 className='header'>
-                        Login
-                    </h1>
-                    <FormSignIn onInput={this.handleInput} onSubmit={this.handleSubmit} />
-                    <div className='links'>
-                        <Link href='/'><a className='link'>To home page</a></Link>
-                        <Link href='/signup'><a className='link'>Register</a></Link>
+            <SignInStyleWrapper className="isoSignInPage">
+                <div className="isoLoginContentWrapper">
+                    <div className="isoLoginContent">
+                        <div className="isoLogoWrapper">
+                            <Link href="/">
+                                <a>
+                                    PSU Sport Complex
+                                </a>
+                            </Link>
+                        </div>
+
+                        <div className="isoSignInForm">
+                            <div className="isoInputWrapper">
+                                <Input
+                                    id="inputUserName"
+                                    size="large"
+                                    placeholder="Username"
+                                    name='username'
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+
+                            <div className="isoInputWrapper">
+                                <Input
+                                    id="inpuPassword"
+                                    size="large"
+                                    type="password"
+                                    placeholder="Password"
+                                    name='password'
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+
+                            <div className="isoInputWrapper isoLeftRightComponent">
+                                <Checkbox>
+                                    Remember me
+                                </Checkbox>
+                                <Button
+                                    type="primary"
+                                    onClick={this.handleSubmit}
+                                >
+                                    Sign In
+                                </Button>
+                            </div>
+
+                            <div className="isoCenterComponent isoHelperWrapper">
+                                <Link>
+                                    <div className="isoForgotPass">
+                                        Forgot password
+                                    </div>
+                                </Link>
+                                <Link href="/signup">
+                                    <a>
+                                        Create an account
+                                    </a>
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </SignInWarpper>
+            </SignInStyleWrapper>
         )
     }
 
-    handleInput = (e) => {
+    handleChange = (e) => {
         const { name, value } = e.target;
         this.setState({
             [name]: value
