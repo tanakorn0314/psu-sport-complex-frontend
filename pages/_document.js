@@ -19,7 +19,7 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href="/static/css/ionicons.min.css" />
           <link rel="stylesheet" href="/static/css/global.css" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
-          {/* <link rel='stylesheet' href='/static/css/bootstrap.min.css'/> */}
+          <link rel='stylesheet' href='/static/css/bootstrap.min.css'/>
           {/* <link
             rel="stylesheet"
             href="https://unpkg.com/react-instantsearch-theme-algolia@4.0.0/style.min.css"

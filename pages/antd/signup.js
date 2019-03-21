@@ -4,28 +4,20 @@ import { connect } from 'react-redux';
 import Input from '../../components/uielements/input';
 import Checkbox from '../../components/uielements/checkbox';
 import Button from '../../components/uielements/button';
-// import authAction from '../../redux/auth/actions';
-// import Auth0 from '../../helpers/auth0/index';
-// import Firebase from '../../helpers/firebase';
-// import FirebaseLogin from '../../components/firebase';
-// import IntlMessages from '../../components/utility/intlMessages';
 import SignUpStyleWrapper from './signup.style';
 import withTheme from '../../hocs/withTheme';
-
-// const { login } = authAction;
+import { notification } from 'antd';
 
 class SignUp extends React.Component {
     state = {
-        redirectToReferrer: false
+        redirectToReferrer: false,
     };
-    componentWillReceiveProps(nextProps) {
-        // if (this.props.isLoggedIn !== nextProps.isLoggedIn && nextProps.isLoggedIn === true) {
-        // 	this.setState({ redirectToReferrer: true });
-        // }
-    }
+
     handleLogin = () => {
-        // const { login, history } = this.props;
-        // login(history);
+        notification['success']({
+            message: 'Register success',
+            description: 'You can use your email to login'
+        })
     };
     render() {
         return (

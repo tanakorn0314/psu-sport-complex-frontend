@@ -6,6 +6,7 @@ import SignInStyleWrapper from './signin.style';
 import Checkbox from '../../../components/uielements/checkbox';
 import Input from '../../../components/uielements/input';
 import Button from '../../../components/uielements/button';
+import Alert from '../../../components/feedback/alert'
 
 class SignIn extends React.Component {
 

@@ -18,7 +18,6 @@ const actions = {
     } else {
       dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, profile: result.profile });
       setToken(result.accessToken);
-      Router.replace('/');
     }
     return result;
   },
@@ -38,12 +37,6 @@ const actions = {
   },
   register: userInfo => async () => {
     const result = await auth.register(userInfo);
-    if (!result.error) {
-      alert('Register success');
-      Router.push('/signin');
-    } else {
-      alert(result.error)
-    }
     return result;
   }
 };
