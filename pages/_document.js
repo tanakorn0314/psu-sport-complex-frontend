@@ -14,12 +14,12 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.11.4/antd.min.css" />
           <link rel="stylesheet" href="/static/css/ionicons.min.css" />
           <link rel="stylesheet" href="/static/css/global.css" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
-          <link rel='stylesheet' href='/static/css/bootstrap.min.css'/>
+          {/* <link rel='stylesheet' href='/static/css/bootstrap.min.css' /> */}
           {/* <link
             rel="stylesheet"
             href="https://unpkg.com/react-instantsearch-theme-algolia@4.0.0/style.min.css"

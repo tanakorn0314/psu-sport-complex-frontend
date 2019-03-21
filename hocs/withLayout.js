@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLayout from '../containers/Layout/navLayout';
+import NavLayout from '../containers/LayoutNav';
 
 export default ComposedComponent => props => {
     return (

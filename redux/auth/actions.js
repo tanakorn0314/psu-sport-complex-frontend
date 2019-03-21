@@ -18,6 +18,7 @@ const actions = {
     } else {
       dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, profile: result.profile });
       setToken(result.accessToken);
+      Router.replace('/');
     }
     return result;
   },
@@ -33,7 +34,7 @@ const actions = {
   },
   logout: () => async (dispatch) => {
     dispatch({ type: actions.LOGOUT });
-    removeToken()
+    removeToken();
   },
   register: userInfo => async () => {
     const result = await auth.register(userInfo);
