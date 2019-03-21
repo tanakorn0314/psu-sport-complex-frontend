@@ -15,6 +15,9 @@ import iniData from './initData';
 import StyledWrapper from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
+import {
+    Card
+} from 'antd';
 
 const { stadiums, times, durations } = iniData;
 
@@ -49,7 +52,9 @@ class BookOnline extends React.Component {
         return (
             <StyledWrapper>
                 <h1 className='title'>BOOKING</h1>
-                <Schedule times={times} eventGroups={this.state.bookings} />
+                <Card bordered>
+                    <Schedule times={times} eventGroups={this.state.bookings} />
+                </Card>
                 <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
                 <div className='action'>
                     <div className='action-left'>
@@ -111,7 +116,7 @@ class BookOnline extends React.Component {
 
     navigateToConfirm = () => {
         const { myBookings } = this.props.Booking;
-        Router.push(`/booking_confirm?id=${myBookings.length-1}`);
+        Router.push(`/booking_confirm?id=${myBookings.length - 1}`);
     }
 
     showModal = (title, body, cancel = 'cancel', action = '') => {

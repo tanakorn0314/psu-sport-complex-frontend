@@ -74,7 +74,7 @@ class LayoutNav extends React.Component {
                         </Col>
                     </Row>
                 </Header>
-                <Content>
+                <Content style={{background: '#fff'}}>
                     {this.props.children}
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
