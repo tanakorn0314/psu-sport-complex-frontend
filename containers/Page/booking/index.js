@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '../../../components/buttons/buttonPrimary';
 import ScheduleMobile from '../../../components/schedule/mobile';
 import Schedule from '../../../components/schedule';
 import BookingAction from '../../../redux/booking/actions';
@@ -9,17 +8,25 @@ import {
     Modal,
     ModalHeader,
     ModalBody,
-    ModalFooter,
-    Button as BootstrapBTN
+    ModalFooter
 } from 'reactstrap';
 import iniData from './initData';
 import StyledWrapper from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
 import enquire from 'enquire-js';
-import SelectCourt from '../../BookingInputs/courts';
 import {
-    Card
+    SelectCourt,
+    SelectStartTime,
+    SelectDuration,
+    InputDate
+} from '../../BookingInputs';
+import {
+    Row,
+    Col,
+    Input,
+    DatePicker,
+    Button
 } from 'antd';
 
 const { stadiums, times, durations } = iniData;
@@ -32,7 +39,7 @@ class BookOnline extends React.Component {
             court: 0,
             bookings: props.Booking.bookings[1],
             date: new Date().toISOString().substring(0, 10),
-            startDate: times[0],
+            startTime: times[0],
             durationIndex: 0,
             title: '',
             description: '',
@@ -74,43 +81,45 @@ class BookOnline extends React.Component {
 
         return (
             <StyledWrapper>
-                <h1 className='title'>BOOKING</h1>
-                {!isLoading && (isMobile ?
-                    <ScheduleMobile times={times} eventGroups={courtBooking} /> :
-                    <Schedule times={times} eventGroups={courtBooking} onChangeCourt={this.handleChangeCourt} />
-                )}
-                <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
-                <div className='action'>
-                    <div className='action-left'>
-                        <input name='date' type='date' className='input-date' defaultValue={this.state.date} onChange={this.handleSelect} />
-                        <select name='startDate' className='input' onChange={this.handleSelect}>
-                            <optgroup label='start time'>
-                                {times.map((time, index) => <option key={index} value={time}>{time}</option>)}
-                            </optgroup>
-                        </select>
-                        <select name='durationIndex' className='input' onChange={this.handleSelect}>
-                            <optgroup label='duration'>
-                                {durations.map(([duration], index) => <option key={index} value={index}>{duration}</option>)}
-                            </optgroup>
-                        </select>
-
-                    </div>
-                    <div className='action-right'>
-                        {/* <SelectCourt name='court' onChange={this.handleChangeCourt} /> */}
-                        <SelectCourt style={{ width: 200 }} />
-                        <input type='text' name='title' className='input-text' onChange={this.handleSelect} placeholder='title' />
-                        <input type='text' name='description' className='input-text' onChange={this.handleSelect} placeholder='description' />
-                    </div>
-                </div>
-                <Button onClick={this.handleClick}>book</Button>
+                <h1 style={{textAlign: 'center'}}>BOOKING</h1>
+                <Row className='row'>
+                    <Col sm={24} md={24} lg={16} xl={18} className='col'>
+                        {!isLoading && (isMobile ?
+                            <ScheduleMobile times={times} eventGroups={courtBooking} /> :
+                            <Schedule times={times} eventGroups={courtBooking} onChangeCourt={this.handleChangeCourt} />
+                        )}
+                    </Col>
+                    <Col sm={24} md={24} lg={8} xl={6} className='action'>
+                        <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
+                        <div className='action-col'>
+                            <SelectCourt />
+                        </div>
+                        <div className='action-col'>
+                            <InputDate onChange={this.handleSelectDate} />
+                        </div>
+                        <div className='action-col'>
+                            <SelectStartTime onChange={this.handleSelectTime} />
+                        </div>
+                        <div className='action-col'>
+                            <SelectDuration onChange={this.handleSelectDuration} />
+                        </div>
+                        <div className='action-col'>
+                            <Input placeholder='Title' style={{ width: 200 }} name='title' onChange={this.handleChange} />
+                        </div>
+                        <div className='action-col'>
+                            <Input placeholder='Description' style={{ width: 200 }} name='description' onChange={this.handleChange} />
+                        </div>
+                        <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
+                    </Col>
+                </Row>
                 <Modal isOpen={this.state.modal.isOpen} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>{this.state.modal.title}</ModalHeader>
                     <ModalBody>
                         {this.state.modal.body}
                     </ModalBody>
                     <ModalFooter>
-                        {this.state.modal.action.length > 0 && <BootstrapBTN color="primary" onClick={this.navigateToConfirm}>{this.state.modal.action}</BootstrapBTN>}{' '}
-                        <BootstrapBTN color="secondary" onClick={this.toggle}>{this.state.modal.cancel}</BootstrapBTN>
+                        {this.state.modal.action.length > 0 && <Button color="primary" onClick={this.navigateToConfirm}>{this.state.modal.action}</Button>}{' '}
+                        <Button color="secondary" onClick={this.toggle}>{this.state.modal.cancel}</Button>
                     </ModalFooter>
                 </Modal>
             </StyledWrapper>
@@ -140,11 +149,25 @@ class BookOnline extends React.Component {
         this.setState({ modal });
     }
 
-    handleSelect = async (e) => {
+    handleChange = (e) => {
         let { name, value } = e.target;
         this.setState({
             [name]: value
         })
+    }
+
+    handleSelectDate = (date) => {
+        if (date) {
+            this.setState({ date: date.format('L') });
+        }
+    }
+
+    handleSelectTime = (startTime) => {
+        this.setState({ startTime })
+    }
+
+    handleSelectDuration = (durationIndex) => {
+        this.setState({ durationIndex })
     }
 
     handleClick = (e) => {
@@ -153,7 +176,7 @@ class BookOnline extends React.Component {
 
     bookOnline = async () => {
         const {
-            startDate,
+            startTime: startDate,
             durationIndex,
             title,
             description,

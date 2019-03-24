@@ -5,11 +5,13 @@ const unitHeight = 40;
 const timeSlot = 13;
 
 const ScheduleWrapper = styled.div`
-    min-width: 500px;
+    min-width: 300px;
+    max-width: 800px;
     position: relative;
     padding: 10px;
     border: solid 1px ${colors.border};
     border-radius: 10px;
+    flex: 1;
     .top-container {
         margin-bottom: 10px;
         .top-left {

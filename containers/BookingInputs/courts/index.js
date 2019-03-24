@@ -21,7 +21,7 @@ class SelectCourts extends React.Component {
             <Select
                 name={name || 'court'}
                 onChange={this.handleChange}
-                style={style}
+                style={{width: 200, ...style}}
                 placeholder={placeholder || 'Select court'}
                 defaultValue={stadiums[0].courts[0]}
                 value={courtId}
