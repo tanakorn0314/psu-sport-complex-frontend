@@ -2,7 +2,9 @@ import actions from "./actions";
 
 const initState = {
     bookings: {},
-    myBookings: []
+    myBookings: [],
+    courtId: 0,
+    courtBooking: [],
 };
 
 export default function bookingReducer(state = initState, action) {
@@ -22,6 +24,12 @@ export default function bookingReducer(state = initState, action) {
                 ...state,
                 myBookings: action.bookings
             }
+        case actions.SELECT_COURT:
+            return {
+                ...state,
+                courtId: action.courtId,
+                courtBooking: state.bookings[action.courtId + 1],
+            };
         case actions.FETCH_BOOKING_ERROR:
             return initState;
         default:

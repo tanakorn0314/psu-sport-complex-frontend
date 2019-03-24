@@ -3,7 +3,7 @@ import {
     Select
 } from 'antd';
 import stadiums from './stadiumData';
-import BookingInputAction from '../../../redux/bookingInput/actions';
+import BookingAction from '../../../redux/booking/actions';
 import { connect } from 'react-redux';
 
 const { OptGroup, Option } = Select;
@@ -48,6 +48,6 @@ class SelectCourts extends React.Component {
 }
 
 export default connect(
-    state => state.BookingInput,
-    BookingInputAction
+    state => state.Booking,
+    BookingAction
 )(SelectCourts)

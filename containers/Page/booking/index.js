@@ -4,12 +4,6 @@ import Schedule from '../../../components/schedule';
 import BookingAction from '../../../redux/booking/actions';
 import Link from 'next/link';
 import Router from 'next/router';
-import {
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter
-} from 'reactstrap';
 import iniData from './initData';
 import StyledWrapper from './style';
 import { connect } from 'react-redux';
@@ -25,11 +19,11 @@ import {
     Row,
     Col,
     Input,
-    DatePicker,
+    Modal,
     Button
 } from 'antd';
 
-const { stadiums, times, durations } = iniData;
+const { times } = iniData;
 
 class BookOnline extends React.Component {
 
@@ -74,14 +68,16 @@ class BookOnline extends React.Component {
     }
 
     render() {
-        let counter = -1;
-        const { profile } = this.props.Auth;
-        const { courtBooking } = this.props.BookingInput;
-        const { isLoading, isMobile } = this.state;
+        const { courtBooking } = this.props.Booking;
+        const {
+            isLoading,
+            isMobile,
+            modal
+        } = this.state;
 
         return (
             <StyledWrapper>
-                <h1 style={{textAlign: 'center'}}>BOOKING</h1>
+                <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
                 <Row className='row'>
                     <Col sm={24} md={24} lg={16} xl={18} className='col'>
                         {!isLoading && (isMobile ?
@@ -112,15 +108,16 @@ class BookOnline extends React.Component {
                         <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
                     </Col>
                 </Row>
-                <Modal isOpen={this.state.modal.isOpen} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>{this.state.modal.title}</ModalHeader>
-                    <ModalBody>
-                        {this.state.modal.body}
-                    </ModalBody>
-                    <ModalFooter>
-                        {this.state.modal.action.length > 0 && <Button color="primary" onClick={this.navigateToConfirm}>{this.state.modal.action}</Button>}{' '}
-                        <Button color="secondary" onClick={this.toggle}>{this.state.modal.cancel}</Button>
-                    </ModalFooter>
+                <Modal
+                    visible={modal.isOpen}
+                    toggle={this.toggle}
+                    title={modal.title}
+                    footer={[
+                        (modal.action.length > 0 && <Button type="primary" onClick={this.navigateToConfirm}>{this.state.modal.action}</Button>),
+                        <Button type="secondary" onClick={this.toggle}>{this.state.modal.cancel}</Button>
+                    ]}
+                >
+                    {this.state.modal.body}
                 </Modal>
             </StyledWrapper>
         );
@@ -180,16 +177,16 @@ class BookOnline extends React.Component {
             durationIndex,
             title,
             description,
-            court
         } = this.state;
         const { profile, idToken } = this.props.Auth;
+        const { courtId } = this.props.Booking;
         const dateInfo = dataHandler.handleDateInfo(this.state.date, startDate, durationIndex);
 
         const bookingInfo = {
             title,
             description,
             userId: profile.userId,
-            courtId: +court + 1,
+            courtId: courtId + 1,
             startDate: dateInfo.startDate,
             endDate: dateInfo.endDate
         }
