@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../../components/buttons/buttonPrimary';
+import ScheduleMobile from '../../../components/schedule/mobile';
 import Schedule from '../../../components/schedule';
 import BookingAction from '../../../redux/booking/actions';
 import Link from 'next/link';
@@ -15,6 +16,8 @@ import iniData from './initData';
 import StyledWrapper from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
+import enquire from 'enquire-js';
+import SelectCourt from '../../BookingInputs/courts';
 import {
     Card
 } from 'antd';
@@ -41,20 +44,41 @@ class BookOnline extends React.Component {
                 cancel: '',
                 isOpen: false
             },
+            isMobile: false,
+            isLoading: true
         }
+    }
+
+    componentDidMount() {
+        enquire.register('screen and (max-width:425px)', {
+            match: () => {
+                this.setState({ isMobile: true })
+            },
+            unmatch: () => {
+                this.setState({ isMobile: false })
+            }
+        })
+
+        this.setState({ isLoading: false });
+    }
+
+    componentWillUnmount() {
+        enquire.unregister('screen and (max-width:425px)');
     }
 
     render() {
         let counter = -1;
         const { profile } = this.props.Auth;
-        const user = profile;
+        const { courtBooking } = this.props.BookingInput;
+        const { isLoading, isMobile } = this.state;
 
         return (
             <StyledWrapper>
                 <h1 className='title'>BOOKING</h1>
-                <Card bordered>
-                    <Schedule times={times} eventGroups={this.state.bookings} />
-                </Card>
+                {!isLoading && (isMobile ?
+                    <ScheduleMobile times={times} eventGroups={courtBooking} /> :
+                    <Schedule times={times} eventGroups={courtBooking} onChangeCourt={this.handleChangeCourt} />
+                )}
                 <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
                 <div className='action'>
                     <div className='action-left'>
@@ -72,21 +96,8 @@ class BookOnline extends React.Component {
 
                     </div>
                     <div className='action-right'>
-                        <select name='court' className='input' onChange={this.handleSelect}>
-                            {stadiums.map((stadium, index) => {
-                                return (
-                                    <optgroup label={stadium.sport} key={index}>
-                                        {stadium.courts.map((court, i) => {
-                                            counter++;
-                                            return (
-                                                <option key={i} value={counter}>{court}</option>
-                                            )
-                                        })
-                                        }
-                                    </optgroup>
-                                )
-                            })}
-                        </select>
+                        {/* <SelectCourt name='court' onChange={this.handleChangeCourt} /> */}
+                        <SelectCourt style={{ width: 200 }} />
                         <input type='text' name='title' className='input-text' onChange={this.handleSelect} placeholder='title' />
                         <input type='text' name='description' className='input-text' onChange={this.handleSelect} placeholder='description' />
                     </div>
@@ -134,15 +145,6 @@ class BookOnline extends React.Component {
         this.setState({
             [name]: value
         })
-
-        if (name === 'court') {
-            const result = await this.props.fetchBooking(this.props.Auth.idToken, +value + 1);
-            if (!result.error) {
-                this.setState({
-                    bookings: this.props.Booking.bookings[+value + 1]
-                });
-            }
-        }
     }
 
     handleClick = (e) => {

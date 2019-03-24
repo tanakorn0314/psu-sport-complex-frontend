@@ -11,8 +11,22 @@ const ScheduleWrapper = styled.div`
     border: solid 1px ${colors.border};
     border-radius: 10px;
     .top-container {
-        display: flex;
-        justify-content: space-between;
+        margin-bottom: 10px;
+        .top-left {
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+        .top-center {
+            display: flex;
+            justify-content: center;
+            .select {
+                width: 100px;
+            }
+        }
+        .top-right {
+            display: flex;
+            justify-content: flex-end;
+        }
     }
     .schedule {
         border: solid 1px ${colors.border};
@@ -23,8 +37,12 @@ const ScheduleWrapper = styled.div`
     .schedule-top {
         display: flex;
         min-height: ${unitHeight}px;
-        margin-right: 17px
+        margin-right: 17px;
         border-bottom: solid 1px ${colors.border};
+
+        @media (max-width: 768px) {
+            margin-right: 0px;
+        }
     }
     .schedule-top-item {
         text-align: center;

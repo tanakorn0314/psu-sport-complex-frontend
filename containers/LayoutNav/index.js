@@ -1,7 +1,7 @@
 import React from 'react';
 import StyleLayout from './layout.style';
 import Link from 'next/link';
-import { enquireScreen } from 'enquire-js';
+import enquire from 'enquire-js';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
 import {
@@ -26,11 +26,20 @@ class LayoutNav extends React.Component {
     }
 
     componentDidMount() {
-        enquireScreen((b) => {
-            this.setState({menuMode: !b ? 'horizontal' : 'inline'});
+        enquire.register('screen and (max-width:425px)', {
+            match: () => {
+                this.setState({menuMode: 'inline'});
+            },
+            unmatch: () => {
+                this.setState({menuMode: 'horizontal'});
+            }
         })
 
-        this.setState({isLoading: false});
+        this.setState({ isLoading: false });
+    }
+
+    componentWillUnmount() {
+        enquire.unregister('screen and (max-width:425px)');
     }
 
     render() {
@@ -42,8 +51,7 @@ class LayoutNav extends React.Component {
                 style={{lineHeight: '64px'}}
             >
                 <Menu.Item key={1}><Link href='/booking'><a>Booking</a></Link></Menu.Item>
-                <Menu.Item key={2}><Link><a>Booking List</a></Link></Menu.Item>
-                <Menu.Item key={3}>
+                <Menu.Item key={2}>
                     {
                        !idToken ? 
                        <Link href='/signin'><a>Login</a></Link> :
@@ -56,7 +64,7 @@ class LayoutNav extends React.Component {
             <StyleLayout>
                 <Header className='header'>
                     <Row type='flex' justify='space-between'>
-                        <Col xxl={4} xl={6} l={8} md={12} s={12} xs={20}>
+                        <Col xxl={4} xl={6} l={8} md={12} s={12} xs={20} key={1}>
                             <Link href='/'><a>PSU Sport Complex</a></Link>
                         </Col>
                         <Col>
