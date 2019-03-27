@@ -6,7 +6,6 @@ export const colors = {
     pool: [
         `#ff6700`,
         `#ffd14f`,
-        `#ebebe6`,
         `#bad6ab`,
         `#7fc780`,
         `#25cc73`

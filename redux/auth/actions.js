@@ -34,16 +34,10 @@ const actions = {
   },
   logout: () => async (dispatch) => {
     dispatch({ type: actions.LOGOUT });
-    removeToken()
+    removeToken();
   },
   register: userInfo => async () => {
     const result = await auth.register(userInfo);
-    if (!result.error) {
-      alert('Register success');
-      Router.push('/login');
-    } else {
-      alert(result.error)
-    }
     return result;
   }
 };

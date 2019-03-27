@@ -15,6 +15,7 @@ export default ComposedComponent => {
             const token = getToken(req);
             if (token) {
                 await store.dispatch(BookingAction.fetchBooking(token, 1));
+                await store.dispatch(BookingAction.selectCourt(0, token));
                 await store.dispatch(BookingAction.fetchMyBooking(token));
                 await store.dispatch(StadiumAction.fetchStadium());
             }

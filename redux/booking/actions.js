@@ -8,6 +8,7 @@ const actions = {
   BOOKING_REQUEST: 'BOOKING_REQUEST',
   BOOKING_SUCCESS: 'BOOKING_SUCCESS',
   BOOKING_ERROR: 'BOOKING_ERROR',
+  SELECT_COURT: 'SELECT_COURT',
   fetchBooking: (token, courtId) => async (dispatch, getState) => {
     const store = getState().Booking.bookings;
     const result = await Booking.collectBookingData(store, token, courtId);
@@ -24,15 +25,29 @@ const actions = {
     return result;
   },
   reserve: (token, bookingInfo) => async (dispatch, getState) => {
-    const store = getState().Booking.bookings;
+    const bookings = getState().Booking.bookings;
     const result = await Booking.reserve(token, bookingInfo);
     if (result && !result.error) {
       const { courtId } = result;
-      if (!store[courtId]) store[courtId] = [];
-      store[courtId].push(result);
-      dispatch({ type: actions.BOOKING_SUCCESS, bookings: store });
+      if (!bookings[courtId]) bookings[courtId] = [];
+      bookings[courtId].push(result);
+      dispatch({ type: actions.BOOKING_SUCCESS, bookings });
     }
     return result;
-  }
+  },
+  selectCourt: (courtId, idToken) => async (dispatch, getState) => {
+    if (!idToken) {
+      idToken = getState().Auth.idToken;
+    }
+
+    const result = await dispatch(actions.fetchBooking(idToken, courtId + 1));
+
+    dispatch({
+      type: actions.SELECT_COURT,
+      courtId: courtId,
+    });
+
+    return result;
+  },
 };
 export default actions;

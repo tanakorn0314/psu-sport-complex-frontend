@@ -1,5 +1,4 @@
 import React from 'react';
-import { todayIndex } from '../../utils/date-utils';
 import {
     ScheduleWrapper,
     Event
@@ -12,10 +11,16 @@ import {
     calculateSlot
 } from './dataHandler';
 import Button, { ButtonGroup } from '../uielements/button';
-import _ from 'lodash';
+import SelectCourt from '../../containers/BookingInputs/courts';
 import { colors } from '../../styles/constants/colors';
+import {
+    Row,
+    Col,
+    Typography
+} from 'antd';
 
 const userColors = {};
+const { Title } = Typography;
 
 class Schedule extends React.Component {
 
@@ -45,23 +50,21 @@ class Schedule extends React.Component {
 
         return (
             <ScheduleWrapper>
-                <div className='top-container'>
-                    <div className='top-left'>
+                <Row className='top-container' type='flex' align='middle'>
+                    <Col className='top-left' span={6}>
+                        <Title level={4}>{scheduleTitle.date}</Title>
+                        <Title level={4}>{scheduleTitle.year}</Title>
+                    </Col>
+                    <Col className='top-center' span={10}>
+                        <SelectCourt style={{width: 200}} onChange={this.props.onChangeCourt}/>
+                    </Col>
+                    <Col className='top-right' span={8}>
                         <ButtonGroup>
                             <Button onClick={this.showPrevWeek}>BACK</Button>
                             <Button onClick={this.showNextWeek}>NEXT</Button>
                         </ButtonGroup>
-                    </div>
-                    <div className='top-center'>
-                        <h4>{scheduleTitle}</h4>
-                    </div>
-                    <div className='top-right'>
-                        <ButtonGroup>
-                            <Button>Week</Button>
-                            <Button>Day</Button>
-                        </ButtonGroup>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 <div className='schedule'>
                     <div className='schedule-top'>
                         <div className='schedule-top-item schedule-left'></div>

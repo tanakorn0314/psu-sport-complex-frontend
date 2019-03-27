@@ -1,16 +1,16 @@
 const months = [
-    'January',
-    'Febuary',
-    'March',
-    'April',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
     'May',
-    'June',
-    'July',
-    'August',
-    'Sebtember',
-    'October',
-    'November',
-    'December'
+    'Jun',
+    'Jul',
+    'Aug',
+    'Seb',
+    'Oct',
+    'Nov',
+    'Dec'
 ];
 
 const days = [
@@ -23,6 +23,16 @@ const days = [
     'Sat'
 ];
 
+const fullDays = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+];
+
 function groupEventByDate(events) {
     const groupedEvent = {};
     if (events) {
@@ -32,7 +42,8 @@ function groupEventByDate(events) {
                 groupedEvent[dateIndex] = []
             }
             groupedEvent[dateIndex].push(event);
-        });
+            groupedEvent[dateIndex].sort((a, b) => (a.startDate - b.startDate));
+        })
     }
     return groupedEvent;
 }
@@ -53,9 +64,13 @@ function getnerateDateTitle(date) {
     const endMonth = months[+saturdayStr.slice(5, 7) - 1];
     const endDay = +saturdayStr.slice(8, 10);
 
-    const title = `${startMonth} ${startDay} - ${startMonth !== endMonth ? endMonth : ''} ${endDay}`;
-    return title;
+    let dateTitle = `${startMonth} ${startDay} - ${startMonth !== endMonth ? endMonth : ''} ${endDay}`;
+    return {
+        date: dateTitle,
+        year: sunday.getFullYear()
+    };
 }
+
 
 function generateWeekdays(date) {
     const sunday = new Date(date.toISOString());
@@ -64,11 +79,30 @@ function generateWeekdays(date) {
 
     const weekDays = [];
     const dayStr = day.toISOString().slice(8, 10);
+    //10 Sun
     weekDays.push(`${dayStr} ${days[0]}`);
     for (let i = 0; i < 6; i++) {
         day.setDate(day.getDate() + 1);
         const dayStr = day.toISOString().slice(8, 10);
         weekDays.push(`${dayStr} ${days[i + 1]}`);
+    }
+
+    return weekDays;
+}
+
+function generateFullWeekdays(date) {
+    const sunday = new Date(date.toISOString());
+    sunday.setDate(sunday.getDate() - sunday.getDay());
+    let day = sunday;
+
+    const weekDays = [];
+    const dayStr = day.toISOString().slice(8, 10);
+    //Sunday, 10 March 2019
+    weekDays.push(`${fullDays[0]}, ${dayStr} ${months[day.getMonth()]} ${day.getFullYear()}`);
+    for (let i = 0; i < 6; i++) {
+        day.setDate(day.getDate() + 1);
+        const dayStr = day.toISOString().slice(8, 10);
+        weekDays.push(`${fullDays[i + 1]}, ${dayStr} ${months[day.getMonth()]} ${day.getFullYear()}`);
     }
 
     return weekDays;
@@ -90,6 +124,15 @@ function generateDateIndex(date) {
     }
 
     return dateIndices;
+}
+
+function toRangeStr(event) {
+    let { startDate, endDate } = event;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    const startTime = startDate.toISOString().slice(11, 16).replace(':', '.');
+    const endTime = endDate.toISOString().slice(11, 16).replace(':', '.');
+    return `${startTime} - ${endTime}`;
 }
 
 function filterEvents(date, eventGroups) {
@@ -120,6 +163,8 @@ export {
     groupEventByDate,
     getnerateDateTitle,
     generateWeekdays,
+    generateFullWeekdays,
     filterEvents,
-    calculateSlot
+    calculateSlot,
+    toRangeStr
 }

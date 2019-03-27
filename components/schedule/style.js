@@ -5,14 +5,30 @@ const unitHeight = 40;
 const timeSlot = 13;
 
 const ScheduleWrapper = styled.div`
-    min-width: 500px;
+    min-width: 300px;
+    max-width: 800px;
     position: relative;
     padding: 10px;
     border: solid 1px ${colors.border};
     border-radius: 10px;
+    flex: 1;
     .top-container {
-        display: flex;
-        justify-content: space-between;
+        margin-bottom: 10px;
+        .top-left {
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+        .top-center {
+            display: flex;
+            justify-content: center;
+            .select {
+                width: 100px;
+            }
+        }
+        .top-right {
+            display: flex;
+            justify-content: flex-end;
+        }
     }
     .schedule {
         border: solid 1px ${colors.border};
@@ -23,8 +39,12 @@ const ScheduleWrapper = styled.div`
     .schedule-top {
         display: flex;
         min-height: ${unitHeight}px;
-        margin-right: 17px
+        margin-right: 17px;
         border-bottom: solid 1px ${colors.border};
+
+        @media (max-width: 768px) {
+            margin-right: 0px;
+        }
     }
     .schedule-top-item {
         text-align: center;
