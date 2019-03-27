@@ -4,6 +4,8 @@
     "dev": "next -p 80",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
+    "start:server": "NODE_ENV=production pm2 start server.js",
+    "stop:server": "pm2 stop server.js",
     "export": "npm run build && next export"
   },
   "dependencies": {
