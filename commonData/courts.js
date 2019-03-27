@@ -1,0 +1,17 @@
+export default [
+            'tennis 1',
+            'tennis 2',
+            'tennis 3',
+            'basketball 1',
+            'basketball 2',
+            'basketball 3',
+            'table tennis 1',
+            'table tennis 2',
+            'table tennis 3',
+            'badminton 1',
+            'badminton 2',
+            'badminton 3',
+            'badminton 4',
+            'badminton 5',
+            'badminton 6',
+];

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
+    overflow-x: hidden;
     .row {
         padding: 20px;
         @media(max-width: 425px) {

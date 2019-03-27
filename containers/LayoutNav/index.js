@@ -86,7 +86,7 @@ class LayoutNav extends React.Component {
                     {this.props.children}
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
-                    <Text type='secondary'>TK Design 2019</Text>
+                    <Text type='secondary'>©2019 PSU Sport Complex</Text>
                 </Footer>
             </StyleLayout>
         )
