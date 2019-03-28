@@ -7,7 +7,11 @@ import Input from '../../../components/uielements/input';
 import Button from '../../../components/uielements/button';
 import DatePicker from '../../../components/uielements/datePicker';
 import RadioBox, { RadioGroup } from '../../../components/uielements/radio';
-import { Typography } from 'antd';
+import { 
+    Typography,
+    notification
+ } from 'antd';
+ import Router from 'next/router';
 
 const { Text } = Typography;
 
@@ -48,7 +52,7 @@ class SignUp extends React.Component {
                             </div>
 
                             <div className='isoInputWrapper'>
-                                <Input placeholder='Identification number' name='idNumber' onChange={this.handleChange} />
+                                <Input placeholder='Phone number' name='idNumber' onChange={this.handleChange} />
                             </div>
 
                             <div className='isoInputWrapper'>
@@ -139,7 +143,20 @@ class SignUp extends React.Component {
         }
 
         const result = await this.props.register(userInfo);
-        console.log(result);
+        if (result.error) {
+            notification['error']({
+                message: 'Error',
+                description: result.error,
+                duration: 3
+            })
+        } else {
+            notification['success']({
+                message: 'Success',
+                description: 'Registration success',
+                duration: 3
+            });
+            Router.push('/signin');
+        }
     }
 }
 
