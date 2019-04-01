@@ -1,14 +1,13 @@
 import React from 'react';
-import NavLayout from '../present-layer/layout/NavLayout';
+import BookingList from '../containers/Page/booking_list';
+import Head from 'next/head';
+import Page from '../hocs/bookingPage';
 
-class BookingList extends React.Component {
-    render() {
-        return (
-            <NavLayout>
-                
-            </NavLayout>
-        )
-    }
-}
-
-export default BookingList;
+export default Page(() => (
+    <>
+        <Head>
+            <title>Booking List</title>
+        </Head>
+        <BookingList/>
+    </>
+))
