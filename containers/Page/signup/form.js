@@ -33,11 +33,7 @@ class SignUpForm extends React.Component {
     }
 
     render() {
-        const {
-            getFieldDecorator,
-            getFieldTouched,
-            getFieldError,
-        } = this.props.form;
+        const { getFieldDecorator } = this.props.form;
 
         return (
             <StyledForm onSubmit={this.handleSubmit}>
@@ -70,7 +66,7 @@ class SignUpForm extends React.Component {
                     getFieldDecorator={getFieldDecorator}
                     component={<Input placeholder='Phone Number' />}
                 />
-                 <FormItem
+                <FormItem
                     label='Date of birth'
                     className='form-item'
                     name='dob'
@@ -176,7 +172,7 @@ class SignUpForm extends React.Component {
                             <Input placeholder='Confirm Password' type='password' />
                         )
                     }
-                </Form.Item> 
+                </Form.Item>
                 <FormItem
                     className='form-item'
                     component={<Button type='primary' htmlType='submit'>Submit</Button>}
@@ -188,7 +184,7 @@ class SignUpForm extends React.Component {
     handleSubmit = async e => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, value) => {
-            if(!err && this.props.onSubmit) {
+            if (!err && this.props.onSubmit) {
                 this.props.onSubmit(value);
             }
         })

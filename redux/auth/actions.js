@@ -18,7 +18,6 @@ const actions = {
     } else {
       dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, profile: result.profile });
       setToken(result.accessToken);
-      Router.replace('/');
     }
     return result;
   },

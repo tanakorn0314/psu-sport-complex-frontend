@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
+import Router from 'next/router';
 import AuthAction from '../../../redux/auth/actions';
 import SignInStyleWrapper from './signin.style';
-import Checkbox from '../../../components/uielements/checkbox';
-import Input from '../../../components/uielements/input';
-import Button from '../../../components/uielements/button';
-import Alert from '../../../components/feedback/alert'
+import FormSignIn from './form';
+import { notification } from 'antd';
 
 class SignIn extends React.Component {
 
@@ -32,38 +31,8 @@ class SignIn extends React.Component {
                         </div>
 
                         <div className="isoSignInForm">
-                            <div className="isoInputWrapper">
-                                <Input
-                                    id="inputUserName"
-                                    size="large"
-                                    placeholder="Username"
-                                    name='username'
-                                    onChange={this.handleChange}
-                                />
-                            </div>
 
-                            <div className="isoInputWrapper">
-                                <Input
-                                    id="inpuPassword"
-                                    size="large"
-                                    type="password"
-                                    placeholder="Password"
-                                    name='password'
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-
-                            <div className="isoInputWrapper isoLeftRightComponent">
-                                <Checkbox>
-                                    Remember me
-                                </Checkbox>
-                                <Button
-                                    type="primary"
-                                    onClick={this.handleSubmit}
-                                >
-                                    Sign In
-                                </Button>
-                            </div>
+                            <FormSignIn onSubmit={this.handleSubmit}/>
 
                             <div className="isoCenterComponent isoHelperWrapper">
                                 <Link>
@@ -91,12 +60,21 @@ class SignIn extends React.Component {
         });
     }
 
-    handleSubmit = () => {
+    handleSubmit = async value => {
         const userInfo = {
-            username: this.state.username,
-            password: this.state.password
+            username: value.username,
+            password: value.password
         }
-        this.props.login(userInfo);
+        const result = await this.props.login(userInfo);
+        if (result.error) {
+            notification['error']({
+                duration: 3,
+                message: result.error,
+                description: 'Please try again'
+            })
+        } else {
+            Router.replace('/');
+        }
     }
 }
 
