@@ -20,9 +20,12 @@ import {
     Col,
     Input,
     Modal,
-    Button
+    Button,
+    Card,
+    Typography
 } from 'antd';
 
+const { Text } = Typography;
 const { times } = iniData;
 
 class BookOnline extends React.Component {
@@ -69,45 +72,56 @@ class BookOnline extends React.Component {
 
     render() {
         const { courtBooking } = this.props.Booking;
+        const { profile } = this.props.Auth;
         const {
             isLoading,
             isMobile,
             modal
         } = this.state;
 
+        // console.log(courtBooking);
+
         return (
             <StyledWrapper>
                 <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
-                <Row className='row'>
-                    <Col sm={24} md={24} lg={16} xl={18} className='col'>
-                        {!isLoading && (isMobile ?
+                { !isLoading && (<Row className='row' type='flex' align='middle' justify='center'>
+                    <Col sm={24} md={24} lg={16} xl={16} className='col'>
+                        {isMobile ?
                             <ScheduleMobile times={times} eventGroups={courtBooking} /> :
                             <Schedule times={times} eventGroups={courtBooking} onChangeCourt={this.handleChangeCourt} />
-                        )}
+                        }
                     </Col>
-                    <Col sm={24} md={24} lg={8} xl={6} className='action'>
-                        <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
-                        <div className='action-col'>
-                            <SelectCourt />
-                        </div>
-                        <div className='action-col'>
-                            <InputDate onChange={this.handleSelectDate} />
-                        </div>
-                        <div className='action-col'>
-                            <SelectStartTime onChange={this.handleSelectTime} />
-                        </div>
-                        <div className='action-col'>
-                            <SelectDuration onChange={this.handleSelectDuration} />
-                        </div>
-                        <div className='action-col'>
-                            <Input placeholder='Title' style={{ width: 200 }} name='title' onChange={this.handleChange} />
-                        </div>
-                        <div className='action-col'>
-                            <Input placeholder='Description' style={{ width: 200 }} name='description' onChange={this.handleChange} />
-                        </div>
-                        <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
-                    </Col>
-                </Row>
+                    {
+                        !profile ?
+                            <Col sm={24} md={24} lg={8} xl={8} className='blocked-action'>
+                                <Card>
+                                    <Text>Please <Link href='/signin'><a>login</a></Link> or <Link href='signup'><a>register</a></Link> before booking.</Text>
+                                </Card>
+                            </Col> :
+                            <Col sm={24} md={24} lg={8} xl={8} className='action'>
+                                <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
+                                <div className='action-col'>
+                                    <SelectCourt />
+                                </div>
+                                <div className='action-col'>
+                                    <InputDate onChange={this.handleSelectDate} />
+                                </div>
+                                <div className='action-col'>
+                                    <SelectStartTime onChange={this.handleSelectTime} />
+                                </div>
+                                <div className='action-col'>
+                                    <SelectDuration onChange={this.handleSelectDuration} />
+                                </div>
+                                <div className='action-col'>
+                                    <Input placeholder='Title' style={{ width: 200 }} name='title' onChange={this.handleChange} />
+                                </div>
+                                <div className='action-col'>
+                                    <Input placeholder='Description' style={{ width: 200 }} name='description' onChange={this.handleChange} />
+                                </div>
+                                <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
+                            </Col>
+                    }
+                </Row>)}
                 <Modal
                     visible={modal.isOpen}
                     toggle={this.toggle}

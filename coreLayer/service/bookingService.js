@@ -31,14 +31,10 @@ const getByUserId = async (accessToken, userId) => {
     return await response.json();
 }
 
-const getByCourtId = async (accessToken, courtId) => {
+const getByCourtId = async (courtId) => {
     const url = `${bookingApi}/court/${courtId}`;
-    const options = {
-        headers: {
-            'Authorization': 'bearer ' + accessToken,
-        }
-    }
-    const response = await fetch(url, options);;
+
+    const response = await fetch(url);;
     return await response.json();
 }
 

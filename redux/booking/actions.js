@@ -9,9 +9,9 @@ const actions = {
   BOOKING_SUCCESS: 'BOOKING_SUCCESS',
   BOOKING_ERROR: 'BOOKING_ERROR',
   SELECT_COURT: 'SELECT_COURT',
-  fetchBooking: (token, courtId) => async (dispatch, getState) => {
+  fetchBooking: (courtId) => async (dispatch, getState) => {
     const store = getState().Booking.bookings;
-    const result = await Booking.collectBookingData(store, token, courtId);
+    const result = await Booking.collectBookingData(store, courtId);
     if (result && !result.error) {
       dispatch({ type: actions.FETCH_BOOKING_SUCESS, bookings: result });
     }
@@ -35,12 +35,8 @@ const actions = {
     }
     return result;
   },
-  selectCourt: (courtId, idToken) => async (dispatch, getState) => {
-    if (!idToken) {
-      idToken = getState().Auth.idToken;
-    }
-
-    const result = await dispatch(actions.fetchBooking(idToken, courtId + 1));
+  selectCourt: (courtId) => async (dispatch) => {
+    const result = await dispatch(actions.fetchBooking(courtId + 1));
 
     dispatch({
       type: actions.SELECT_COURT,
