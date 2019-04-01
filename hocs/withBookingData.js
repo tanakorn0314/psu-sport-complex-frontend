@@ -13,11 +13,11 @@ export default ComposedComponent => {
             const { req, store, query } = ctx;
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
             const token = getToken(req);
+            await store.dispatch(BookingAction.fetchBooking(1));
+            await store.dispatch(BookingAction.selectCourt(0));
+            await store.dispatch(StadiumAction.fetchStadium());
             if (token) {
-                await store.dispatch(BookingAction.fetchBooking(token, 1));
-                await store.dispatch(BookingAction.selectCourt(0, token));
                 await store.dispatch(BookingAction.fetchMyBooking(token));
-                await store.dispatch(StadiumAction.fetchStadium());
             }
             if (query){
                 pageProps.query = query;

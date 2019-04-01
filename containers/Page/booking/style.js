@@ -13,6 +13,16 @@ const StyledWrapper = styled.div`
                 justify-content: center;
             }
         }
+        .blocked-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+            @media(min-width: 768px) {
+                margin: 20px 0;
+            }
+            
+        }
         .action {
             display: flex;
             flex-direction: column;
