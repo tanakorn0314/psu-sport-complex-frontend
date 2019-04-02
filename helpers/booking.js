@@ -3,7 +3,6 @@ import jwtDecode from 'jwt-decode';
 
 async function collectBookingData(store, courtId) {
     const res = await BookingService.getByCourtId(courtId);
-    console.log('res', res);
     if (res && !res.error) {
         if (!store[courtId])
             store[courtId] = [];
