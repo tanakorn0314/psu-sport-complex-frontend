@@ -17,6 +17,11 @@ async function reserve(token, bookingInfo) {
     return res;
 }
 
+async function remove(token, bookingId) {
+    const res = await BookingService.deleteBooking(token, bookingId);
+    return res;
+}
+
 async function getMyBooking(token) {
     const user = jwtDecode(token);
     const res = await BookingService.getByUserId(token, user.userId);
@@ -26,5 +31,6 @@ async function getMyBooking(token) {
 export default {
     collectBookingData,
     reserve,
+    remove,
     getMyBooking
 }

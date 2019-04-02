@@ -5,10 +5,12 @@ import {
     Modal
 } from 'antd';
 import { connect } from 'react-redux';
+import BookingActions from '../../../redux/booking/actions';
 import StyledWrapper from './style';
 import BookingService from '../../../coreLayer/service/bookingService';
 import { bookingApi } from '../../../coreLayer/api/api';
 import StatusTag from '../../../components/statusTag';
+import Router from 'next/router';
 
 class BookingConfirm extends React.Component {
 
@@ -44,7 +46,7 @@ class BookingConfirm extends React.Component {
                     <div>Stadium : {booking.court.name}</div>
                     <div>Start Date : {new Date(booking.startDate).toLocaleString()}</div>
                     <div>End Date : {new Date(booking.endDate).toLocaleString()}</div>
-                    <div>Service fees : {stadium[booking.court.stadiumId].costPublic} Baht</div>
+                    <div>Service fees : {stadium[booking.court.stadiumId-1].costPublic} Baht</div>
                     <div>Status : <StatusTag status={status}>{status}</StatusTag> </div>
                     <label htmlFor='upload-image'>
                         <img src={this.state.image} className='img' /> <br />
@@ -52,13 +54,16 @@ class BookingConfirm extends React.Component {
                     </label>
                     <Button onClick={this.handleSubmit} type='primary' style={{ marginRight: 5 }}>CONFIRM</Button>
                     <Button onClick={this.handleDelete} type='danger' disabled={status === 'paid'}>DELETE</Button>
+                    <div style={{marginTop: 10}}>
+                        <a href='/' onClick={this.navigateBack}>Back</a>
+                    </div>
                 </div>
                 <Modal
                     visible={modal.isOpen}
                     toggle={this.toggle}
                     title={modal.title}
                     footer={[
-                        (modal.action.length > 0 && <Button type="primary" onClick={this.navigateToConfirm}>{modal.action}</Button>),
+                        (modal.action.length > 0 && <Button type="primary" onClick={this.deleteBooking}>{modal.action}</Button>),
                         <Button type="secondary" onClick={this.toggle}>{modal.cancel}</Button>
                     ]}
                 >
@@ -125,6 +130,31 @@ class BookingConfirm extends React.Component {
             modal
         });
     }
+
+    deleteBooking = async () => {
+        const { idToken } = this.props.Auth;
+        const courtId = this.props.query.id;
+        const result = await this.props.remove(idToken, courtId);
+        if (result && !result.error) {
+            this.toggle();
+            notification['success']({
+                message: 'Success',
+                description: 'Booking delete successful',
+                duration: 2
+            });
+            setTimeout(() => {
+                Router.back()
+            }, 500);
+        }
+    }
+
+    navigateBack = e => {
+        e.preventDefault();
+        Router.back();
+    }
 }
 
-export default connect(state => state)(BookingConfirm);
+export default connect(
+    state => state,
+    BookingActions
+    )(BookingConfirm);

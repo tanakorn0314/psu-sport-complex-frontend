@@ -9,6 +9,7 @@ const actions = {
   BOOKING_SUCCESS: 'BOOKING_SUCCESS',
   BOOKING_ERROR: 'BOOKING_ERROR',
   SELECT_COURT: 'SELECT_COURT',
+  DELETE_BOOKING: 'DELETE_BOOKING',
   fetchBooking: (courtId) => async (dispatch, getState) => {
     const store = getState().Booking.bookings;
     const result = await Booking.collectBookingData(store, courtId);
@@ -32,6 +33,18 @@ const actions = {
       if (!bookings[courtId]) bookings[courtId] = [];
       bookings[courtId].push(result);
       dispatch({ type: actions.BOOKING_SUCCESS, bookings });
+    }
+    return result;
+  },
+  remove: (token, bookingId) => async (dispatch, getState) => {
+    const result = await Booking.remove(token, bookingId);
+    if(result) {
+      if (!result.error) {
+        const courtId = getState().Booking.courtId;
+        await dispatch(actions.fetchBooking(courtId));
+        await dispatch(actions.fetchMyBooking(token));
+        await dispatch(actions.selectCourt(courtId));
+      }
     }
     return result;
   },

@@ -53,6 +53,19 @@ const book = async (accessToken, bookingInfo) => {
     return await response.json();
 }
 
+const deleteBooking = async (accessToken, bookingId) => {
+    const url = `${bookingApi}/id/${bookingId}`;
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        }
+    }
+    const response = await fetch(url, options);
+    return await response.json();
+}
+
 const uploadSlip = async (accessToken, formData, bookingId) => {
     const url = `${bookingApi}/upload_slip/${bookingId}`;
     const config = {
@@ -61,9 +74,7 @@ const uploadSlip = async (accessToken, formData, bookingId) => {
             'content-type': 'multipart/form-data'
         }
     }
-    console.log('test');
     const response = await axios.post(url, formData, config);
-    console.log(response);
     return response;
 }
 
@@ -73,5 +84,6 @@ export default {
     getByUserId,
     getByCourtId,
     book,
-    uploadSlip
+    uploadSlip,
+    deleteBooking
 }

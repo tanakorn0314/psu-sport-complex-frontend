@@ -145,7 +145,7 @@ class BookOnline extends React.Component {
 
     navigateToConfirm = () => {
         const { myBookings } = this.props.Booking;
-        const lastIndex = myBookings.length - 1;
+        const lastIndex = myBookings.length-1;
         Router.push(`/booking_confirm?id=${myBookings[lastIndex].bookingId}`);
     }
 
