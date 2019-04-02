@@ -83,7 +83,7 @@ class BookOnline extends React.Component {
             <StyledWrapper>
                 <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
                 { !isLoading && (<Row className='row' type='flex' align='middle' justify='center'>
-                    <Col sm={24} md={24} lg={16} xl={16} className='col'>
+                    <Col sm={24} md={24} lg={16} xl={18} className='col'>
                         {isMobile ?
                             <ScheduleMobile times={times} eventGroups={courtBooking} /> :
                             <Schedule times={times} eventGroups={courtBooking} onChangeCourt={this.handleChangeCourt} />

@@ -9,6 +9,7 @@ const StyledWrapper = styled.div`
         }
         .col {
             overflow-x: hidden;
+            width: 100%;
             @media(min-width: 1024px) {
                 display: flex;
                 justify-content: center;

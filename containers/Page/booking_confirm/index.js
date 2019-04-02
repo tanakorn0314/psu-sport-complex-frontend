@@ -63,7 +63,7 @@ class BookingConfirm extends React.Component {
                     toggle={this.toggle}
                     title={modal.title}
                     footer={[
-                        (modal.action.length > 0 && <Button type="primary" onClick={this.deleteBooking}>{modal.action}</Button>),
+                        (modal.action.length > 0 && <Button type="danger" onClick={this.deleteBooking}>{modal.action}</Button>),
                         <Button type="secondary" onClick={this.toggle}>{modal.cancel}</Button>
                     ]}
                 >
