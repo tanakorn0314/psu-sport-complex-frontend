@@ -79,8 +79,6 @@ class BookOnline extends React.Component {
             modal
         } = this.state;
 
-        // console.log(courtBooking);
-
         return (
             <StyledWrapper>
                 <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
@@ -147,7 +145,8 @@ class BookOnline extends React.Component {
 
     navigateToConfirm = () => {
         const { myBookings } = this.props.Booking;
-        Router.push(`/booking_confirm?id=${myBookings.length - 1}`);
+        const lastIndex = myBookings.length - 1;
+        Router.push(`/booking_confirm?id=${myBookings[lastIndex].bookingId}`);
     }
 
     showModal = (title, body, cancel = 'cancel', action = '') => {
