@@ -45,10 +45,10 @@ class Schedule extends React.Component {
         return (
             <StyleWrapper>
                 <Row style={{paddingLeft: 20, paddingRight: 20, marginBottom: 10}} gutter={3}>
-                    <Col span={16} style={{ display: 'flex'}}>
+                    <Col span={14} style={{ display: 'flex'}}>
                         <SelectCourt style={{ width: 140 }} />
                     </Col>
-                    <Col span={8} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Col span={10} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button onClick={this.showPrevWeek}>Back</Button>
                         <Button onClick={this.showNextWeek}>Next</Button>
                     </Col>

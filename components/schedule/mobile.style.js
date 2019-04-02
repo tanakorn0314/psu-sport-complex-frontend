@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { Col } from 'antd';
 
-const StyleWrapper = styled.div`
+const StyleWrapper = styled(Col)`
     width: 100%;
     .schedule-wrapper {
         margin-bottom: 10px;

@@ -8,6 +8,7 @@ const StyledWrapper = styled.div`
             padding: 0px;
         }
         .col {
+            overflow-x: hidden;
             @media(min-width: 1024px) {
                 display: flex;
                 justify-content: center;
