@@ -15,7 +15,7 @@ import {
     Icon
 } from 'antd';
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 const { Text } = Typography;
 
 class LayoutNav extends React.Component {
@@ -29,10 +29,10 @@ class LayoutNav extends React.Component {
     componentDidMount() {
         enquire.register('screen and (max-width:425px)', {
             match: () => {
-                this.setState({menuMode: 'inline'});
+                this.setState({ menuMode: 'inline' });
             },
             unmatch: () => {
-                this.setState({menuMode: 'horizontal'});
+                this.setState({ menuMode: 'horizontal' });
             }
         })
 
@@ -50,14 +50,14 @@ class LayoutNav extends React.Component {
             <Menu
                 key={1}
                 mode={menuMode}
-                style={{lineHeight: '64px'}}
+                style={{ lineHeight: '64px' }}
             >
                 <Menu.Item key={1}><Link href='/booking'><a>Booking</a></Link></Menu.Item>
                 <Menu.Item key={2}>
                     {
-                       !idToken ? 
-                       <Link href='/signin'><a>Login</a></Link> :
-                       <a onClick={this.handleLogout}>Logout</a>
+                        !idToken ?
+                            <Link href='/signin'><a>Login</a></Link> :
+                            <a onClick={this.handleLogout}>Logout</a>
                     }
                 </Menu.Item>
             </Menu>
@@ -72,24 +72,24 @@ class LayoutNav extends React.Component {
                         <Col>
                             {
                                 !isLoading && (menuMode === 'horizontal' ? menu :
-                                <Popover
-                                    visible={showMenu}
-                                    content={menu}
-                                    placement='bottomRight'
-                                    arrowPointAtCenter
-                                >
-                                    <Icon type='menu' onClick={()=>{this.setState({showMenu: !showMenu})}}/>
-                                </Popover>)
+                                    <Popover
+                                        visible={showMenu}
+                                        content={menu}
+                                        placement='bottomRight'
+                                        arrowPointAtCenter
+                                    >
+                                        <Icon type='menu' onClick={() => { this.setState({ showMenu: !showMenu }) }} />
+                                    </Popover>)
                             }
                         </Col>
                     </Row>
                 </Header>
-                <Content style={{background: '#fff'}}>
+                <Content style={{ background: '#fff' }}>
                     {this.props.children}
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
+                {!this.props.noFooter && <Footer style={{ textAlign: 'center' }}>
                     <Text type='secondary'>©2019 PSU Sport Complex</Text>
-                </Footer>
+                </Footer>}
             </StyleLayout>
         )
     }
@@ -97,8 +97,8 @@ class LayoutNav extends React.Component {
     handleLogout = async () => {
         await this.props.logout();
         setTimeout(() => {
-            Router.replace('/signin', 500);
-        })
+            Router.replace('/signin');
+        }, 500)
     }
 }
 
