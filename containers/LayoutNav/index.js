@@ -1,6 +1,7 @@
 import React from 'react';
 import StyleLayout from './layout.style';
 import Link from 'next/link';
+import Router from 'next/router';
 import enquire from 'enquire-js';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
@@ -94,7 +95,10 @@ class LayoutNav extends React.Component {
     }
 
     handleLogout = async () => {
-        this.props.logout();
+        await this.props.logout();
+        setTimeout(() => {
+            Router.replace('/signin', 500);
+        })
     }
 }
 
