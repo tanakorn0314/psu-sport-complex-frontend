@@ -47,6 +47,7 @@ class LayoutNav extends React.Component {
         const { idToken } = this.props;
         const menu = [
             <Menu
+                key={1}
                 mode={menuMode}
                 style={{lineHeight: '64px'}}
             >

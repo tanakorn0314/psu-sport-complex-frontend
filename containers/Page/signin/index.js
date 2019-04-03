@@ -35,7 +35,7 @@ class SignIn extends React.Component {
                             <FormSignIn onSubmit={this.handleSubmit}/>
 
                             <div className="isoCenterComponent isoHelperWrapper">
-                                <Link>
+                                <Link href='#'>
                                     <div className="isoForgotPass">
                                         Forgot password
                                     </div>
