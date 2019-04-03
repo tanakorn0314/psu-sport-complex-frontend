@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 
 const StyledLayout = styled(Layout)`
     height: calc(100vh - 64px);
+    overflow-y: auto;
 
     .ant-menu > .ant-menu-item:first-child {
         margin-top: 0;

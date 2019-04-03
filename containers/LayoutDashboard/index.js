@@ -6,6 +6,7 @@ import {
     Menu,
     Icon
 } from 'antd';
+import Router from 'next/router';
 
 const { Sider, Content } = Layout;
 
@@ -32,17 +33,17 @@ class LayoutDashboard extends React.Component {
                             defaultOpenKeys={['sub1']}
                             style={{ height: '100%' }}
                         >
-                            <Menu.Item key="1">
+                            <Menu.Item key="booking" onClick={this.navigate}>
                                 <Icon type='read' />
-                                <span>Bookings</span>
+                                    <span>Bookings</span>
                             </Menu.Item>
-                            <Menu.Item key="2">
+                            <Menu.Item key="user" onClick={this.navigate}>
                                 <Icon type='user' />
-                                <span>Users</span>
+                                    <span>Users</span>
                             </Menu.Item>
-                            <Menu.Item key="3">
+                            <Menu.Item key="openclose" onClick={this.navigate}>
                                 <Icon type='calendar' />
-                                <span>Open / Close</span>
+                                    <span>Open / Close</span>
                             </Menu.Item>
                         </Menu>
                     </Sider>
@@ -56,6 +57,10 @@ class LayoutDashboard extends React.Component {
 
     onCollapse = collapsed => {
         this.setState({ collapsed })
+    }
+
+    navigate = ({key}) => {
+        Router.push(`/dashboard/${key}`);
     }
 }
 
