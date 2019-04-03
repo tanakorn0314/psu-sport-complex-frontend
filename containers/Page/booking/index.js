@@ -40,6 +40,7 @@ class BookOnline extends React.Component {
             durationIndex: 0,
             title: '',
             description: '',
+            fee: 0,
             modal: {
                 title: '',
                 body: '',
@@ -76,7 +77,8 @@ class BookOnline extends React.Component {
         const {
             isLoading,
             isMobile,
-            modal
+            modal,
+            fee
         } = this.state;
 
         return (
@@ -116,6 +118,9 @@ class BookOnline extends React.Component {
                                 <div className='action-col'>
                                     <Input placeholder='Description' style={{ width: 200 }} name='description' onChange={this.handleChange} />
                                 </div>
+                                <div className='action-col'>
+                                    <Text>Service fee : {0} baht</Text>
+                                </div>
                                 <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
                             </Col>
                     }
@@ -125,11 +130,11 @@ class BookOnline extends React.Component {
                     toggle={this.toggle}
                     title={modal.title}
                     footer={[
-                        (modal.action.length > 0 && <Button type="primary" onClick={this.navigateToConfirm}>{this.state.modal.action}</Button>),
-                        <Button type="secondary" onClick={this.toggle}>{this.state.modal.cancel}</Button>
+                        (modal.action.length > 0 && <Button type="primary" onClick={this.navigateToConfirm}>{modal.action}</Button>),
+                        <Button type="secondary" onClick={this.toggle}>{modal.cancel}</Button>
                     ]}
                 >
-                    {this.state.modal.body}
+                    {modal.body}
                 </Modal>
             </StyledWrapper>
         );
