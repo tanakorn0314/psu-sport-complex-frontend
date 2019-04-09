@@ -25,6 +25,11 @@ const StyledForm = styled(Form)`
             margin: 10px 0;
         }
     }
+    .form-radio {
+        .ant-form-item-label {
+            padding: 0;
+        }
+    }
 `;
 
 export default StyledForm;

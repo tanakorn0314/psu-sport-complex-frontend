@@ -45,11 +45,12 @@ class SignUp extends React.Component {
             language: navigator.language || navigator.userLanguage,
         }
         const result = await this.props.register(userInfo);
+        console.log(result);
         if (result.error) {
             notification['error']({
                 duration: 3,
-                message: result.error,
-                description: 'Please use another username or email'
+                message: 'Error',
+                description: result.error
             })
         } else {
             notification['success']({

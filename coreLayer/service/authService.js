@@ -71,7 +71,7 @@ const signup = (user) => {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await fetch(url, options).then(response => response.json());
-            if (response.username) {
+            if (!response.error) {
                 resolve(response);
             } else {
                 reject(response);

@@ -34,9 +34,6 @@ const loginJWT = async token => {
 }
 
 const register = async userInfo => {
-    if (!userInfo.username || !userInfo.password) {
-        return { error: 'please fill in the input' };
-    }
     return await authService.signup(userInfo)
         .then(res => {
             const result = res;

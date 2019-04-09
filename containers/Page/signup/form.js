@@ -4,7 +4,7 @@ import Button from '../../../components/uielements/button';
 import DatePicker from '../../../components/uielements/datePicker';
 import RadioBox, { RadioGroup } from '../../../components/uielements/radio';
 import { Typography, Form } from 'antd';
-import Link from 'next/link';
+import InputDate from '../../../components/inputDate';
 import StyledForm from './form.style';
 
 const { Text } = Typography;
@@ -57,27 +57,9 @@ class SignUpForm extends React.Component {
                         component={<Input placeholder='Last Name' />}
                     />
                 </div>
-                <FormItem
-                    label='Phone number'
-                    className='form-item'
-                    name='phoneNumber'
-                    required
-                    message='Please input your phone number'
-                    getFieldDecorator={getFieldDecorator}
-                    component={<Input placeholder='Phone Number' />}
-                />
-                <FormItem
-                    label='Date of birth'
-                    className='form-item'
-                    name='dob'
-                    required
-                    message='Please input your birthday'
-                    getFieldDecorator={getFieldDecorator}
-                    component={<DatePicker />}
-                />
                 <Form.Item
                     label='Gender'
-                    className='form-item'
+                    className='form-item form-radio'
                 >
                     {
                         getFieldDecorator('gender', {
@@ -90,45 +72,33 @@ class SignUpForm extends React.Component {
                         )
                     }
                 </Form.Item>
+                <FormItem
+                    label='Date of birth'
+                    className='form-item'
+                    name='dob'
+                    required
+                    message='Please input your birthday'
+                    getFieldDecorator={getFieldDecorator}
+                    component={<InputDate />}
+                />
                 <Form.Item
-                    label='Username'
+                    label='Phone Number'
                     className='form-item'
                 >
                     {
-                        getFieldDecorator('username', {
+                        getFieldDecorator('phoneNumber', {
                             rules: [
                                 {
-                                    min: 6,
-                                    message: 'At least 6 characters'
+                                    len: 10,
+                                    message: '10 characters phone number'
                                 },
                                 {
                                     required: true,
-                                    message: 'Please input username'
+                                    message: 'Please input your phone number'
                                 }
                             ]
                         })(
-                            <Input placeholder='Username' />
-                        )
-                    }
-                </Form.Item>
-                <Form.Item
-                    label='Email'
-                    className='form-item'
-                >
-                    {
-                        getFieldDecorator('email', {
-                            rules: [
-                                {
-                                    type: 'email',
-                                    message: 'Not valid email'
-                                },
-                                {
-                                    required: true,
-                                    message: 'Please input email'
-                                }
-                            ]
-                        })(
-                            <Input placeholder='Email' />
+                            <Input placeholder='Phone Number' type='number' />
                         )
                     }
                 </Form.Item>
