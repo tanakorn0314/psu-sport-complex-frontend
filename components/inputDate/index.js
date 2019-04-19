@@ -36,17 +36,35 @@ class InputDate extends React.Component {
         const thisYear = parseInt(moment().format('YYYY'));
         return (
             <StyledWarpper>
-                <Select defaultValue={day} onChange={this.changeDay}>
+                <Select
+                    defaultValue={day}
+                    onChange={this.changeDay}
+                    showSearch
+                    optionFilterProp='children'
+                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
+                >
                     {_.range(1, 31).map((day) => (
                         <SelectOption key={day} value={day}>{day}</SelectOption>
                     ))}
                 </Select>
-                <Select defaultValue={month} onChange={this.changeMonth}>
+                <Select
+                    defaultValue={month}
+                    onChange={this.changeMonth}
+                    showSearch
+                    optionFilterProp='children'
+                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
+                >
                     {MONTHS.map((month, index) => (
                         <SelectOption key={month} value={index + 1} >{month}</SelectOption>
                     ))}
                 </Select>
-                <Select defaultValue={year} onChange={this.changeYear}>
+                <Select
+                    defaultValue={year}
+                    onChange={this.changeYear}
+                    showSearch
+                    optionFilterProp='children'
+                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
+                >
                     {_.range(1900, parseInt(thisYear) + 1).map((year) => (
                         <SelectOption key={year} value={year} >{year}</SelectOption>
                     ))}

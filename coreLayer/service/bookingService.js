@@ -38,6 +38,13 @@ const getByCourtId = async (courtId) => {
     return await response.json();
 }
 
+const getByStadiumId = async (stadiumId) => {
+    const url = `${bookingApi}/stadium/${stadiumId}`;
+
+    const response = await fetch(url);;
+    return await response.json();
+}
+
 const book = async (accessToken, bookingInfo) => {
     const url = bookingApi;
     const body = {...bookingInfo};
@@ -83,6 +90,7 @@ export default {
     getById,
     getByUserId,
     getByCourtId,
+    getByStadiumId,
     book,
     uploadSlip,
     deleteBooking

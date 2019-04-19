@@ -1,10 +1,13 @@
 import actions from "./actions";
 
 const initState = {
+    stadiumId: 1,
     bookings: {},
     myBookings: [],
-    courtId: 0,
-    courtBooking: [],
+    stadiumBooking: [],
+    selectedBooking: {},
+    bookingList: [],
+    fee: 0
 };
 
 export default function bookingReducer(state = initState, action) {
@@ -24,12 +27,22 @@ export default function bookingReducer(state = initState, action) {
                 ...state,
                 myBookings: action.bookings
             }
-        case actions.SELECT_COURT:
+        case actions.SELECT_STADIUM:
             return {
                 ...state,
-                courtId: action.courtId,
-                courtBooking: state.bookings[action.courtId + 1],
+                stadiumId: action.stadiumId,
+                stadiumBooking: state.bookings[action.stadiumId],
+                selectedBooking: {},
+                bookingList: [],
+                fee: 0
             };
+        case actions.SELECT_BOOKING:
+            return {
+                ...state,
+                selectedBooking: action.selectedBooking,
+                bookingList: action.bookingList,
+                fee: action.fee
+            }
         case actions.FETCH_BOOKING_ERROR:
             return initState;
         default:

@@ -6,13 +6,15 @@ import AuthAction from '../../../redux/auth/actions';
 import SignInStyleWrapper from './signin.style';
 import FormSignIn from './form';
 import { notification } from 'antd';
+import Button from '../../../components/uielements/button';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 class SignIn extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            phoneNumber: '',
             password: '',
         }
     }
@@ -32,7 +34,26 @@ class SignIn extends React.Component {
 
                         <div className="isoSignInForm">
 
-                            <FormSignIn onSubmit={this.handleSubmit}/>
+                            <FormSignIn onSubmit={this.handleSubmit} />
+
+                            <div className="isoInputWrapper isoOtherLogin">
+                                <FacebookLogin
+                                    appId="431603290925527"
+                                    autoLoad
+                                    callback={this.handleLoginFacebook}
+                                    fields="name,email,picture,first_name,last_name,gender"
+                                    scope="public_profile,user_friends,user_gender"
+                                    render={renderProps => (
+                                        <Button
+                                            onClick={renderProps.onClick}
+                                            type="primary"
+                                            className="btnFacebook"
+                                        >
+                                            Facebook Login
+                                        </Button>
+                                    )}
+                                />
+                            </div>
 
                             <div className="isoCenterComponent isoHelperWrapper">
                                 <Link href='#'>
@@ -53,6 +74,12 @@ class SignIn extends React.Component {
         )
     }
 
+    handleLoginFacebook = response => {
+        if(response.accessToken) {
+            // Router.push('/')
+        }
+    }
+
     handleChange = (e) => {
         const { name, value } = e.target;
         this.setState({
@@ -62,7 +89,7 @@ class SignIn extends React.Component {
 
     handleSubmit = async value => {
         const userInfo = {
-            username: value.username,
+            phoneNumber: value.phoneNumber,
             password: value.password
         }
         const result = await this.props.login(userInfo);

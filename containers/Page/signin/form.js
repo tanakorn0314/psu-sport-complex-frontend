@@ -7,17 +7,17 @@ import Button from '../../../components/uielements/button'
 import Checkbox from '../../../components/uielements/checkbox';
 import Input from '../../../components/uielements/input';
 
-class FormSignUp extends React.Component {
+class FormSignIn extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
             <StyledForm onSubmit={this.handleSubmit}>
                 <Form.Item
-                    label='Username'
+                    label='Phone number'
                     className='form-item'
                 >
                     {
-                        getFieldDecorator('username')(<Input placeholder='Username' />)
+                        getFieldDecorator('phoneNumber')(<Input placeholder='Phone number' />)
                     }
                 </Form.Item>
                 <Form.Item
@@ -43,12 +43,12 @@ class FormSignUp extends React.Component {
         const { form } = this.props;
         if (form && this.props.onSubmit) {
             this.props.onSubmit({
-                username: form.getFieldValue('username'),
+                phoneNumber: form.getFieldValue('phoneNumber'),
                 password: form.getFieldValue('password')
             })
         }
     }
 }
 
-const WrapperLoginForm = Form.create({ name: 'signin' })(FormSignUp);
+const WrapperLoginForm = Form.create({ name: 'signin' })(FormSignIn);
 export default WrapperLoginForm;

@@ -1,12 +1,12 @@
 import BookingService from '../coreLayer/service/bookingService';
 import jwtDecode from 'jwt-decode';
 
-async function collectBookingData(store, courtId) {
-    const res = await BookingService.getByCourtId(courtId);
+async function collectBookingData(store, stadiumId) {
+    const res = await BookingService.getByStadiumId(stadiumId);
     if (res && !res.error) {
-        if (!store[courtId])
-            store[courtId] = [];
-        store[courtId] = res;
+        if (!store[stadiumId])
+            store[stadiumId] = [];
+        store[stadiumId] = res;
         return store;
     }
     return res;
@@ -28,9 +28,51 @@ async function getMyBooking(token) {
     return res;
 }
 
+function handleSelect(prevBooking, selectData) {
+    const { start, court, selected } = selectData;
+    let result = { ...prevBooking };
+    if (selected) {
+        if (!result[start])
+            result[start] = [];
+        result[start][court] = { start, court };
+    } else {
+        result[start][court] = null;
+    }
+
+    return result;
+}
+
+function manageBookingList(selectedBookings) {
+    const bookingList = [];
+    Object.values(selectedBookings).forEach(bookings => {
+        bookings && bookings.forEach((booking) => {
+            booking && bookingList.push(booking);
+        })
+    })
+    return bookingList;
+}
+
+function getBookingFee(stadium, userPosition) {
+    switch(userPosition) {
+        case 'member' :
+            return stadium.costMember;
+        case 'student' :
+            return stadium.costStudent;
+        case 'staff' :
+            return stadium.costStaff;
+        case 'admin' :
+            return 0;
+        default:
+            return stadium.costPublic;
+    }
+}
+
 export default {
     collectBookingData,
     reserve,
     remove,
-    getMyBooking
+    getMyBooking,
+    handleSelect,
+    manageBookingList,
+    getBookingFee
 }

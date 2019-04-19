@@ -8,12 +8,13 @@ import iniData from './initData';
 import StyledWrapper from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
-import enquire from 'enquire-js';
 import {
     SelectCourt,
     SelectStartTime,
     SelectDuration,
-    InputDate
+    InputDate,
+    SelectDate,
+    SelectStadium
 } from '../../BookingInputs';
 import {
     Row,
@@ -24,6 +25,8 @@ import {
     Card,
     Typography
 } from 'antd';
+import BookingComponent from '../../BookingComponent';
+import BottomAction from '../../../components/bottomAction';
 
 const { Text } = Typography;
 const { times } = iniData;
@@ -40,7 +43,10 @@ class BookOnline extends React.Component {
             durationIndex: 0,
             title: '',
             description: '',
-            fee: 0,
+            bookingList: {},
+            bottomAction: {
+                isOpen: false,
+            },
             modal: {
                 title: '',
                 body: '',
@@ -48,83 +54,36 @@ class BookOnline extends React.Component {
                 action: '',
                 cancel: '',
                 isOpen: false
-            },
-            isMobile: false,
-            isLoading: true
+            }
         }
     }
 
-    componentDidMount() {
-        enquire.register('screen and (max-width:425px)', {
-            match: () => {
-                this.setState({ isMobile: true })
-            },
-            unmatch: () => {
-                this.setState({ isMobile: false })
-            }
-        })
-
-        this.setState({ isLoading: false });
-    }
-
-    componentWillUnmount() {
-        enquire.unregister('screen and (max-width:425px)');
-    }
-
     render() {
-        const { courtBooking } = this.props.Booking;
+        const { stadiumBooking, stadiumId, fee, bookingList } = this.props.Booking;
+        const { stadiums } = this.props.Stadium;
         const { profile } = this.props.Auth;
+        const { isLoading, isMobile } = this.props.Screen;
         const {
-            isLoading,
-            isMobile,
             modal,
-            fee
+            bottomAction
         } = this.state;
 
         return (
             <StyledWrapper>
                 <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
-                { !isLoading && (<Row className='row' type='flex' align='middle' justify='center'>
-                    <Col sm={24} md={24} lg={16} xl={18} className='col'>
-                        {isMobile ?
-                            <ScheduleMobile times={times} eventGroups={courtBooking} /> :
-                            <Schedule times={times} eventGroups={courtBooking} onChangeCourt={this.handleChangeCourt} />
-                        }
-                    </Col>
-                    {
-                        !profile ?
-                            <Col sm={24} md={24} lg={8} xl={8} className='blocked-action'>
-                                <Card>
-                                    <Text>Please <Link href='/signin'><a>login</a></Link> or <Link href='signup'><a>register</a></Link> before booking.</Text>
-                                </Card>
-                            </Col> :
-                            <Col sm={24} md={24} lg={8} xl={8} className='action'>
-                                <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
-                                <div className='action-col'>
-                                    <SelectCourt />
-                                </div>
-                                <div className='action-col'>
-                                    <InputDate onChange={this.handleSelectDate} />
-                                </div>
-                                <div className='action-col'>
-                                    <SelectStartTime onChange={this.handleSelectTime} />
-                                </div>
-                                <div className='action-col'>
-                                    <SelectDuration onChange={this.handleSelectDuration} />
-                                </div>
-                                <div className='action-col'>
-                                    <Input placeholder='Title' style={{ width: 200 }} name='title' onChange={this.handleChange} />
-                                </div>
-                                <div className='action-col'>
-                                    <Input placeholder='Description' style={{ width: 200 }} name='description' onChange={this.handleChange} />
-                                </div>
-                                <div className='action-col'>
-                                    <Text>Service fee : {0} baht</Text>
-                                </div>
-                                <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
-                            </Col>
-                    }
-                </Row>)}
+                <div className='select-container'>
+                    <SelectStadium />
+                </div>
+                <div>
+                    <SelectDate />
+                </div>
+                <div>
+                    <BookingComponent />
+                </div>
+                <BottomAction
+                    visible={bookingList.length > 0}
+                    fee={fee}
+                />
                 <Modal
                     visible={modal.isOpen}
                     toggle={this.toggle}
@@ -150,7 +109,7 @@ class BookOnline extends React.Component {
 
     navigateToConfirm = () => {
         const { myBookings } = this.props.Booking;
-        const lastIndex = myBookings.length-1;
+        const lastIndex = myBookings.length - 1;
         Router.push(`/booking_confirm?id=${myBookings[lastIndex].bookingId}`);
     }
 
@@ -218,6 +177,34 @@ class BookOnline extends React.Component {
         }
 
     }
+
+    renderAction = () => (
+        <Col sm={24} md={24} lg={8} xl={8} className='action'>
+            <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
+            <div className='action-col'>
+                <SelectCourt />
+            </div>
+            <div className='action-col'>
+                <InputDate onChange={this.handleSelectDate} />
+            </div>
+            <div className='action-col'>
+                <SelectStartTime onChange={this.handleSelectTime} />
+            </div>
+            <div className='action-col'>
+                <SelectDuration onChange={this.handleSelectDuration} />
+            </div>
+            <div className='action-col'>
+                <Input placeholder='Title' style={{ width: 200 }} name='title' onChange={this.handleChange} />
+            </div>
+            <div className='action-col'>
+                <Input placeholder='Description' style={{ width: 200 }} name='description' onChange={this.handleChange} />
+            </div>
+            <div className='action-col'>
+                <Text>Service fee : {0} baht</Text>
+            </div>
+            <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
+        </Col>
+    )
 
 }
 

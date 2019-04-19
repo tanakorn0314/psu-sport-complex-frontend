@@ -2,10 +2,10 @@ import jwtDecode from 'jwt-decode';
 import authService from '../coreLayer/service/authService';
 
 const login = async userInfo => {
-    if (!userInfo.username || !userInfo.password) {
+    if (!userInfo.phoneNumber || !userInfo.password) {
         return { error: 'please fill in the input' };
     }
-    return await authService.signIn(userInfo.username, userInfo.password)
+    return await authService.signIn(userInfo.phoneNumber, userInfo.password)
         .then(res => {
             const result = {};
             if (res.accessToken) {

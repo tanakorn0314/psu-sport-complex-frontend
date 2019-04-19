@@ -8,11 +8,12 @@ const actions = {
   BOOKING_REQUEST: 'BOOKING_REQUEST',
   BOOKING_SUCCESS: 'BOOKING_SUCCESS',
   BOOKING_ERROR: 'BOOKING_ERROR',
-  SELECT_COURT: 'SELECT_COURT',
+  SELECT_STADIUM: 'SELECT_STADIUM',
+  SELECT_BOOKING: 'SELECT_BOOKING',
   DELETE_BOOKING: 'DELETE_BOOKING',
-  fetchBooking: (courtId) => async (dispatch, getState) => {
+  fetchBooking: (stadiumId) => async (dispatch, getState) => {
     const store = getState().Booking.bookings;
-    const result = await Booking.collectBookingData(store, courtId);
+    const result = await Booking.collectBookingData(store, stadiumId);
     if (result && !result.error) {
       dispatch({ type: actions.FETCH_BOOKING_SUCESS, bookings: result });
     }
@@ -29,9 +30,9 @@ const actions = {
     const bookings = getState().Booking.bookings;
     const result = await Booking.reserve(token, bookingInfo);
     if (result && !result.error) {
-      const { courtId } = result;
-      if (!bookings[courtId]) bookings[courtId] = [];
-      bookings[courtId].push(result);
+      const { stadiumId } = result;
+      if (!bookings[stadiumId]) bookings[stadiumId] = [];
+      bookings[stadiumId].push(result);
       dispatch({ type: actions.BOOKING_SUCCESS, bookings });
     }
     return result;
@@ -40,23 +41,34 @@ const actions = {
     const result = await Booking.remove(token, bookingId);
     if(result) {
       if (!result.error) {
-        const courtId = getState().Booking.courtId;
-        await dispatch(actions.fetchBooking(courtId));
+        const stadiumId = getState().Booking.stadiumId;
+        await dispatch(actions.fetchBooking(stadiumId));
         await dispatch(actions.fetchMyBooking(token));
-        await dispatch(actions.selectCourt(courtId));
+        await dispatch(actions.selectStadium(stadiumId));
       }
     }
     return result;
   },
-  selectCourt: (courtId) => async (dispatch) => {
-    const result = await dispatch(actions.fetchBooking(courtId + 1));
-
-    dispatch({
-      type: actions.SELECT_COURT,
-      courtId: courtId,
-    });
-
+  selectStadium: (stadiumId) => async (dispatch) => {
+    const result = await dispatch(actions.fetchBooking(stadiumId));
+    dispatch({type: actions.SELECT_STADIUM, stadiumId});
     return result;
   },
+  selectBooking: (data) => async (dispatch, getState) => {
+    const user = getState().Auth.profile;
+    const stadiumId = getState().Booking.stadiumId;
+    const stadium = getState().Stadium.stadiums[stadiumId - 1];
+    const prevBookings = getState().Booking.selectedBooking;
+    const currentBookings = Booking.handleSelect(prevBookings, data);
+    const bookingList = Booking.manageBookingList(currentBookings);
+    const fee = Booking.getBookingFee(stadium, user.position) * bookingList.length;
+    dispatch({
+      type: actions.SELECT_BOOKING,
+      selectedBooking: currentBookings,
+      bookingList,
+      fee
+    });
+    return currentBookings;
+  }
 };
 export default actions;

@@ -1,7 +1,7 @@
 import actions from "./actions";
 
 const initState = {
-    stadium: []
+    stadiums: []
 };
 
 export default function bookingReducer(state = initState, action) {
@@ -9,7 +9,7 @@ export default function bookingReducer(state = initState, action) {
         case actions.FETCH_STADIUM_SUCCESS:
             return {
                 ...state,
-                stadium: action.payload
+                stadiums: action.payload
             };
         default:
             return state;

@@ -45,7 +45,6 @@ class SignUp extends React.Component {
             language: navigator.language || navigator.userLanguage,
         }
         const result = await this.props.register(userInfo);
-        console.log(result);
         if (result.error) {
             notification['error']({
                 duration: 3,
