@@ -9,8 +9,9 @@ import { connect } from 'react-redux';
 class BookingComponent extends React.Component {
 
     render() {
-        const { stadiumBooking } = this.props.Booking;
-        const bookingData = dataHandler.seperateDataByStartTime(stadiumBooking)
+        const { stadiumBooking, selectedDate } = this.props.Booking;
+        const bookingData = dataHandler.seperateDataByStartTime(stadiumBooking, selectedDate);
+
         return (
             <StyledWrapper>
                 {this.renderCards(bookingData)}
@@ -32,7 +33,7 @@ class BookingComponent extends React.Component {
                 numCourt: stadium.numCourt,
                 bookingData: bookingData[operationTime[i-1]]
             }
-            cards.push(<BookingCard dataSource={dataSource}/>)
+            cards.push(<BookingCard key={i} dataSource={dataSource}/>)
         }
 
         return cards;

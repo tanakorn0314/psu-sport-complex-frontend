@@ -8,10 +8,18 @@ const StyledWrapper = styled.div`
     .title {
         font-weight: 400;
     }
+    .select-date {
+        justify-content: flex-start;
+    }
     .select-container {
+        justify-content: flex-end;
+    }
+    .select-container, .select-date {
         display: flex;
         margin: 10px 0;
-        justify-content: flex-end;
+        @media (max-width: 425px) {
+            justify-content: center;
+        }
     }
     .link-to-list {
         margin: 10px 0;
@@ -20,6 +28,9 @@ const StyledWrapper = styled.div`
     .btn-container {
         display: flex;
         justify-content: center;
+    }
+    .input-upload {
+        display: none;
     }
 `;
 

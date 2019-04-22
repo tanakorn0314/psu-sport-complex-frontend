@@ -60,8 +60,36 @@ const book = async (accessToken, bookingInfo) => {
     return await response.json();
 }
 
+const bookMany = async (accessToken, bookManyDTO) => {
+    const url = `${bookingApi}/many`;
+    const body = bookManyDTO;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+    const response = await fetch(url, options);
+    return await response.json();
+}
+
 const deleteBooking = async (accessToken, bookingId) => {
-    const url = `${bookingApi}/id/${bookingId}`;
+    const url = `${bookingApi}/${bookingId}`;
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        }
+    }
+    const response = await fetch(url, options);
+    return await response.json();
+}
+
+const deleteByBillId = async (accessToken, billId) => {
+    const url = `${bookingApi}/bill/${billId}`;
     const options = {
         method: 'DELETE',
         headers: {
@@ -92,6 +120,8 @@ export default {
     getByCourtId,
     getByStadiumId,
     book,
+    bookMany,
     uploadSlip,
-    deleteBooking
+    deleteBooking,
+    deleteByBillId
 }

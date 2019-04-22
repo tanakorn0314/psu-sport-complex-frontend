@@ -21,6 +21,22 @@ const StyledWrapper = styled(Row)`
         justify-content: flex-end;
         align-items: center;
     }
+
+    @media (max-width: 425px) {
+        padding: 10px 0px;
+        justify-content: center;
+        align-items: center;
+        .total {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .confirm {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 `;
 
 export default StyledWrapper;

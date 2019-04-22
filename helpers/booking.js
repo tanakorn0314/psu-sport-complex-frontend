@@ -17,6 +17,11 @@ async function reserve(token, bookingInfo) {
     return res;
 }
 
+async function reserveMany(token, bookManyDTO) {
+    const res = await BookingService.bookMany(token, bookManyDTO);
+    return res;
+}
+
 async function remove(token, bookingId) {
     const res = await BookingService.deleteBooking(token, bookingId);
     return res;
@@ -70,6 +75,7 @@ function getBookingFee(stadium, userPosition) {
 export default {
     collectBookingData,
     reserve,
+    reserveMany,
     remove,
     getMyBooking,
     handleSelect,

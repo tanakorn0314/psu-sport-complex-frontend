@@ -11,6 +11,7 @@ const actions = {
   SELECT_STADIUM: 'SELECT_STADIUM',
   SELECT_BOOKING: 'SELECT_BOOKING',
   DELETE_BOOKING: 'DELETE_BOOKING',
+  SELECT_DATE: 'SELECT_DATE',
   fetchBooking: (stadiumId) => async (dispatch, getState) => {
     const store = getState().Booking.bookings;
     const result = await Booking.collectBookingData(store, stadiumId);
@@ -27,31 +28,24 @@ const actions = {
     return result;
   },
   reserve: (token, bookingInfo) => async (dispatch, getState) => {
-    const bookings = getState().Booking.bookings;
     const result = await Booking.reserve(token, bookingInfo);
-    if (result && !result.error) {
-      const { stadiumId } = result;
-      if (!bookings[stadiumId]) bookings[stadiumId] = [];
-      bookings[stadiumId].push(result);
-      dispatch({ type: actions.BOOKING_SUCCESS, bookings });
-    }
+    await refreshBooking(dispatch, getState);
+    return result;
+  },
+  reserveMany: (token, bookManyDTO) => async (dispatch, getState) => {
+    const result = await Booking.reserveMany(token, bookManyDTO);
+    await refreshBooking(dispatch, getState);
     return result;
   },
   remove: (token, bookingId) => async (dispatch, getState) => {
     const result = await Booking.remove(token, bookingId);
-    if(result) {
-      if (!result.error) {
-        const stadiumId = getState().Booking.stadiumId;
-        await dispatch(actions.fetchBooking(stadiumId));
-        await dispatch(actions.fetchMyBooking(token));
-        await dispatch(actions.selectStadium(stadiumId));
-      }
-    }
+    await refreshBooking(dispatch, getState);
     return result;
   },
-  selectStadium: (stadiumId) => async (dispatch) => {
+  selectStadium: (stadiumId) => async (dispatch, getState) => {
     const result = await dispatch(actions.fetchBooking(stadiumId));
-    dispatch({type: actions.SELECT_STADIUM, stadiumId});
+    await dispatch({ type: actions.SELECT_STADIUM, stadiumId });
+
     return result;
   },
   selectBooking: (data) => async (dispatch, getState) => {
@@ -69,6 +63,21 @@ const actions = {
       fee
     });
     return currentBookings;
+  },
+  selectDate: (date) => async (dispatch, getState) => {
+    dispatch({type: actions.SELECT_DATE, selectedDate: date});
+  },
+  refreshData: () => async (dispatch, getState) => {
+    refreshBooking(dispatch, getState);
   }
 };
+
+async function refreshBooking(dispatch, getState) {
+  const stadiumId = getState().Booking.stadiumId;
+  const token = getState().Auth.idToken;
+  await dispatch(actions.fetchBooking(stadiumId));
+  await dispatch(actions.fetchMyBooking(token));
+  await dispatch(actions.selectStadium(stadiumId));
+}
+
 export default actions;

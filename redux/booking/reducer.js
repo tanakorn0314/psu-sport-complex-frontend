@@ -1,4 +1,5 @@
 import actions from "./actions";
+import moment from 'moment';
 
 const initState = {
     stadiumId: 1,
@@ -7,7 +8,8 @@ const initState = {
     stadiumBooking: [],
     selectedBooking: {},
     bookingList: [],
-    fee: 0
+    fee: 0,
+    selectedDate: moment()
 };
 
 export default function bookingReducer(state = initState, action) {
@@ -42,6 +44,11 @@ export default function bookingReducer(state = initState, action) {
                 selectedBooking: action.selectedBooking,
                 bookingList: action.bookingList,
                 fee: action.fee
+            }
+        case actions.SELECT_DATE:
+            return {
+                ...state,
+                selectedDate: action.selectedDate,
             }
         case actions.FETCH_BOOKING_ERROR:
             return initState;

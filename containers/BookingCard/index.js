@@ -6,29 +6,25 @@ import StyledRow, {
     Badge
 } from './style';
 import {
-    Col
+    Col,
+    Icon
 } from 'antd';
 import { connect } from 'react-redux';
 import BookingAction from '../../redux/booking/actions';
 
 class BookingSlot extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selected: false,
-        }
-    }
-
     render() {
         const {
             court,
-            bookingData
+            bookingData,
+            selected
         } = this.props.dataSource;
         const isBooked = !!bookingData;
+        const isApproved = bookingData && bookingData.status === 'approved'
 
         return (
-            <Slot seleted={this.state.selected} onClick={this.toggleSelect}>
-                <SlotTitle booked={isBooked}>
+            <Slot seleted={selected} onClick={this.toggleSelect}>
+                <SlotTitle booked={isBooked} approved={isApproved}>
                     {`Court ${court + 1}`}
                 </SlotTitle>
                 <div className='slot-info'>
@@ -41,24 +37,21 @@ class BookingSlot extends React.Component {
                         ['Available']
                     }
                 </div>
-                {this.state.selected && <Badge />}
+                {!isBooked && selected && <Icon type="check-circle" className='check'/>}
             </Slot>
         )
     }
 
     toggleSelect = () => {
-        const { selected } = this.state;
-        const { court, start, bookingData } = this.props.dataSource;
+        let { court, start, bookingData, selected } = this.props.dataSource;
         const isBooked = !!bookingData;
         if (isBooked)
             return;
 
-        this.setState({ selected: !selected }, () => {
-            this.props.onSelect && this.props.onSelect({
-                start,
-                court,
-                selected: this.state.selected
-            })
+        this.props.onSelect && this.props.onSelect({
+            start,
+            court,
+            selected: !selected
         })
     }
 }
@@ -71,9 +64,11 @@ class BookingCard extends React.Component {
             numCourt,
             bookingData
         } = this.props.dataSource;
+        const { selectedBooking } = this.props.Booking;
+
         return (
             <StyledRow type='flex' align='middle'>
-                <Col className='duration' s={24} md={24} lg={24} xl={12} xxl={12}>
+                <Col className='duration' xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
                     <div className='start-time'>
                         {start}
                     </div>
@@ -84,13 +79,18 @@ class BookingCard extends React.Component {
                         {end}
                     </div>
                 </Col>
-                <Col className='slot-container' s={24} md={24} lg={24} xl={12} xxl={12}>
+                <Col className='slot-container' xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
                     {
                         _.range(0, numCourt).map((num) => {
+                            let selected = false;
+                            if (selectedBooking[start] && selectedBooking[start][num])
+                                selected = true;
+
                             const data = {
                                 start,
                                 court: num,
-                                bookingData: !bookingData ? null : bookingData[num]
+                                bookingData: !bookingData ? null : bookingData[num],
+                                selected
                             }
                             return (
                                 <BookingSlot key={num} dataSource={data} onSelect={this.handleSelect} />
@@ -103,8 +103,7 @@ class BookingCard extends React.Component {
     }
 
     handleSelect = async data => {
-        const result = await this.props.selectBooking(data);
-        console.log(result);
+        await this.props.selectBooking(data);
     }
 }
 

@@ -44,6 +44,16 @@ const StyledRow = styled(Row)`
             height: 100%;
         }
     }
+
+    .check {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        color: #7CFC00;
+        font-size: 20px;
+    }
 `;
 
 const Slot = styled.div`
@@ -72,6 +82,9 @@ const SlotTitle = styled.div`
     border-bottom: 1px solid #cecece;
     background-color: #7CFC00;
     ${props => props.booked && 
+        `background-color: #FF8C00;`
+    }
+    ${props => props.approved && 
         `background-color: #ff4c4c;`
     }
 `
@@ -79,8 +92,6 @@ const SlotTitle = styled.div`
 const Badge = styled.div`
     width: 20px;
     height: 20px;
-    border-radius: 10px;
-    background-color: #ff4c4c;
     position: absolute;
     right: 5px;
     bottom: 5px;

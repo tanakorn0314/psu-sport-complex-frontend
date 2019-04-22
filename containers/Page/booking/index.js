@@ -1,60 +1,52 @@
 import React from 'react';
-import ScheduleMobile from '../../../components/schedule/mobile';
-import Schedule from '../../../components/schedule';
 import BookingAction from '../../../redux/booking/actions';
-import Link from 'next/link';
-import Router from 'next/router';
 import iniData from './initData';
 import StyledWrapper from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
 import {
-    SelectCourt,
-    SelectStartTime,
-    SelectDuration,
     InputDate,
-    SelectDate,
     SelectStadium
 } from '../../BookingInputs';
 import {
-    Row,
-    Col,
-    Input,
     Modal,
     Button,
-    Card,
-    Typography
+    Typography,
+    notification,
+    Row,
+    Col
 } from 'antd';
+import BillService from '../../../coreLayer/service/billService';
 import BookingComponent from '../../BookingComponent';
 import BottomAction from '../../../components/bottomAction';
+import moment from 'moment';
+import BookingService from '../../../coreLayer/service/bookingService';
 
 const { Text } = Typography;
 const { times } = iniData;
 
 class BookOnline extends React.Component {
 
+    interval = null;
+
     constructor(props) {
         super(props);
         this.state = {
-            court: 0,
-            bookings: props.Booking.bookings[1],
-            date: new Date().toISOString().substring(0, 10),
-            startTime: times[0],
-            durationIndex: 0,
-            title: '',
-            description: '',
-            bookingList: {},
-            bottomAction: {
-                isOpen: false,
-            },
             modal: {
                 title: '',
                 body: '',
                 isOpen: '',
                 action: '',
                 cancel: '',
+                cancelAction: null,
+                minute: 0,
+                second: 0,
+                fee: 0,
                 isOpen: false
-            }
+            },
+            image: '/static/Placeholder.jpg',
+            file: '',
+            billId: 0,
         }
     }
 
@@ -64,33 +56,35 @@ class BookOnline extends React.Component {
         const { profile } = this.props.Auth;
         const { isLoading, isMobile } = this.props.Screen;
         const {
-            modal,
-            bottomAction
+            modal
         } = this.state;
 
         return (
             <StyledWrapper>
                 <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
-                <div className='select-container'>
-                    <SelectStadium />
-                </div>
-                <div>
-                    <SelectDate />
-                </div>
+                <Row>
+                    <Col className='select-date' xs={{order: 2, span: 24}} sm={12} md={12} lg={12} xl={12}>
+                        <InputDate/>
+                    </Col>
+                    <Col className='select-container' xs={{order: 1, span: 24}} sm={12} md={12} lg={12} xl={12}>
+                        <SelectStadium />
+                    </Col>
+                </Row>
                 <div>
                     <BookingComponent />
                 </div>
                 <BottomAction
                     visible={bookingList.length > 0}
                     fee={fee}
+                    onClick={this.handleClick}
                 />
                 <Modal
                     visible={modal.isOpen}
                     toggle={this.toggle}
                     title={modal.title}
                     footer={[
-                        (modal.action.length > 0 && <Button type="primary" onClick={this.navigateToConfirm}>{modal.action}</Button>),
-                        <Button type="secondary" onClick={this.toggle}>{modal.cancel}</Button>
+                        (modal.action.length > 0 && <Button type="primary" onClick={this.handleUploadImage}>{modal.action}</Button>),
+                        <Button type="secondary" onClick={modal.cancelAction}>{modal.cancel}</Button>
                     ]}
                 >
                     {modal.body}
@@ -99,113 +93,175 @@ class BookOnline extends React.Component {
         );
     }
 
+    renderConfirm = () => (
+        <div>
+            <h2>Service fee : {this.state.modal.fee} baht</h2>
+            <h2>Please pay to</h2>
+            <h2>
+                xxx-xxxxxx-x <br />
+                SCB PSU Phuket
+                </h2>
+            <h1>{this.state.modal.minute} : {this.state.modal.second.toString().padStart(2, '0')}</h1>
+            <h3>Upload your payment slip</h3>
+            <label htmlFor='upload-image'>
+                <img src={this.state.image} className='img' width={200} /> <br />
+                <input style={{ display: 'none' }} id='upload-image' className='input-upload' type='file' name='file' onChange={this.handleChangeImage} />
+            </label>
+        </div>
+    )
+
+    handleClick = async () => {
+        const { bookingList, stadiumId, fee, selectedDate } = this.props.Booking;
+        const { idToken, profile } = this.props.Auth;
+        const { modal } = this.state;
+
+        const bookManyDTO = dataHandler.toBookManyDto(bookingList, profile.userId, stadiumId, selectedDate);
+
+        const result = await this.props.reserveMany(idToken, bookManyDTO);
+
+        if (result.error) {
+            return this.showErrorModal(result)
+        }
+
+        modal.fee = fee;
+        modal.minute = (20 - moment(result.createAt).diff(moment(), 'minute'));
+        modal.second = 0;
+
+        this.setState({
+            billId: result.billId,
+            modal
+        }, () => {
+            this.interval = setInterval(() => {
+                const { modal } = this.state;
+                modal.second = modal.second - 1
+                if (modal.second < 0) {
+                    modal.minute = modal.minute - 1;
+                    modal.second = 59;
+                }
+                this.setState({ modal });
+                if (modal.minute < 0)
+                    this.hideModal();
+                else
+                    this.showConfirmModal();
+            }, 1000);
+        });
+
+        this.showConfirmModal();
+    }
+
+    hideModal = () => {
+        const { modal } = this.state;
+        modal.isOpen = false
+        this.setState({
+            modal,
+            image: '/static/Placeholder.jpg',
+            file: '',
+        });
+
+        clearInterval(this.interval);
+    }
+
+    showErrorModal = ({error}) => {
+        const ErrorView = () => <div>{error}</div>
+
+        const { modal } = this.state;
+        modal.title = 'Error';
+        modal.body = <ErrorView/>;
+        modal.cancel = 'Cancel';
+        modal.action = '';
+        modal.isOpen = true;
+        modal.cancelAction = this.hideModal;
+        this.setState({
+            modal,
+        });
+    }
+
+    showConfirmModal = () => {
+        const { modal } = this.state;
+        modal.title = 'Confirm your booking';
+        modal.body = this.renderConfirm();
+        modal.cancel = 'Cancel';
+        modal.action = 'Upload';
+        modal.isOpen = true;
+        modal.cancelAction = this.handleCancel;
+        this.setState({
+            modal,
+        });
+    }
+
     toggle = () => {
         const { modal } = this.state;
         modal.isOpen = !modal.isOpen;
         this.setState({
             modal
         });
+
+        if (!modal.isOpen) {
+            this.setState({
+                image: '/static/Placeholder.jpg',
+                file: '',
+            })
+            clearInterval(this.interval);
+        }
     }
 
-    navigateToConfirm = () => {
-        const { myBookings } = this.props.Booking;
-        const lastIndex = myBookings.length - 1;
-        Router.push(`/booking_confirm?id=${myBookings[lastIndex].bookingId}`);
-    }
-
-    showModal = (title, body, cancel = 'cancel', action = '') => {
+    showModal = (title, body, action, cancel) => {
         const { modal } = this.state;
         modal.title = title;
         modal.body = body;
         modal.cancel = cancel;
         modal.action = action;
         modal.isOpen = true;
-        this.setState({ modal });
-    }
-
-    handleChange = (e) => {
-        let { name, value } = e.target;
         this.setState({
-            [name]: value
-        })
+            modal,
+        });
     }
 
-    handleSelectDate = (date) => {
-        if (date) {
-            this.setState({ date: date.format('L') });
-        }
-    }
+    handleChangeImage = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
 
-    handleSelectTime = (startTime) => {
-        this.setState({ startTime })
-    }
-
-    handleSelectDuration = (durationIndex) => {
-        this.setState({ durationIndex })
-    }
-
-    handleClick = (e) => {
-        this.bookOnline();
-    }
-
-    bookOnline = async () => {
-        const {
-            startTime: startDate,
-            durationIndex,
-            title,
-            description,
-        } = this.state;
-        const { profile, idToken } = this.props.Auth;
-        const { courtId } = this.props.Booking;
-        const dateInfo = dataHandler.handleDateInfo(this.state.date, startDate, durationIndex);
-
-        const bookingInfo = {
-            title,
-            description,
-            userId: profile.userId,
-            courtId: courtId + 1,
-            startDate: dateInfo.startDate,
-            endDate: dateInfo.endDate
+        reader.onload = () => {
+            this.setState({
+                image: reader.result,
+                file
+            }, () => {
+                this.showConfirmModal()
+            });
         }
 
-        const result = await this.props.reserve(idToken, bookingInfo);
+        reader.readAsDataURL(file);
+    }
 
-        if (result.error) {
-            this.showModal('Error', result.error);
+    handleUploadImage = async () => {
+        const { idToken } = this.props.Auth;
+        const { billId } = this.state;
+        const formData = new FormData();
+        formData.append('file', this.state.file);
+        const response = await BillService.uploadSlip(idToken, formData, billId);
+        this.props.refreshData();
+
+        if (response.error) {
+            notification['error']({
+                message: 'Error',
+                description: response.error,
+                duration: 3
+            });
         } else {
-            this.showModal('Booking success', 'Please confirm your booking within 1 hour.', 'Later', 'Confirm');
+            notification['success']({
+                message: 'Success',
+                description: 'Confirm booking success',
+                duration: 3
+            });
+            this.hideModal();
         }
-
     }
 
-    renderAction = () => (
-        <Col sm={24} md={24} lg={8} xl={8} className='action'>
-            <Link href='/booking_list'><a className='link-to-list'>View your bookings list</a></Link>
-            <div className='action-col'>
-                <SelectCourt />
-            </div>
-            <div className='action-col'>
-                <InputDate onChange={this.handleSelectDate} />
-            </div>
-            <div className='action-col'>
-                <SelectStartTime onChange={this.handleSelectTime} />
-            </div>
-            <div className='action-col'>
-                <SelectDuration onChange={this.handleSelectDuration} />
-            </div>
-            <div className='action-col'>
-                <Input placeholder='Title' style={{ width: 200 }} name='title' onChange={this.handleChange} />
-            </div>
-            <div className='action-col'>
-                <Input placeholder='Description' style={{ width: 200 }} name='description' onChange={this.handleChange} />
-            </div>
-            <div className='action-col'>
-                <Text>Service fee : {0} baht</Text>
-            </div>
-            <Button onClick={this.handleClick} style={{ width: 80, margin: 10 }}>book</Button>
-        </Col>
-    )
-
+    handleCancel = async () => {
+        const result = await BookingService.deleteByBillId(this.props.Auth.idToken, this.state.billId);
+        this.props.refreshData();
+        this.hideModal();
+    }
 }
 
 export default connect(state => state, BookingAction)(BookOnline);
