@@ -98,7 +98,7 @@ class SignUpForm extends React.Component {
                                 }
                             ]
                         })(
-                            <Input placeholder='Phone Number' type='number' />
+                            <Input placeholder='Phone Number' type='text' />
                         )
                     }
                 </Form.Item>

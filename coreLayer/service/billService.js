@@ -16,8 +16,6 @@ const uploadSlip = async (accessToken, formData, billId) => {
             'content-type': 'multipart/form-data'
         }
     }
-
-    console.log(formData);
     const response = await axios.post(url, formData, config);
     return response;
 }

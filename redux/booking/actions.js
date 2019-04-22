@@ -12,6 +12,12 @@ const actions = {
   SELECT_BOOKING: 'SELECT_BOOKING',
   DELETE_BOOKING: 'DELETE_BOOKING',
   SELECT_DATE: 'SELECT_DATE',
+  fetchAllBooking: () => async (dispatch, getState) => {
+    const { stadiums } = getState().Stadium;
+    for (let i = 1; i <= stadiums.length; i++) {
+      await dispatch(actions.fetchBooking(i));
+    }
+  },
   fetchBooking: (stadiumId) => async (dispatch, getState) => {
     const store = getState().Booking.bookings;
     const result = await Booking.collectBookingData(store, stadiumId);

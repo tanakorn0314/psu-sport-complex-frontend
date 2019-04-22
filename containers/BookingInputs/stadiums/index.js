@@ -35,8 +35,11 @@ class SelectStadium extends React.Component {
         )
     }
 
-    handleSelectStadium = (stadiumId) => {
-        this.props.selectStadium(stadiumId);
+    handleSelectStadium = async (stadiumId) => {
+
+        await this.props.selectStadium(stadiumId);
+
+        this.props.onChange && await this.props.onChange(stadiumId)
     }
 }
 
