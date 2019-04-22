@@ -7,6 +7,7 @@ export default ComposedComponent => {
         static async getInitialProps(ctx) {
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
             const token = getToken(ctx.req);
+
             if (token) {
                 redirect(ctx, '/');
             }

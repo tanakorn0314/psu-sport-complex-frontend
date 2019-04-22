@@ -45,14 +45,14 @@ class LayoutNav extends React.Component {
 
     render() {
         const { menuMode, showMenu, isLoading } = this.state;
-        const { idToken } = this.props;
+        const { idToken, profile } = this.props;
         const menu = [
             <Menu
                 key={1}
                 mode={menuMode}
                 style={{ lineHeight: '64px' }}
             >
-                <Menu.Item key={0}><Link href='/dashboard/booking'><a>Admin</a></Link></Menu.Item>
+                {profile && profile.position === 'admin' && <Menu.Item key={0}><Link href='/dashboard/booking'><a>Admin</a></Link></Menu.Item>}
                 <Menu.Item key={1}><Link href='/booking'><a>Booking</a></Link></Menu.Item>
                 <Menu.Item key={2}>
                     {

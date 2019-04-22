@@ -5,4 +5,4 @@ import withBookingData from '../withBookingData';
 import withTheme from '../withTheme';
 import withEnquireScreen from '../withEnquireScreen';
 
-export default compose(withBookingData, withAuth, withTheme,withEnquireScreen, withDashboard);
+export default compose(withDashboard, withBookingData, withAuth, withTheme, withEnquireScreen);
