@@ -12,7 +12,13 @@ const get = () => {
     return fetch(url);
 }
 
+const getUserByResetToken = async (token) => {
+    const url = `${userApi}/reset/${token}`;
+    return await fetch(url).then(response => response.json());
+}
+
 export default {
     createUser,
     get,
+    getUserByResetToken
 }

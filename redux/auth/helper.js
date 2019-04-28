@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import authService from '../coreLayer/service/authService';
+import authService from '../../coreLayer/service/authService';
 
 const login = async userInfo => {
     if (!userInfo.signInfo || !userInfo.password) {
@@ -14,7 +14,7 @@ const login = async userInfo => {
                 return result;
             }
         })
-        .catch(error => ({ error }));
+        .catch(error => (error));
 };
 
 const loginJWT = async token => {
@@ -30,7 +30,7 @@ const loginJWT = async token => {
                 return result;
             }
         })
-        .catch(error => ({ error }));
+        .catch(error => (error));
 }
 
 const register = async userInfo => {
@@ -39,7 +39,7 @@ const register = async userInfo => {
             const result = res;
             return result;
         })
-        .catch(error => ({ error }));
+        .catch(error => (error));
 }
 export default {
     login,

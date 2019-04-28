@@ -82,8 +82,42 @@ const signup = (user) => {
     });
 }
 
+const sendResetRequest = async (phoneNumber) => {
+    const url = `${authApi}/forget_password`;
+    const headers = {
+        'Content-Type': 'application/json',
+    }
+    const body = {
+        phoneNumber
+    }
+    const options = {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body)
+    }
+    return await fetch(url, options).then(response => response.json());
+}
+
+const resetPassword = async (token, password) => {
+    const url = `${authApi}/reset/${token}`;
+    const headers = {
+        'Content-Type': 'application/json',
+    }
+    const body = {
+        password
+    }
+    const options = {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(body)
+    }
+    return await fetch(url, options).then(response => response.json());
+}
+
 export default {
     signIn,
     signWithToken,
-    signup
+    signup,
+    sendResetRequest,
+    resetPassword
 }

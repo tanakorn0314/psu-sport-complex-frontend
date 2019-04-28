@@ -3,31 +3,30 @@ import { connect } from 'react-redux';
 import Link from 'next/link';
 import Router from 'next/router';
 import AuthAction from '../../../redux/auth/actions';
-import SignInStyleWrapper, { ModalBody } from './signin.style';
-import FormSignIn from './form';
+import FormResetPassword from './form';
 import {
     notification,
     Modal
 } from 'antd';
-import ForgetPassword from './forgetPassword';
+import StyledWrapper from './style';
 import Button from '../../../components/uielements/button';
 import Input from '../../../components/uielements/input';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { withRouter } from 'next/router';
 
-class SignIn extends React.Component {
+class ResetPassword extends React.Component {
 
     state = {
         modal: {
-            visible: false,
-            loading: false
+            visible: false
         },
+        phoneNumber: '',
         loading: false
     }
 
     render() {
         const { modal } = this.state;
         return (
-            <SignInStyleWrapper className="isoSignInPage">
+            <StyledWrapper className="isoSignInPage">
                 <div className="isoLoginContentWrapper">
                     <div className="isoLoginContent">
                         <div className="isoLogoWrapper">
@@ -37,45 +36,28 @@ class SignIn extends React.Component {
                                 </a>
                             </Link>
                         </div>
-
                         <div className="isoSignInForm">
-
-                            <FormSignIn onSubmit={this.handleLogin} loading={this.state.loading}/>
-
-                            <div className="isoCenterComponent isoHelperWrapper">
-                                <div className="isoForgotPass" onClick={this.showModal}>
-                                    Forgot password
-                                </div>
-                                <Link href="/signup">
-                                    <a>
-                                        Create an account
-                                    </a>
-                                </Link>
-                            </div>
+                            <FormResetPassword onSubmit={this.resetPassword} />
                         </div>
                     </div>
                 </div>
-                <Modal
-                    title='Reset password'
-                    visible={modal.visible}
-                    onCancel={this.hideModal}
-                    centered
-                    footer={null}
-                >
-                    <ForgetPassword onSubmit={this.sendResetRequest} loading={modal.loading}/>
-                </Modal>
-            </SignInStyleWrapper>
+            </StyledWrapper>
         )
     }
 
-    sendResetRequest = async value => {
-        const { modal } = this.state;
-        const { phoneNumber } = value;
-        modal.loading = true;
-        this.setState({ modal })
+    inputPhoneNumber = (e) => {
+        const { value } = e.target;
+        this.setState({ phoneNumber: value })
+    }
 
-        const result = await this.props.sendResetRequest(phoneNumber);
-        console.log(result);
+    resetPassword = async value => {
+        this.setState({ loading: true });
+
+        const { password } = value;
+        const { token } = this.props.router.query;
+
+        const result = await this.props.resetPassword(token, password);
+
         if (result.error) {
             notification['error']({
                 duration: 3,
@@ -86,13 +68,14 @@ class SignIn extends React.Component {
             notification['success']({
                 duration: 3,
                 message: result,
-                description: 'Reset password sent'
+                description: 'Reset password successful'
             });
-            this.hideModal();
+            setTimeout(() => {
+                Router.replace('/signin');
+            }, 2000)
         }
 
-        modal.loading = true;
-        this.setState({ modal })
+        this.setState({ loading: false })
     }
 
     toggle = () => {
@@ -120,17 +103,12 @@ class SignIn extends React.Component {
         });
     }
 
-    handleLogin = async value => {
-        this.setState({loading: true});
-
+    handleSubmit = async value => {
         const userInfo = {
             signInfo: value.signInfo,
             password: value.password
         }
         const result = await this.props.login(userInfo);
-
-        this.setState({loading: false});
-        
         if (result.error) {
             notification['error']({
                 duration: 3,
@@ -146,4 +124,4 @@ class SignIn extends React.Component {
 export default connect(
     state => state,
     AuthAction
-)(SignIn);
+)(withRouter(ResetPassword));

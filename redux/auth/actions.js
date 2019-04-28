@@ -1,6 +1,6 @@
-import auth from '../../helpers/authentication';
+import auth from './helper';
 import { setToken, removeToken } from '../../helpers/token';
-import Router from 'next/router';
+import authService from '../../coreLayer/service/authService';
 
 const actions = {
   LOGIN_REQUEST: 'LOGIN_REQUEST',
@@ -37,6 +37,16 @@ const actions = {
   },
   register: userInfo => async () => {
     const result = await auth.register(userInfo);
+    return result;
+  },
+  sendResetRequest: phoneNumber => async () => {
+    const result = await authService.sendResetRequest(phoneNumber);
+    return result;
+  },
+  resetPassword: (token, password) => async () => {
+    if (!password)
+      return { error: 'Password required' };
+    const result = await authService.resetPassword(token, password);
     return result;
   }
 };

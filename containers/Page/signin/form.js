@@ -8,6 +8,11 @@ import Checkbox from '../../../components/uielements/checkbox';
 import Input from '../../../components/uielements/input';
 
 class FormSignIn extends React.Component {
+
+    state = {
+        isLoading: false
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -32,7 +37,7 @@ class FormSignIn extends React.Component {
                     <Checkbox>
                         Remember me
                     </Checkbox>
-                    <Button type='primary' htmlType='submit' >Sign In</Button>
+                    <Button type='primary' htmlType='submit' loading={this.props.loading} >Sign In</Button>
                 </div>
             </StyledForm >
         )

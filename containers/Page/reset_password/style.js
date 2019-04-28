@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { palette } from 'styled-theme';
-// import WithDirection from '../../config/withDirection';
 
-import bgImage from '../../../static/image/complex-frontview.jpg';
+import bgImage from '../../../static/image/fitness.jpg';
 
 const SignInStyleWrapper = styled.div`
   width: 100%;
@@ -220,14 +219,4 @@ const SignInStyleWrapper = styled.div`
   }
 `;
 
-const ModalBody = styled.div`
-  display: flex;
-  input {
-    margin-right: 5px;
-  }
-`;
-
 export default SignInStyleWrapper;
-export {
-  ModalBody
-}
