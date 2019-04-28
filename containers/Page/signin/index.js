@@ -11,14 +11,6 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 
 class SignIn extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            phoneNumber: '',
-            password: '',
-        }
-    }
-
     render() {
         return (
             <SignInStyleWrapper className="isoSignInPage">
@@ -35,25 +27,6 @@ class SignIn extends React.Component {
                         <div className="isoSignInForm">
 
                             <FormSignIn onSubmit={this.handleSubmit} />
-
-                            <div className="isoInputWrapper isoOtherLogin">
-                                <FacebookLogin
-                                    appId="431603290925527"
-                                    autoLoad
-                                    callback={this.handleLoginFacebook}
-                                    fields="name,email,picture,first_name,last_name,gender"
-                                    scope="public_profile,user_friends,user_gender"
-                                    render={renderProps => (
-                                        <Button
-                                            onClick={renderProps.onClick}
-                                            type="primary"
-                                            className="btnFacebook"
-                                        >
-                                            Facebook Login
-                                        </Button>
-                                    )}
-                                />
-                            </div>
 
                             <div className="isoCenterComponent isoHelperWrapper">
                                 <Link href='#'>
@@ -80,6 +53,10 @@ class SignIn extends React.Component {
         }
     }
 
+    handleLoginPSU = (e) => {
+
+    }
+
     handleChange = (e) => {
         const { name, value } = e.target;
         this.setState({
@@ -89,7 +66,7 @@ class SignIn extends React.Component {
 
     handleSubmit = async value => {
         const userInfo = {
-            phoneNumber: value.phoneNumber,
+            signInfo: value.signInfo,
             password: value.password
         }
         const result = await this.props.login(userInfo);

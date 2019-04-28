@@ -82,6 +82,23 @@ class SignUpForm extends React.Component {
                     component={<InputDate />}
                 />
                 <Form.Item
+                    label='Email'
+                    className='form-item'
+                >
+                    {
+                        getFieldDecorator('email', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'Please input your email'
+                                }
+                            ]
+                        })(
+                            <Input placeholder='Email' type='email' />
+                        )
+                    }
+                </Form.Item>
+                <Form.Item
                     label='Phone Number'
                     className='form-item'
                 >

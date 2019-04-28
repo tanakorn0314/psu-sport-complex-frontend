@@ -13,11 +13,11 @@ class FormSignIn extends React.Component {
         return (
             <StyledForm onSubmit={this.handleSubmit}>
                 <Form.Item
-                    label='Phone number'
+                    label='Phone number or PSU Passport'
                     className='form-item'
                 >
                     {
-                        getFieldDecorator('phoneNumber')(<Input placeholder='Phone number' />)
+                        getFieldDecorator('signInfo')(<Input placeholder='Phone number or PSU Passport' />)
                     }
                 </Form.Item>
                 <Form.Item
@@ -43,7 +43,7 @@ class FormSignIn extends React.Component {
         const { form } = this.props;
         if (form && this.props.onSubmit) {
             this.props.onSubmit({
-                phoneNumber: form.getFieldValue('phoneNumber'),
+                signInfo: form.getFieldValue('signInfo'),
                 password: form.getFieldValue('password')
             })
         }

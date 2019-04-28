@@ -190,6 +190,14 @@ const SignInStyleWrapper = styled.div`
               background-color: ${palette('color', 6)};
             }
           }
+
+          &.btnPsuPassport {
+            background-color: #3b5998;
+
+            &:hover {
+              background-color: darken(#3b5998, 20%);
+            }
+          }
         }
       }
 

@@ -1,13 +1,13 @@
 import { authApi } from '../api/api';
 import fetch from 'isomorphic-unfetch';
 
-const signIn = (phoneNumber, password) => {
+const signIn = (signInfo, password) => {
     const url = `${authApi}/signin/`;
     const headers = {
         'Content-Type': 'application/json',
     }
     const body = {
-        phoneNumber,
+        signInfo,
         password
     }
     const options = {
