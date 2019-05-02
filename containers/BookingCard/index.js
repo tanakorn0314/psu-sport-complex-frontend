@@ -20,10 +20,10 @@ class BookingSlot extends React.Component {
             selected
         } = this.props.dataSource;
         const isBooked = !!bookingData;
-        const isApproved = bookingData && bookingData.status === 'approved'
+        const isApproved = bookingData && bookingData.status === 'approved';
 
         return (
-            <Slot seleted={selected} onClick={this.toggleSelect}>
+            <Slot key={this.props.index} seleted={selected} onClick={this.toggleSelect}>
                 <SlotTitle booked={isBooked} approved={isApproved}>
                     {`Court ${court + 1}`}
                 </SlotTitle>
@@ -67,7 +67,7 @@ class BookingCard extends React.Component {
         const { selectedBooking } = this.props.Booking;
 
         return (
-            <StyledRow type='flex' align='middle'>
+            <StyledRow key={this.props.i} type='flex' align='middle'>
                 <Col className='duration' xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
                     <div className='start-time'>
                         {start}
@@ -92,8 +92,9 @@ class BookingCard extends React.Component {
                                 bookingData: !bookingData ? null : bookingData[num],
                                 selected
                             }
+
                             return (
-                                <BookingSlot key={num} dataSource={data} onSelect={this.handleSelect} />
+                                <BookingSlot key={num} index={num} dataSource={data} onSelect={this.handleSelect} />
                             )
                         })
                     }

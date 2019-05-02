@@ -33,7 +33,7 @@ class BookingComponent extends React.Component {
                 numCourt: stadium.numCourt,
                 bookingData: bookingData[operationTime[i-1]]
             }
-            cards.push(<BookingCard key={i} dataSource={dataSource}/>)
+            cards.push(<BookingCard key={i} i={i} dataSource={dataSource}/>)
         }
 
         return cards;

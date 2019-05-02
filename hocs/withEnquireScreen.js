@@ -14,7 +14,7 @@ export default ComposedComponent => {
         }
 
         componentDidMount() {
-            enquire.register(`screen and (max-width:425px)`, {
+            enquire.register(`screen and (max-width:575px)`, {
                 match: () => {
                     this.props.setMobileScreen(true);
                 },
@@ -26,7 +26,7 @@ export default ComposedComponent => {
         }
 
         componentWillUnmount() {
-            enquire.unregister(`screen and (max-width:425px)`)
+            enquire.unregister(`screen and (max-width:575px)`)
         }
 
         render() {

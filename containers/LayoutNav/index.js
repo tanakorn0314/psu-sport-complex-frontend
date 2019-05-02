@@ -2,7 +2,6 @@ import React from 'react';
 import StyleLayout from './layout.style';
 import Link from 'next/link';
 import Router from 'next/router';
-import enquire from 'enquire-js';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
 import {
@@ -21,67 +20,21 @@ const { Text } = Typography;
 class LayoutNav extends React.Component {
 
     state = {
-        menuMode: 'horizontal',
         showMenu: false,
-        isLoading: true
-    }
-
-    componentDidMount() {
-        enquire.register('screen and (max-width:425px)', {
-            match: () => {
-                this.setState({ menuMode: 'inline' });
-            },
-            unmatch: () => {
-                this.setState({ menuMode: 'horizontal' });
-            }
-        })
-
-        this.setState({ isLoading: false });
-    }
-
-    componentWillUnmount() {
-        enquire.unregister('screen and (max-width:425px)');
     }
 
     render() {
-        const { menuMode, showMenu, isLoading } = this.state;
-        const { idToken, profile } = this.props;
-        const menu = [
-            <Menu
-                key={1}
-                mode={menuMode}
-                style={{ lineHeight: '64px' }}
-            >
-                {profile && profile.position === 'admin' && <Menu.Item key={0}><Link href='/dashboard/booking'><a>Admin</a></Link></Menu.Item>}
-                <Menu.Item key={1}><Link href='/booking'><a>Booking</a></Link></Menu.Item>
-                <Menu.Item key={2}>
-                    {
-                        !idToken ?
-                            <Link href='/signin'><a>Login</a></Link> :
-                            <a onClick={this.handleLogout}>Logout</a>
-                    }
-                </Menu.Item>
-            </Menu>
-        ]
+        const { isLoading, isMobile } = this.props.Screen;
+
         return (
             <StyleLayout>
                 <Header className='header'>
                     <Row type='flex' justify='space-between'>
-                        <Col xxl={4} xl={6} l={8} md={12} s={12} xs={20} key={1}>
+                        <Col xxl={4} xl={6} lg={8} md={12} sm={12} xs={20} key={1}>
                             <Link href='/'><a>PSU Sport Complex</a></Link>
                         </Col>
-                        <Col>
-                            {
-                                !isLoading && (menuMode === 'horizontal' ? menu :
-                                    <Popover
-                                        visible={showMenu}
-                                        content={menu}
-                                        placement='bottomRight'
-                                        arrowPointAtCenter
-                                    >
-                                        <Icon type='menu' onClick={() => { this.setState({ showMenu: !showMenu }) }} />
-                                    </Popover>)
-                            }
+                        <Col className='menu-container'>
+                            {!isLoading && this.renderMenu()}
                         </Col>
                     </Row>
                 </Header>
@@ -95,6 +48,98 @@ class LayoutNav extends React.Component {
         )
     }
 
+    renderMenu = () => {
+        const { isMobile } = this.props.Screen;
+        const { showMenu } = this.state;
+
+        if (isMobile)
+            return (
+                <Popover
+                    visible={showMenu}
+                    content={this.renderMenuItems()}
+                    placement='bottomRight'
+                    arrowPointAtCenter
+                >
+                    <Icon type='menu' onClick={() => { this.setState({ showMenu: !showMenu }) }} />
+                </Popover>
+            )
+        else
+            return this.renderMenuItems();
+    }
+
+    renderMenuItems = () => {
+        const { isMobile } = this.props.Screen;
+        const { profile } = this.props.Auth;
+        const menuMode = isMobile ? 'inline' : 'horizontal';
+        return (
+            <Menu
+                key={1}
+                mode={menuMode}
+                style={{ lineHeight: '64px' }}
+            >
+                {profile && profile.position === 'admin' &&
+                    <Menu.Item key={0}><Link href='/dashboard/booking'><a>Admin</a></Link></Menu.Item>}
+                <Menu.Item key={1}><Link href='/booking'><a>Booking</a></Link></Menu.Item>
+                {this.renderAccountMenu()}
+            </Menu>
+        )
+    }
+
+    renderAccountMenu = () => {
+        const { showMenu } = this.state;
+        const { isMobile } = this.props.Screen;
+        const { profile } = this.props.Auth;
+
+        const menuMode = isMobile ? 'inline' : 'horizontal';
+
+        if (!profile)
+            return (
+                <Menu.Item key={2}>
+                    <Link href='/signin'><a>Login</a></Link>
+                </Menu.Item>
+            );
+        else if (isMobile)
+            return this.renderAccountMenuItems();
+        else
+            return (
+                <Menu.Item key={2}>
+                    <Popover
+                        visible={showMenu}
+                        content={
+                            <Menu
+                                key={1}
+                                style={{ lineHeight: '64px' }}
+                            >
+                                {this.renderAccountMenuItems()}
+                            </Menu>
+                        }
+                        placement='bottomRight'
+                        arrowPointAtCenter
+                    >
+                        <div
+                            style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}
+                            onClick={this.toggleMenu}
+                        >
+                            <Icon type='user' />
+                            <div>{profile.fname}</div>
+                        </div>
+                    </Popover>
+                </Menu.Item>
+            )
+    }
+
+    renderAccountMenuItems = () => {
+        return [
+            <Menu.Item key={4}><Link href='/'><a>Booking List</a></Link></Menu.Item>,
+            <Menu.Item key={5}><Link href='/booking'><a>Account</a></Link></Menu.Item>,
+            <Menu.Item key={6}><a onClick={this.handleLogout}>Logout</a></Menu.Item>,
+        ]
+    }
+
+    toggleMenu = () => {
+        this.setState({ showMenu: !this.state.showMenu })
+    }
+
     handleLogout = async () => {
         await this.props.logout();
         setTimeout(() => {
@@ -104,6 +149,6 @@ class LayoutNav extends React.Component {
 }
 
 export default connect(
-    state => state.Auth,
+    state => state,
     AuthAction,
 )(LayoutNav);

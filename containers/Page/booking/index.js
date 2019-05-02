@@ -1,6 +1,5 @@
 import React from 'react';
 import BookingAction from '../../../redux/booking/actions';
-import iniData from './initData';
 import StyledWrapper from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
@@ -11,7 +10,6 @@ import {
 import {
     Modal,
     Button,
-    Typography,
     notification,
     Row,
     Col
@@ -21,9 +19,6 @@ import BookingComponent from '../../BookingComponent';
 import BottomAction from '../../../components/bottomAction';
 import moment from 'moment';
 import BookingService from '../../../coreLayer/service/bookingService';
-
-const { Text } = Typography;
-const { times } = iniData;
 
 class BookOnline extends React.Component {
 
@@ -51,10 +46,7 @@ class BookOnline extends React.Component {
     }
 
     render() {
-        const { stadiumBooking, stadiumId, fee, bookingList } = this.props.Booking;
-        const { stadiums } = this.props.Stadium;
-        const { profile } = this.props.Auth;
-        const { isLoading, isMobile } = this.props.Screen;
+        const { fee, bookingList } = this.props.Booking;
         const {
             modal
         } = this.state;

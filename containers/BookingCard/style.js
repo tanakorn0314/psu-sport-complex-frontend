@@ -6,6 +6,9 @@ const StyledRow = styled(Row)`
     border-bottom: 0;
     width: 100%;
     padding: 20px;
+    @media (max-width: 325px) {
+        padding: 5px;
+    }
     &:first-child {
         border-radius: 5px 5px 0 0;
     }

@@ -32,10 +32,6 @@ function toBookManyDto(bookingList, userId, stadiumId, date) {
         const startDate = moment(date).hour(+hour).minute(+minute).second(0).millisecond(0);
         const endDate = moment(date).hour(+hour).minute(+minute + 30).second(0).millisecond(0);
 
-        console.log('hour', hour);
-        console.log('startDate', startDate.toISOString(true).slice(0, 19)+'.000Z');
-        console.log('endDate', endDate.toISOString(true).slice(0, 19)+'.000Z')
-
         const bookingInfo = {
             title: '',
             description: '',

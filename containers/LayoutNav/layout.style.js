@@ -6,6 +6,12 @@ const StyleLayout = styled(Layout)`
     .header {
         background-color: white;
     }
+
+    .menu-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
 `;
 
 export default StyleLayout;

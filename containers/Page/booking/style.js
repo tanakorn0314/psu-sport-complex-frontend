@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
     .select-container, .select-date {
         display: flex;
         margin: 10px 0;
-        @media (max-width: 425px) {
+        @media (max-width: 575px) {
             justify-content: center;
         }
     }
