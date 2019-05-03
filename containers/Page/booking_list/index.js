@@ -32,8 +32,8 @@ const columns = [{
     title: 'Status',
     dataIndex: 'status',
     render: status => (
-        <StatusTag status={status}/>
-    ) 
+        <StatusTag status={status} />
+    )
 }];
 
 class BookingList extends React.Component {
@@ -93,12 +93,13 @@ class BookingList extends React.Component {
                                 renderItem={(booking, index) => {
                                     return (
                                         <List.Item style={{ cursor: 'pointer' }}>
-                                            <Link href={`/booking_confirm?id=${myBookings[index].bookingId}`}>
+                                            {/* <Link href={`/booking_confirm?id=${myBookings[index].bookingId}`}> */}
+                                            <Link href='#'>
                                                 <Card>
                                                     <div>Court : {booking.court}</div>
                                                     <div>Start : {booking.start}</div>
                                                     <div>End : {booking.end}</div>
-                                                    <StatusTag status={booking.status}/> <br />
+                                                    <StatusTag status={booking.status} /> <br />
                                                 </Card>
                                             </Link>
                                         </List.Item>
@@ -116,8 +117,8 @@ class BookingList extends React.Component {
     }
 
     navigateConfirm = row => {
-        const { myBookings } = this.props.Booking;
-        Router.push(`/booking_confirm?id=${myBookings[row.no-1].bookingId}`);
+        // const { myBookings } = this.props.Booking;
+        // Router.push(`/booking_confirm?id=${myBookings[row.no - 1].bookingId}`);
     }
 
     navigateBack = e => {

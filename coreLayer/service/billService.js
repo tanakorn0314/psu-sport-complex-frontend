@@ -13,14 +13,30 @@ const uploadSlip = async (accessToken, formData, billId) => {
     const config = {
         headers: {
             'Authorization': 'bearer ' + accessToken,
-            'content-type': 'multipart/form-data'
+            
         }
     }
     const response = await axios.post(url, formData, config);
     return response;
 }
 
+const confirm = async (accessToken, billId, transactionInfo) => {
+    const url = `${billApi}/confirm/${billId}`;
+    const body = transactionInfo;
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+
+    return await fetch(url, options).then(response => response.json());
+}
+
 export default {
     uploadSlip,
-    getSlip
+    getSlip,
+    confirm
 }

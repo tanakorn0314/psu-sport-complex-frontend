@@ -16,7 +16,7 @@ export default ComposedComponent => {
             await store.dispatch(BookingAction.fetchBooking(1));
             await store.dispatch(BookingAction.selectStadium(1));
             await store.dispatch(StadiumAction.fetchStadium());
-            if (token) {
+            if (token && token !== 'undefined') {
                 await store.dispatch(BookingAction.fetchMyBooking(token));
             }
             if (query){

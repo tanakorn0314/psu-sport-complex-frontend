@@ -34,4 +34,11 @@ const StyledWrapper = styled.div`
     }
 `;
 
+export const ConfirmContainer = styled.div`
+    input {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+`;
+
 export default StyledWrapper;

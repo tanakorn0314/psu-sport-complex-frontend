@@ -1,4 +1,5 @@
-import Booking from '../../helpers/booking';
+import Booking from './helper';
+import BillService from '../../coreLayer/service/billService';
 
 const actions = {
   FETCH_BOOKING: 'FETCH_BOOKING',
@@ -70,8 +71,17 @@ const actions = {
     });
     return currentBookings;
   },
+  confirmTransaction: (accessToken, billId, transactionInfo) => async (dispatch, getState) => {
+    const result = await BillService.confirm(accessToken, billId, transactionInfo);
+    if (result.error) 
+      return result;
+    
+    refreshBooking(dispatch, getState);
+
+    return 'Success';
+  },
   selectDate: (date) => async (dispatch, getState) => {
-    dispatch({type: actions.SELECT_DATE, selectedDate: date});
+    dispatch({ type: actions.SELECT_DATE, selectedDate: date });
   },
   refreshData: () => async (dispatch, getState) => {
     refreshBooking(dispatch, getState);

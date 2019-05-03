@@ -23,19 +23,27 @@ class InputDate extends React.Component {
 
     constructor(props) {
         super(props);
+        const defaultDate = props.defaultValue;
+
+        const day = defaultDate ? defaultDate.get('date') : 1;
+        const month = defaultDate ? defaultDate.get('month') : 0;
+        const year = defaultDate ? defaultDate.get('year') : 1999;
+        
         this.state = {
-            day: 1,
-            month: 'January',
-            year: 1999
+            day,
+            month,
+            year
         }
+
         this.updateDate();
+    
     }
 
     render() {
         const { day, month, year } = this.state;
         const thisYear = parseInt(moment().format('YYYY'));
         return (
-            <StyledWarpper>
+            <StyledWarpper style={this.props.style}>
                 <Select
                     defaultValue={day}
                     onChange={this.changeDay}
@@ -53,9 +61,10 @@ class InputDate extends React.Component {
                     showSearch
                     optionFilterProp='children'
                     filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
+                    className='select-month'
                 >
                     {MONTHS.map((month, index) => (
-                        <SelectOption key={month} value={index + 1} >{month}</SelectOption>
+                        <SelectOption key={month} value={index} >{month}</SelectOption>
                     ))}
                 </Select>
                 <Select
@@ -74,10 +83,13 @@ class InputDate extends React.Component {
     }
 
     updateDate = () => {
-        const d = this.state.day.toString().padStart(2, '0');
-        const m = this.state.month.toString().padStart(2, '0');
-        const y = this.state.year;
-        this.props.onChange && this.props.onChange(moment(`${y}${m}${d}`))
+        const { day, month, year } = this.state;
+
+        const date = moment();
+        date.set('day', day);
+        date.set('month', month);
+        date.set('year', year);
+        this.props.onChange && this.props.onChange(date)
     }
 
     changeDay = day => {

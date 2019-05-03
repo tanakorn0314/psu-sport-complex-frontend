@@ -130,8 +130,8 @@ class LayoutNav extends React.Component {
 
     renderAccountMenuItems = () => {
         return [
-            <Menu.Item key={4}><Link href='/'><a>Booking List</a></Link></Menu.Item>,
-            <Menu.Item key={5}><Link href='/booking'><a>Account</a></Link></Menu.Item>,
+            <Menu.Item key={4}><Link href='/booking_list'><a>Booking List</a></Link></Menu.Item>,
+            <Menu.Item key={5}><Link href='/account'><a>Account</a></Link></Menu.Item>,
             <Menu.Item key={6}><a onClick={this.handleLogout}>Logout</a></Menu.Item>,
         ]
     }
