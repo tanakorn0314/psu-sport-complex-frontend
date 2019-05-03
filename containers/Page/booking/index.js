@@ -18,8 +18,6 @@ import BookingService from '../../../coreLayer/service/bookingService';
 import Input from '../../../components/uielements/input';
 import DateTimeSelect from '../../../components/inputDateTime';
 
-import to from 'await-to-js';
-
 class BookOnline extends React.Component {
 
     interval = null;
