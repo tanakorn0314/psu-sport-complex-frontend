@@ -90,8 +90,6 @@ class LayoutNav extends React.Component {
         const { isMobile } = this.props.Screen;
         const { profile } = this.props.Auth;
 
-        const menuMode = isMobile ? 'inline' : 'horizontal';
-
         if (!profile)
             return (
                 <Menu.Item key={2}>
@@ -130,8 +128,8 @@ class LayoutNav extends React.Component {
 
     renderAccountMenuItems = () => {
         return [
-            <Menu.Item key={4}><Link href='/booking_list'><a>Booking List</a></Link></Menu.Item>,
-            <Menu.Item key={5}><Link href='/account'><a>Account</a></Link></Menu.Item>,
+            <Menu.Item key={4}><Link href='/booking_history'><a>Booking History</a></Link></Menu.Item>,
+            // <Menu.Item key={5}><Link href='/account'><a>Account</a></Link></Menu.Item>,
             <Menu.Item key={6}><a onClick={this.handleLogout}>Logout</a></Menu.Item>,
         ]
     }

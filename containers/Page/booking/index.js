@@ -38,14 +38,14 @@ class BookOnline extends React.Component {
                 isOpen: false
             },
             confirm: {
-                accountNumber: '',
-                balance: 0,
+                account: '',
+                deposit: 0,
             },
             billId: 0,
             minute: moment().minute(),
             hour: moment().hour(),
             date: moment().date(),
-            month: moment().date(),
+            month: moment().month(),
             year: moment().year()
         }
     }
@@ -109,13 +109,13 @@ class BookOnline extends React.Component {
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='Account number'
-                    name='accountNumber'
+                    name='account'
                     onChange={this.handleChange}
                 />
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='Amount'
-                    name='balance'
+                    name='deposit'
                     onChange={this.handleChange}
                 />
                 <DateTimeSelect
@@ -240,11 +240,11 @@ class BookOnline extends React.Component {
         const { confirm } = this.state;
 
         switch (name) {
-            case 'accountNumber':
-                confirm.accountNumber = value;
+            case 'account':
+                confirm.account = value;
                 break;
-            case 'balance':
-                confirm.balance = parseInt(value);
+            case 'deposit':
+                confirm.deposit = parseInt(value);
                 break;
             default: break;
         }
@@ -270,7 +270,7 @@ class BookOnline extends React.Component {
 
         const transactionInfo = {
             ...this.state.confirm,
-            timestamp
+            date: timestamp
         }
 
         const result = await this.props.confirmTransaction(idToken, billId, transactionInfo);

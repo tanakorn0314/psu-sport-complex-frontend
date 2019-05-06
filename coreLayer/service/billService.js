@@ -35,8 +35,21 @@ const confirm = async (accessToken, billId, transactionInfo) => {
     return await fetch(url, options).then(response => response.json());
 }
 
+const getMyBills = async (accessToken) => {
+    const url = `${billApi}/my`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+        }
+    }
+
+    return await fetch(url, options).then(response => response.json());
+}
+
 export default {
     uploadSlip,
     getSlip,
-    confirm
+    confirm,
+    getMyBills
 }

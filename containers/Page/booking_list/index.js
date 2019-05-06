@@ -81,7 +81,7 @@ class BookingList extends React.Component {
                 <h1 className='title'>BOOKING LIST</h1>
                 <div className='table-container'>
                     {
-                        !isMobile ?
+                        isMobile ?
                             <Table
                                 columns={columns}
                                 dataSource={dataSource}

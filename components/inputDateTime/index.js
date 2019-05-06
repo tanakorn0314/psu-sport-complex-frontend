@@ -93,7 +93,7 @@ class InputDateTime extends React.Component {
                         optionFilterProp='children'
                         filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                     >
-                        {_.range(0, 24).map((m) => (
+                        {_.range(0, 60).map((m) => (
                             <SelectOption key={m} value={m}>{m.toString().padStart(2, '0')}</SelectOption>
                         ))}
                     </Select>

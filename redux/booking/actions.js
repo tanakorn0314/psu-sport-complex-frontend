@@ -78,7 +78,7 @@ const actions = {
     
     refreshBooking(dispatch, getState);
 
-    return 'Success';
+    return result;
   },
   selectDate: (date) => async (dispatch, getState) => {
     dispatch({ type: actions.SELECT_DATE, selectedDate: date });
