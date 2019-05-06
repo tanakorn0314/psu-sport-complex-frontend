@@ -133,7 +133,7 @@ class BookOnline extends React.Component {
     handleClick = async () => {
         const { bookingList, stadiumId, fee, selectedDate } = this.props.Booking;
         const { idToken, profile } = this.props.Auth;
-        const { modal } = this.state;
+        const { modal, confirm } = this.state;
 
         const bookManyDTO = dataHandler.toBookManyDto(bookingList, profile.userId, stadiumId, selectedDate);
 
@@ -147,9 +147,12 @@ class BookOnline extends React.Component {
         modal.minute = (20 - moment(result.createAt).diff(moment(), 'minute'));
         modal.second = 0;
 
+        confirm.deposit = fee;
+
         this.setState({
             billId: result.billId,
-            modal
+            modal,
+            confirm
         }, () => {
             this.interval = setInterval(() => {
                 const { modal } = this.state;
