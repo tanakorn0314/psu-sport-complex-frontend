@@ -25,7 +25,7 @@ class BookingSlot extends React.Component {
         return (
             <Slot key={this.props.index} seleted={selected} onClick={this.toggleSelect}>
                 <SlotTitle booked={isBooked} approved={isApproved}>
-                    {`Court ${court + 1}`}
+                    {`สนาม ${court + 1}`}
                 </SlotTitle>
                 <div className='slot-info'>
                     {isBooked ?

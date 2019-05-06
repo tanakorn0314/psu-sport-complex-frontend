@@ -106,18 +106,22 @@ class BookOnline extends React.Component {
                     SCB PSU Phuket
             </h2>
                 <h1>{modal.minute} : {modal.second.toString().padStart(2, '0')}</h1>
+                <div style={{marginBottom: 5}}>Account Number </div>
                 <Input
                     style={{ maxWidth: 300 }}
-                    placeholder='Account number'
+                    placeholder='xxxxxxxxxx'
                     name='account'
                     onChange={this.handleChange}
                 />
+                <div style={{marginBottom: 5}}>Amount</div>
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='Amount'
                     name='deposit'
                     onChange={this.handleChange}
+                    defaultValue={modal.fee}
                 />
+                <div style={{marginBottom: 5}}>Deposit Time </div>
                 <DateTimeSelect
                     minute={minute}
                     hour={hour}
