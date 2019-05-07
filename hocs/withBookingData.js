@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import BookingAction from '../redux/booking/actions';
 import StadiumAction from '../redux/stadium/actions';
+import BillAction from '../redux/bill/actions';
 
 export default ComposedComponent => {
     class withBookingData extends React.Component {
@@ -16,6 +17,7 @@ export default ComposedComponent => {
             await store.dispatch(BookingAction.fetchBooking(1));
             await store.dispatch(BookingAction.selectStadium(1));
             await store.dispatch(StadiumAction.fetchStadium());
+            await store.dispatch(BillAction.fetchMyBills(token));
             if (token && token !== 'undefined') {
                 await store.dispatch(BookingAction.fetchMyBooking(token));
             }

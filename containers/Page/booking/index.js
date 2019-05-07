@@ -9,7 +9,8 @@ import {
     Button,
     notification,
     Row,
-    Col
+    Col,
+    Spin
 } from 'antd';
 import BookingComponent from '../../BookingComponent';
 import BottomAction from '../../../components/bottomAction';
@@ -24,6 +25,16 @@ class BookOnline extends React.Component {
 
     constructor(props) {
         super(props);
+
+        let shouldRestoreConfirm = false;
+        let lastBill = null;
+        const bills = props.Bill.myBills;
+        if (bills && bills.length > 0) {
+            lastBill = bills[0];
+            if (!lastBill.transaction)
+                shouldRestoreConfirm = true;
+        }
+
         this.state = {
             modal: {
                 title: '',
@@ -46,28 +57,44 @@ class BookOnline extends React.Component {
             hour: moment().hour(),
             date: moment().date(),
             month: moment().month(),
-            year: moment().year()
+            year: moment().year(),
+            shouldRestoreConfirm,
+            lastBill
         }
+
     }
 
     render() {
         const { fee, bookingList } = this.props.Booking;
-        const { modal } = this.state;
+        const { isLoading } = this.props.Screen;
+        const { modal, shouldRestoreConfirm, lastBill } = this.state;
+
+        if (shouldRestoreConfirm) {
+            const { billId, fee, createdAt } = lastBill;
+
+            this.restoreConfirmModal(billId, fee, createdAt);
+        }
 
         return (
             <StyledWrapper>
                 <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
-                <Row>
-                    <Col className='select-date' xs={{ order: 2, span: 24 }} sm={12} md={12} lg={12} xl={12}>
-                        <InputDate />
-                    </Col>
-                    <Col className='select-container' xs={{ order: 1, span: 24 }} sm={12} md={12} lg={12} xl={12}>
-                        <SelectStadium />
-                    </Col>
-                </Row>
-                <div>
-                    <BookingComponent />
-                </div>
+                {isLoading ?
+                    <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Spin tip='Loading...' size='large' />
+                    </div> :
+                    [<Row>
+                        <Col className='select-date' xs={{ order: 2, span: 24 }} sm={12} md={12} lg={12} xl={12}>
+                            <InputDate />
+                        </Col>
+                        <Col className='select-container' xs={{ order: 1, span: 24 }} sm={12} md={12} lg={12} xl={12}>
+                            <SelectStadium />
+                        </Col>
+                    </Row>,
+                    <div>
+                        <BookingComponent />
+                    </div>
+                    ]
+                }
                 <BottomAction
                     visible={bookingList.length > 0}
                     fee={fee}
@@ -89,7 +116,7 @@ class BookOnline extends React.Component {
     }
 
     renderConfirm = () => {
-        const { 
+        const {
             modal,
             minute,
             hour,
@@ -106,14 +133,14 @@ class BookOnline extends React.Component {
                     SCB PSU Phuket
             </h2>
                 <h1>{modal.minute} : {modal.second.toString().padStart(2, '0')}</h1>
-                <div style={{marginBottom: 5}}>Account Number </div>
+                <div style={{ marginBottom: 5 }}>Account Number </div>
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='xxxxxxxxxx'
                     name='account'
                     onChange={this.handleChange}
                 />
-                <div style={{marginBottom: 5}}>Amount</div>
+                <div style={{ marginBottom: 5 }}>Amount</div>
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='Amount'
@@ -121,7 +148,7 @@ class BookOnline extends React.Component {
                     onChange={this.handleChange}
                     defaultValue={modal.fee}
                 />
-                <div style={{marginBottom: 5}}>Deposit Time </div>
+                <div style={{ marginBottom: 5 }}>Deposit Time </div>
                 <DateTimeSelect
                     minute={minute}
                     hour={hour}
@@ -156,7 +183,40 @@ class BookOnline extends React.Component {
         this.setState({
             billId: result.billId,
             modal,
-            confirm
+            confirm,
+        }, () => {
+            this.interval = setInterval(() => {
+                const { modal } = this.state;
+                modal.second = modal.second - 1
+                if (modal.second < 0) {
+                    modal.minute = modal.minute - 1;
+                    modal.second = 59;
+                }
+                this.setState({ modal });
+                if (modal.minute < 0)
+                    this.hideModal();
+                else
+                    this.showConfirmModal();
+            }, 1000);
+        });
+
+        this.showConfirmModal();
+    }
+
+    restoreConfirmModal = (billId, fee, createdAt) => {
+        const { modal, confirm } = this.state;
+
+        modal.fee = fee;
+        modal.minute = (19 - moment().diff(moment(createdAt), 'minute') % 20);
+        modal.second = (60 - moment().diff(moment(createdAt), 'second') % 60);
+
+        confirm.deposit = fee;
+
+        this.setState({
+            billId,
+            modal,
+            confirm,
+            shouldRestoreConfirm: false
         }, () => {
             this.interval = setInterval(() => {
                 const { modal } = this.state;
@@ -260,11 +320,11 @@ class BookOnline extends React.Component {
     }
 
     changeTime = (type, value) => {
-        this.setState({[type]: value});
+        this.setState({ [type]: value });
     }
 
     confirmBooking = async () => {
-        const { 
+        const {
             minute,
             hour,
             date,
