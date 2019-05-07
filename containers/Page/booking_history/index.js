@@ -27,12 +27,6 @@ class BookingHistory extends React.Component {
     }
 
     render() {
-        const {
-            isLoading,
-            isMobile
-        } = this.props.Screen;
-
-        const { myBills } = this.props.Bill;
 
         return (
             <StyledWrapper>
@@ -68,7 +62,7 @@ class BookingHistory extends React.Component {
                         const dataSource = {
                             billId: bill.billId,
                             bookingTime: moment(bill.createdAt).format('LLL'),
-                            balance: bill.transaction.balance,
+                            balance: bill.fee,
                             sport: stadiums[bill.bookings[0].stadiumId - 1].name
                         }
 
