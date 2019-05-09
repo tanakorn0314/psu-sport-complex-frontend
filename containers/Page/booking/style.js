@@ -9,10 +9,21 @@ const StyledWrapper = styled.div`
         font-weight: 400;
     }
     .select-date {
+        display: flex;
         justify-content: flex-start;
+        @media (max-width: 575px) {
+            padding: 0 5%;
+            justify-content: center;
+        }
     }
     .select-container {
         justify-content: flex-end;
+        @media (max-width: 575px) {
+            padding: 0 5%;
+            .antd-select {
+                width: 100%;
+            }
+        }
     }
     .select-container, .select-date {
         display: flex;

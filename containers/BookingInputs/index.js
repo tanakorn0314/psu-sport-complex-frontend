@@ -2,7 +2,7 @@ import SelectCourt from './courts';
 import SelectStartTime from './startTime';
 import SelectDuration from './duration';
 import InputDate from './date';
-import SelectDate from './dateSlider';
+import SelectDate from './selectDate';
 import SelectStadium from './stadiums';
 
 export {

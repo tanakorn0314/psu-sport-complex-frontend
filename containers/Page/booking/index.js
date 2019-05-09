@@ -3,7 +3,7 @@ import BookingAction from '../../../redux/booking/actions';
 import StyledWrapper, { ConfirmContainer } from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
-import { SelectStadium, InputDate } from '../../BookingInputs';
+import { SelectStadium, SelectDate, InputDate } from '../../BookingInputs';
 import {
     Modal,
     Button,
@@ -66,7 +66,7 @@ class BookOnline extends React.Component {
 
     render() {
         const { fee, bookingList } = this.props.Booking;
-        const { isLoading } = this.props.Screen;
+        const { isLoading, isMobile } = this.props.Screen;
         const { modal, shouldRestoreConfirm, lastBill } = this.state;
 
         if (shouldRestoreConfirm) {
@@ -84,10 +84,10 @@ class BookOnline extends React.Component {
                     </div> :
                     [<Row>
                         <Col className='select-date' xs={{ order: 2, span: 24 }} sm={12} md={12} lg={12} xl={12}>
-                            <InputDate />
+                            {isMobile ? <SelectDate style={{display: 'flex', justifyContent: 'center'}}/> : <InputDate />}
                         </Col>
                         <Col className='select-container' xs={{ order: 1, span: 24 }} sm={12} md={12} lg={12} xl={12}>
-                            <SelectStadium />
+                            <SelectStadium style={{width: isMobile ? '100%' : 200}}/>
                         </Col>
                     </Row>,
                     <div>
