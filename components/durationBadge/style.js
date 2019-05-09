@@ -6,7 +6,7 @@ const StyledWrapper = styled.div`
     background-color: red;
     color: white;
 
-    font-size: 8px;
+    font-size: 12px;
 `;
 
 export default StyledWrapper;

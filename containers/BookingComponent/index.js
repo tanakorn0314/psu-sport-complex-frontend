@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import BookingCard from '../BookingCard';
-import StyledWrapper from './style';
 import dataHandler from './dataHandler';
 import { operationTime } from '../../commonData';
 import { connect } from 'react-redux';
@@ -13,9 +12,9 @@ class BookingComponent extends React.Component {
         const bookingData = dataHandler.seperateDataByStartTime(stadiumBooking, selectedDate);
 
         return (
-            <StyledWrapper>
+            <div>
                 {this.renderCards(bookingData)}
-            </StyledWrapper>
+            </div>
         )
     }
 

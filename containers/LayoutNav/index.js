@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
+import { withRouter } from 'next/router';
 import {
     Layout,
     Row,
@@ -19,30 +20,34 @@ const { Text } = Typography;
 
 class LayoutNav extends React.Component {
 
-    state = {
-        showMenu: false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            showMenu: false,
+            current: props.router.pathname.split('/')[1]
+        }
     }
 
     render() {
-        const { isLoading, isMobile } = this.props.Screen;
+        const { isLoading } = this.props.Screen;
 
         return (
             <StyleLayout>
                 <Header className='header'>
                     <Row type='flex' justify='space-between'>
-                        <Col xxl={4} xl={6} lg={8} md={12} sm={12} xs={20} key={1}>
-                            <Link href='/'><a>PSU Sport Complex</a></Link>
+                        <Col style={{flex: 1}} key={1}>
+                            <Link href='/'><a className='logo'>PSU Sport Complex</a></Link>
                         </Col>
                         <Col className='menu-container'>
                             {!isLoading && this.renderMenu()}
                         </Col>
                     </Row>
                 </Header>
-                <Content style={{ background: '#fff' }}>
+                <Content>
                     {this.props.children}
                 </Content>
-                {!this.props.noFooter && <Footer style={{ textAlign: 'center' }}>
-                    <Text type='secondary'>©2019 PSU Sport Complex</Text>
+                {!this.props.noFooter && <Footer style={{ textAlign: 'center', backgroundColor: '#001529' }}>
+                    <Text type='secondary' style={{color: 'hsla(0,0%,100%,.65)'}}>©2019 PSU Sport Complex</Text>
                 </Footer>}
             </StyleLayout>
         )
@@ -60,7 +65,7 @@ class LayoutNav extends React.Component {
                     placement='bottomRight'
                     arrowPointAtCenter
                 >
-                    <Icon type='menu' onClick={() => { this.setState({ showMenu: !showMenu }) }} />
+                    <Icon type='menu' style={{color: '#fff'}} onClick={() => { this.setState({ showMenu: !showMenu }) }} />
                 </Popover>
             )
         else
@@ -74,12 +79,16 @@ class LayoutNav extends React.Component {
         return (
             <Menu
                 key={1}
+                onClick={this.handleClick}
                 mode={menuMode}
+                theme={isMobile ? 'light' : 'dark'}
                 style={{ lineHeight: '64px' }}
+                defaultSelectedKeys={[this.state.current]}
+                selectedKeys={[this.state.current]}
             >
                 {profile && profile.position === 'admin' &&
-                    <Menu.Item key={0}><Link href='/dashboard/booking'><a>Admin</a></Link></Menu.Item>}
-                <Menu.Item key={1}><Link href='/booking'><a>Booking</a></Link></Menu.Item>
+                    <Menu.Item key='dashboard'><Link href='/dashboard/booking'><a>Admin</a></Link></Menu.Item>}
+                <Menu.Item key='booking'><Link href='/booking'><a>Booking</a></Link></Menu.Item>
                 {this.renderAccountMenu()}
             </Menu>
         )
@@ -92,7 +101,7 @@ class LayoutNav extends React.Component {
 
         if (!profile)
             return (
-                <Menu.Item key={2}>
+                <Menu.Item key='login'>
                     <Link href='/signin'><a>Login</a></Link>
                 </Menu.Item>
             );
@@ -100,13 +109,14 @@ class LayoutNav extends React.Component {
             return this.renderAccountMenuItems();
         else
             return (
-                <Menu.Item key={2}>
+                <Menu.Item key='user'>
                     <Popover
                         visible={showMenu}
                         content={
                             <Menu
                                 key={1}
                                 style={{ lineHeight: '64px' }}
+                                selectedKeys={[this.state.current]}
                             >
                                 {this.renderAccountMenuItems()}
                             </Menu>
@@ -128,10 +138,15 @@ class LayoutNav extends React.Component {
 
     renderAccountMenuItems = () => {
         return [
-            <Menu.Item key={4}><Link href='/booking_history'><a>Booking History</a></Link></Menu.Item>,
+            <Menu.Item key='booking_history'><Link href='/booking_history'><a>Booking History</a></Link></Menu.Item>,
             // <Menu.Item key={5}><Link href='/account'><a>Account</a></Link></Menu.Item>,
             <Menu.Item key={6}><a onClick={this.handleLogout}>Logout</a></Menu.Item>,
         ]
+    }
+
+    handleClick = (e) => {
+        if (e.key !== 'user')
+            this.setState({current: e.key})
     }
 
     toggleMenu = () => {
@@ -149,4 +164,4 @@ class LayoutNav extends React.Component {
 export default connect(
     state => state,
     AuthAction,
-)(LayoutNav);
+)(withRouter(LayoutNav));

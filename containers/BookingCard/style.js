@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { Row } from 'antd';
+import { colors } from '../../styles/constants/colors';
 
 const StyledRow = styled(Row)`
     border: solid 1px #cecece;
     border-bottom: 0;
     width: 100%;
     padding: 20px;
+    background-color: #fff;
     @media (max-width: 325px) {
         padding: 5px;
     }
@@ -22,13 +24,13 @@ const StyledRow = styled(Row)`
         .line-container {
             display: flex;
             flex: 1;
-            padding: 0 30px;
+            padding: 0 16px;
             justify-content: center;
             align-items: center;
             .line {
                 flex: 1;
                 width: 100%;
-                height: 1px;
+                height: 1.2px;
                 background-color: #cecece;
             }
         }
@@ -37,15 +39,6 @@ const StyledRow = styled(Row)`
     .slot-container {
         display: flex;
         padding: 10px;
-        .slot-info {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 3px;
-            text-align: center;
-            min-height: 50px;
-            height: 100%;
-        }
     }
 
     .check {
@@ -54,7 +47,7 @@ const StyledRow = styled(Row)`
         position: absolute;
         right: 5px;
         bottom: 5px;
-        color: #7CFC00;
+        color: ${colors.available};
         font-size: 20px;
     }
 `;
@@ -74,7 +67,7 @@ const Slot = styled.div`
         border-radius: 0 3px 3px 0;
         border-right: solid 1px #cecece;
     }
-`
+`;
 
 const SlotTitle = styled.div`
     display: flex;
@@ -83,12 +76,30 @@ const SlotTitle = styled.div`
     padding: 3px;
     text-align: center;
     border-bottom: 1px solid #cecece;
-    background-color: #7CFC00;
+    font-weight: bold;
+    background-color: ${colors.available};
     ${props => props.booked && 
-        `background-color: #FF8C00;`
+        `background-color: ${colors.selected};`
     }
     ${props => props.approved && 
-        `background-color: #ff4c4c;`
+        `background-color: ${colors.approved};`
+    }
+    ${props => props.selected && 
+        `border-bottom: 1px solid #555;`
+    }
+`;
+
+const SlotInfo = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    text-align: center;
+    min-height: 50px;
+    height: 100%;
+    ${props => props.selected && 
+        `background-color: #555;
+        color: #fff;`
     }
 `
 
@@ -105,5 +116,6 @@ export default StyledRow;
 export {
     SlotTitle,
     Slot,
+    SlotInfo,
     Badge
 }

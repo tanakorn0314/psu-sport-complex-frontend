@@ -7,6 +7,9 @@ const StyledWrapper = styled.div`
     }
     .title {
         text-align: center;
+        font-weight: 600;
+        font-size: 3em;
+        margin: 0;
     }
 
     .content-container {

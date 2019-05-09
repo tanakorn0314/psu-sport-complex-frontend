@@ -39,7 +39,7 @@ class BookingDetail extends React.Component {
         return (
             <StyledWrapper>
                 <h1 className='title'>BOOKING DETAIL</h1>
-                <div>Play date: {moment(bookings[0].startDate).format('DD/MM/YYYY')}</div>
+                <div>Play date: {moment(bookings[0].startDate).format('MMMM D, YYYY')}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap' }}>
                     <div>Sport: {stadium.name}</div>
                     <div>Booking Timestamp: {moment(createdAt).format('LLL')}</div>

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import StyledRow, {
     SlotTitle,
     Slot,
+    SlotInfo,
     Badge
 } from './style';
 import {
@@ -24,22 +25,28 @@ class BookingSlot extends React.Component {
 
         return (
             <Slot key={this.props.index} seleted={selected} onClick={this.toggleSelect}>
-                <SlotTitle booked={isBooked} approved={isApproved}>
+                <SlotTitle booked={isBooked} approved={isApproved} selected={selected}>
                     {`สนาม ${court + 1}`}
                 </SlotTitle>
-                <div className='slot-info'>
-                    {isBooked ?
-                        [<>
-                            Booked<br />
-                            by<br />
-                            {bookingData && bookingData.owner.fname}
-                        </>] :
-                        ['Available']
-                    }
-                </div>
-                {!isBooked && selected && <Icon type="check-circle" className='check'/>}
+                <SlotInfo selected={selected}>
+                    {this.renderSlotInfo(isBooked, isApproved, selected, bookingData)}
+                </SlotInfo>
             </Slot>
         )
+    }
+
+    renderSlotInfo = (isBooked, isApproved, selected, bookingData) => {
+        if (isApproved || isBooked)
+            return (
+                <>
+                    Booked<br />
+                    by<br />
+                    {bookingData && bookingData.owner.fname}
+                </>
+            )
+        if (selected)
+            return 'Selected';
+        return 'Available';
     }
 
     toggleSelect = () => {

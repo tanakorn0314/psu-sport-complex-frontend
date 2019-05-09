@@ -77,7 +77,7 @@ class BookOnline extends React.Component {
 
         return (
             <StyledWrapper>
-                <h1 style={{ textAlign: 'center' }}>BOOKING</h1>
+                <h1 style={{ textAlign: 'center', fontSize: '3em', fontWeight: '600', margin: 0 }}>BOOKING</h1>
                 {isLoading ?
                     <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Spin tip='Loading...' size='large' />
@@ -148,7 +148,7 @@ class BookOnline extends React.Component {
                     onChange={this.handleChange}
                     defaultValue={modal.fee}
                 />
-                <div style={{ marginBottom: 5 }}>Deposit Time </div>
+                <div style={{ marginBottom: 5 }}>Transfer Time </div>
                 <DateTimeSelect
                     minute={minute}
                     hour={hour}
