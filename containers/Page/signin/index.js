@@ -75,7 +75,6 @@ class SignIn extends React.Component {
         this.setState({ modal })
 
         const result = await this.props.sendResetRequest(phoneNumber);
-        console.log(result);
         if (result.error) {
             notification['error']({
                 duration: 3,
@@ -128,6 +127,8 @@ class SignIn extends React.Component {
             password: value.password
         }
         const result = await this.props.login(userInfo);
+
+        console.log(result);
 
         this.setState({loading: false});
         
