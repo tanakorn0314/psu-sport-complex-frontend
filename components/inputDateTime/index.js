@@ -37,9 +37,6 @@ class InputDateTime extends React.Component {
                         value={date}
                         defaultValue={date}
                         onChange={this.changeDate}
-                        showSearch
-                        optionFilterProp='children'
-                        filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                     >
                         {_.range(1, 31).map((day) => (
                             <SelectOption key={day} value={day}>{day}</SelectOption>
@@ -49,9 +46,6 @@ class InputDateTime extends React.Component {
                         value={month}
                         defaultValue={month}
                         onChange={this.changeMonth}
-                        showSearch
-                        optionFilterProp='children'
-                        filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                         className='select-month'
                     >
                         {MONTHS.map((m, index) => (
@@ -62,9 +56,6 @@ class InputDateTime extends React.Component {
                         value={year}
                         defaultValue={year}
                         onChange={this.changeYear}
-                        showSearch
-                        optionFilterProp='children'
-                        filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                     >
                         {_.range(1900, parseInt(moment().year()) + 1).map((y) => (
                             <SelectOption key={y} value={y} >{y}</SelectOption>
@@ -76,9 +67,6 @@ class InputDateTime extends React.Component {
                         value={hour}
                         defaultValue={hour}
                         onChange={this.changeHour}
-                        showSearch
-                        optionFilterProp='children'
-                        filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                     >
                         {_.range(0, 24).map((h) => (
                             <SelectOption key={h} value={h}>{h.toString().padStart(2, '0')}</SelectOption>
@@ -89,9 +77,6 @@ class InputDateTime extends React.Component {
                         value={minute}
                         defaultValue={minute}
                         onChange={this.changeMinute}
-                        showSearch
-                        optionFilterProp='children'
-                        filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                     >
                         {_.range(0, 60).map((m) => (
                             <SelectOption key={m} value={m}>{m.toString().padStart(2, '0')}</SelectOption>
