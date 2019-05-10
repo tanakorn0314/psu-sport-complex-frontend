@@ -18,16 +18,16 @@ import moment from 'moment';
 import BookingService from '../../../coreLayer/service/bookingService';
 import Input from '../../../components/uielements/input';
 import DateTimeSelect from '../../../components/inputDateTime';
+import CountDown from '../../../components/countDown';
 
 class BookOnline extends React.Component {
-
-    interval = null;
 
     constructor(props) {
         super(props);
 
         let shouldRestoreConfirm = false;
         let lastBill = null;
+
         const bills = props.Bill.myBills;
         if (bills && bills.length > 0) {
             lastBill = bills[0];
@@ -84,10 +84,10 @@ class BookOnline extends React.Component {
                     </div> :
                     [<Row>
                         <Col className='select-date' xs={{ order: 2, span: 24 }} sm={12} md={12} lg={12} xl={12}>
-                            {isMobile ? <SelectDate style={{display: 'flex', justifyContent: 'center'}}/> : <InputDate />}
+                            {isMobile ? <SelectDate style={{ display: 'flex', justifyContent: 'center' }} /> : <InputDate />}
                         </Col>
                         <Col className='select-container' xs={{ order: 1, span: 24 }} sm={12} md={12} lg={12} xl={12}>
-                            <SelectStadium style={{width: isMobile ? '100%' : 200}}/>
+                            <SelectStadium style={{ width: isMobile ? '100%' : 200 }} />
                         </Col>
                     </Row>,
                     <div>
@@ -132,7 +132,7 @@ class BookOnline extends React.Component {
                     857-2196-068 <br />
                     SCB PSU Phuket
             </h2>
-                <h1>{modal.minute} : {modal.second.toString().padStart(2, '0')}</h1>
+                <CountDown minute={modal.minute} second={modal.second} onTimeout={this.hideModal} />
                 <div style={{ marginBottom: 5 }}>Account Number </div>
                 <Input
                     style={{ maxWidth: 300 }}
@@ -184,21 +184,7 @@ class BookOnline extends React.Component {
             billId: result.billId,
             modal,
             confirm,
-        }, () => {
-            this.interval = setInterval(() => {
-                const { modal } = this.state;
-                modal.second = modal.second - 1
-                if (modal.second < 0) {
-                    modal.minute = modal.minute - 1;
-                    modal.second = 59;
-                }
-                this.setState({ modal });
-                if (modal.minute < 0)
-                    this.hideModal();
-                else
-                    this.showConfirmModal();
-            }, 1000);
-        });
+        })
 
         this.showConfirmModal();
     }
@@ -217,21 +203,7 @@ class BookOnline extends React.Component {
             modal,
             confirm,
             shouldRestoreConfirm: false
-        }, () => {
-            this.interval = setInterval(() => {
-                const { modal } = this.state;
-                modal.second = modal.second - 1
-                if (modal.second < 0) {
-                    modal.minute = modal.minute - 1;
-                    modal.second = 59;
-                }
-                this.setState({ modal });
-                if (modal.minute < 0)
-                    this.hideModal();
-                else
-                    this.showConfirmModal();
-            }, 1000);
-        });
+        })
 
         this.showConfirmModal();
     }
@@ -240,8 +212,6 @@ class BookOnline extends React.Component {
         const { modal } = this.state;
         modal.isOpen = false
         this.setState({ modal });
-
-        clearInterval(this.interval);
     }
 
     showErrorModal = ({ error }) => {
@@ -275,13 +245,7 @@ class BookOnline extends React.Component {
     toggle = () => {
         const { modal } = this.state;
         modal.isOpen = !modal.isOpen;
-        this.setState({
-            modal
-        });
-
-        if (!modal.isOpen) {
-            clearInterval(this.interval);
-        }
+        this.setState({ modal });
     }
 
     showModal = (title, body, action, cancel) => {

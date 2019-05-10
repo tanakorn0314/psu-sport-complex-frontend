@@ -27,8 +27,7 @@ const confirm = async (accessToken, billId, transactionInfo) => {
         method: 'PATCH',
         headers: {
             'Authorization': 'bearer ' + accessToken,
-            'content-type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'content-type': 'application/json'
         },
         body: JSON.stringify(body)
     }
