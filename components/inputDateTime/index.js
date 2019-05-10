@@ -64,6 +64,7 @@ class InputDateTime extends React.Component {
                         value={date}
                         defaultValue={date}
                         onChange={this.changeDate}
+                        className='select-day'
                     >
                         {_.range(1, 31).map((day) => (
                             <SelectOption key={day} value={day}>{day}</SelectOption>
@@ -83,6 +84,7 @@ class InputDateTime extends React.Component {
                         value={year}
                         defaultValue={year}
                         onChange={this.changeYear}
+                        className='select-year'
                     >
                         {_.range(1900, parseInt(moment().year()) + 1).map((y) => (
                             <SelectOption key={y} value={y} >{y}</SelectOption>
@@ -94,6 +96,7 @@ class InputDateTime extends React.Component {
                         value={hour}
                         defaultValue={hour}
                         onChange={this.changeHour}
+                        className='select-hour'
                     >
                         {_.range(0, 24).map((h) => (
                             <SelectOption key={h} value={h}>{h.toString().padStart(2, '0')}</SelectOption>
@@ -104,6 +107,7 @@ class InputDateTime extends React.Component {
                         value={minute}
                         defaultValue={minute}
                         onChange={this.changeMinute}
+                        className='select-minute'
                     >
                         {_.range(0, 60).map((m) => (
                             <SelectOption key={m} value={m}>{m.toString().padStart(2, '0')}</SelectOption>
