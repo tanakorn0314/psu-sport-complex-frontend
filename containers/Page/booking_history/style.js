@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const StyledWrapper = styled.div`
     padding: 16px;
     @media (min-width: 1024px) {
-        margin: 0 220px;
+        margin: 0 25%;
     }
     .title {
         text-align: center;

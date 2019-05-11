@@ -1,17 +1,30 @@
 import styled from 'styled-components';
+import { Row } from 'antd';
 
-const StyledWrapper = styled.div`
-    border: solid 1px #cecece;
-    width: 100%;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #fff;
-
-    .row {
+export const StyledRow = styled(Row)`
+    padding-right: 12px;
+    .col {
+        height: 100%;
+    }
+    .basic-detail {
+        border-right: solid 1px #cecece;
+        h4 {
+            margin: 0;
+        }
+        &:last-child {
+            border-right: none;
+        }
+        @media (max-width: 575px) {
+            border-right: none;
+            border-top: solid 1px #cecece;
+            padding-bottom: 3px;
+            &:first-child {
+                border-top: none;
+            }
+        }
+    }
+    .btn-container {
+        width: 100%;
         display: flex;
-        justify-content: space-between;
-        padding: 5px;
     }
 `;
-
-export default StyledWrapper;
