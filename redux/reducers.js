@@ -5,12 +5,14 @@ import Stadium from './stadium/reducer';
 import Screen from './screen/reducer';
 import Admin from './admin/reducer';
 import Bill from './bill/reducer';
+import Users from './users/reducer'
 
 export default combineReducers({
-    Auth,
-    Booking,
-    Stadium,
-    Screen,
     Admin,
-    Bill
+    Auth,
+    Bill,
+    Booking,
+    Screen,
+    Stadium,
+    Users
 })

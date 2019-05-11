@@ -7,9 +7,9 @@ const createUser = (user) => {
     return axios.post(url, user);
 }
 
-const get = () => {
+const getAll = async () => {
     const url = userApi;
-    return fetch(url);
+    return await fetch(url).then(response => response.json());
 }
 
 const getUserByResetToken = async (token) => {
@@ -17,8 +17,21 @@ const getUserByResetToken = async (token) => {
     return await fetch(url).then(response => response.json());
 }
 
+const toMember = async (userId, data) => {
+    const url = `${userApi}/member/${userId}`;
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }
+    return await await fetch(url, options).then(response => response.json());
+}
+
 export default {
     createUser,
-    get,
-    getUserByResetToken
+    getAll,
+    getUserByResetToken,
+    toMember
 }
