@@ -72,13 +72,13 @@ class BookingChart extends React.Component {
 
     renderLine = () => {
         const { displayBookings, start: startDate, end: endDate } = this.props.Admin;
-        const end = moment(endDate);
-        const start = moment(startDate);
+        let end = moment(endDate);
+        let start = moment(startDate);
 
         let diff, data, labelStep, labelFormat;
-        const dayDiff = end.diff(start, 'day') + 1;
-        const monthDiff = end.diff(start, 'month') + 1;
-        const yearDiff = end.diff(start, 'year') + 1;
+        let dayDiff = end.diff(start, 'day') + 1;
+        let monthDiff = end.diff(start, 'month') + 1;
+        let yearDiff = end.diff(start, 'year') + 1;
 
         if (yearDiff > 1) {
             diff = yearDiff;
@@ -91,6 +91,10 @@ class BookingChart extends React.Component {
             labelStep = 'month';
             labelFormat = 'MMM';
         } else {
+            if (end.diff(start, 'month') === 0 && end.diff(start, 'day') < 30) {
+                start = end.clone().date(1);
+                dayDiff = end.diff(start, 'day') + 1;
+            }
             diff = dayDiff;
             data = helper.getDailyIncome(displayBookings, start, end);
             labelStep = 'day';

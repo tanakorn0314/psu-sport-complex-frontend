@@ -53,7 +53,7 @@ class SearchForm extends React.Component {
                                 <Input placeholder='First name' name='fname' style={{ width: '100%', minWidth: 120 }} onChange={this.handleBlur} />
                             </Form.Item>
                         </Col>
-                        <Col span={13}>
+                        <Col>
                             <Form.Item
                                 label='Phone number / PSU Passport'
                             >
