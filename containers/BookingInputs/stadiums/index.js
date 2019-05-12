@@ -17,18 +17,20 @@ class SelectStadium extends React.Component {
             Stadium
         } = this.props;
         const { stadiums } = Stadium;
+        const stadium = stadiums[Booking.stadiumId - 1]
+        const sName = stadium ? stadium.name : 'All'
         return (
             <Select
                 name={name || 'stadium'}
                 onChange={this.handleSelectStadium}
                 style={{ width: 200, ...style }}
                 placeholder={placeholder || 'Select stadium'}
-                defaultValue={stadiums[Booking.stadiumId-1].name}
-                value={stadiums[Booking.stadiumId-1].name}
+                value={sName}
             >
-                {stadiums.map((stadium, index) => {
+                <Option key={0} value={0}>All</Option>
+                {stadiums.map((s, index) => {
                     return (
-                        <Option key={index} value={stadium.stadiumId}>{stadium.name}</Option>
+                        <Option key={index} value={s.stadiumId}>{s.name}</Option>
                     )
                 })}
             </Select>

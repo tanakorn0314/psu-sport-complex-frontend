@@ -62,7 +62,7 @@ const actions = {
     const prevBookings = getState().Booking.selectedBooking;
     const currentBookings = Booking.handleSelect(prevBookings, data);
     const bookingList = Booking.manageBookingList(currentBookings);
-    const fee = Booking.getBookingFee(stadium, user.position) * bookingList.length;
+    const fee = Booking.calculateSlotFee(user.position, bookingList, stadium);
     dispatch({
       type: actions.SELECT_BOOKING,
       selectedBooking: currentBookings,

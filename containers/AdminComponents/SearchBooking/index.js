@@ -27,7 +27,7 @@ class SearchForm extends React.Component {
                             <Form.Item
                                 label='Sports'
                             >
-                                <SelectStadium onChange={this.selectStadium}/>
+                                <SelectStadium onChange={this.selectStadium} />
                             </Form.Item>
                         </Col>
                         <Col span={7} >
@@ -41,34 +41,25 @@ class SearchForm extends React.Component {
                             <Form.Item
                                 label='End'
                             >
-                                <DatePicker defaultValue={moment().add(1, 'day')} onChange={this.selectEnd}/>
+                                <DatePicker defaultValue={moment().add(1, 'day')} onChange={this.selectEnd} />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row span={24}>
-                        <Form.Item
-                            label='First name'
-                        >
-                            <Input placeholder='First name' name='fname' style={{ width: '100%', minWidth: 120 }} onBlur={this.handleBlur}/>
-                        </Form.Item>
-                    </Row>
-                    <Row span={24}>
-                        <Form.Item
-                            label='Phone number'
-                        >
-                            <Input placeholder='phone number' name='phoneNo'style={{ width: '100%', minWidth: 120 }} onBlur={this.handleBlur}/>
-                        </Form.Item>
-                    </Row>
-                    <Row span={24}>
-                        <Form.Item
-                            label='Status'
-                        >
-                            <Select defaultValue='all' onChange={this.handleSelect} style={{ width: '100%', minWidth: 120 }}>
-                                <Option value='unpaid'>Unpaid</Option>
-                                <Option value='approved'>Approved</Option>
-                                <Option value='all'>All</Option>
-                            </Select>
-                        </Form.Item>
+                        <Col span={7}>
+                            <Form.Item
+                                label='First name'
+                            >
+                                <Input placeholder='First name' name='fname' style={{ width: '100%', minWidth: 120 }} onChange={this.handleBlur} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={13}>
+                            <Form.Item
+                                label='Phone number / PSU Passport'
+                            >
+                                <Input placeholder='phone number or psu passport' name='userId' style={{ width: 400 }} onChange={this.handleBlur} />
+                            </Form.Item>
+                        </Col>
                     </Row>
                 </Form>
             </Card>
@@ -78,13 +69,13 @@ class SearchForm extends React.Component {
     handleBlur = e => {
         const { value, name } = e.target;
 
-        switch(name) {
+        switch (name) {
             case 'fname':
                 this.props.filterName(value);
-            break;
-            case 'phoneNo':
-                this.props.filterPhoneNumber(value)
-            break;
+                break;
+            case 'userId':
+                this.props.filterUserId(value)
+                break;
         }
     }
 
@@ -106,6 +97,6 @@ class SearchForm extends React.Component {
 }
 
 export default connect(
-    state => state, 
+    state => state,
     dispatcher
 )(SearchForm)

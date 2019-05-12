@@ -35,16 +35,16 @@ class LayoutDashboard extends React.Component {
                         >
                             <Menu.Item key="booking" onClick={this.navigate}>
                                 <Icon type='read' />
-                                    <span>Bookings</span>
+                                <span>Bookings</span>
                             </Menu.Item>
                             <Menu.Item key="user" onClick={this.navigate}>
                                 <Icon type='user' />
-                                    <span>Users</span>
+                                <span>Users</span>
                             </Menu.Item>
-                            <Menu.Item key="openclose" onClick={this.navigate}>
+                            {/* <Menu.Item key="openclose" onClick={this.navigate}>
                                 <Icon type='calendar' />
-                                    <span>Open / Close</span>
-                            </Menu.Item>
+                                <span>Open / Close</span>
+                            </Menu.Item> */}
                         </Menu>
                     </Sider>
                     <Content>
@@ -59,7 +59,7 @@ class LayoutDashboard extends React.Component {
         this.setState({ collapsed })
     }
 
-    navigate = ({key}) => {
+    navigate = ({ key }) => {
         Router.push(`/dashboard/${key}`);
     }
 }

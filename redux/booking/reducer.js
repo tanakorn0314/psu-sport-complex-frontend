@@ -2,7 +2,7 @@ import actions from "./actions";
 import moment from 'moment';
 
 const initState = {
-    stadiumId: 1,
+    stadiumId: 0,
     bookings: {},
     myBookings: [],
     stadiumBooking: [],

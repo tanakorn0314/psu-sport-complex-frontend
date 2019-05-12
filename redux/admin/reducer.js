@@ -6,7 +6,7 @@ const { types } = AdminAction;
 const initialState = {
     start: moment(),
     end: moment().add(1, 'day'),
-    phoneNumber: '',
+    userId: '',
     name: '',
     status: 'all',
     displayBookings: [],
@@ -26,10 +26,10 @@ export default function AdminReducer(state = initialState, action) {
                 ...state,
                 end: action.end,
             }
-        case types.FILTER_PHONE_NO:
+        case types.FILTER_USER_ID:
             return {
                 ...state,
-                phoneNumber: action.phoneNumber,
+                userId: action.userId,
             }
         case types.FILTER_NAME:
             return {

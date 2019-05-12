@@ -26,36 +26,44 @@ class BookingList extends React.Component {
             dataIndex: 'name',
             key: 'name',
         }, {
-            title: 'Phone No',
-            dataIndex: 'phone',
-            key: 'phone',
+            title: 'Phone Number / PSU Passport',
+            dataIndex: 'userId',
+            key: 'userId',
         }, {
-            title: 'Court',
-            dataIndex: 'court',
-            key: 'court',
+            title: 'Stadium',
+            dataIndex: 'stadium',
+            key: 'stadium',
         }, {
-            title: 'Start',
-            dataIndex: 'start',
-            key: 'start',
+            title: 'Play Date',
+            dataIndex: 'playDate',
+            key: 'playDate',
         }, {
-            title: 'End',
-            dataIndex: 'end',
-            key: 'end',
-        }, {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
+            title: 'Time',
+            dataIndex: 'time',
+            key: 'time',
+        },{
+            title: 'Fee',
+            dataIndex: 'fee',
+            key: 'fee',
         }];
-        const data = displayBookings.map((booking, index) => ({
-            no: index + 1,
-            key: index,
-            name: booking.owner.fname,
-            phone: booking.owner.phoneNumber,
-            court: booking.courtId,
-            start: moment(booking.startDate.slice(0, 16)).format('LLL'),
-            end: moment(booking.endDate.slice(0, 16)).format('LLL'),
-            status: booking.status,
-        }))
+        const data = displayBookings.map((booking, index) => {
+                const { stadiums } = this.props.Stadium;
+                const { owner, stadiumId, courtId, startDate, endDate } = booking;
+                const stadium = stadiums[stadiumId - 1];
+                const userId = owner.phoneNumber.length > 0 ? owner.phoneNumber : owner.psuPassport;
+                const startTime = moment(startDate).parseZone().format('HH:mm');
+                const endTime = moment(endDate).parseZone().format('HH:mm');
+                return {
+                    no: index + 1,
+                    key: index,
+                    name: `${owner.fname} ${owner.lname}`,
+                    userId,
+                    stadium: `${stadium.name} ${courtId}`,
+                    playDate: moment(startDate).parseZone().format('MMMM DD, YYYY'),
+                    time: `${startTime} - ${endTime}`,
+                    fee: booking.fee
+                }
+        })
         return (
             <Card {...this.props}>
                 <Table

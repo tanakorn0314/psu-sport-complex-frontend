@@ -1,5 +1,6 @@
 import BookingService from '../../coreLayer/service/bookingService';
 import jwtDecode from 'jwt-decode';
+import moment from 'moment';
 
 async function collectBookingData(store, stadiumId) {
     const res = await BookingService.getByStadiumId(stadiumId);
@@ -57,20 +58,50 @@ function manageBookingList(selectedBookings) {
     return bookingList;
 }
 
-function getBookingFee(stadium, userPosition) {
-    switch(userPosition) {
-        case 'member' :
-            return stadium.costMember;
-        case 'student' :
-            return stadium.costStudent;
-        case 'staff' :
-            return stadium.costStaff;
-        case 'admin' :
-            return 0;
-        default:
-            return stadium.costPublic;
-    }
-}
+function calculateBookingFee(userPosition, booking, stadium) {
+    console.log(userPosition, booking, stadium);
+    if (!booking)
+      return 0;
+
+      const { startDate, endDate } = booking;
+      let hrDiff = moment(endDate).diff(moment(startDate), 'hour');
+      let minDiff = moment(endDate).diff(moment(startDate), 'minute') % 60 >= 30 ? 0.5 : 0;
+    
+      let duration = hrDiff + minDiff;
+
+      switch (userPosition) {
+        case 'general public': return stadium.costPublic * duration;
+        case 'member': return stadium.costMember * duration;
+        case 'staff': return stadium.costStaff * duration;
+        case 'student': return stadium.costStudent *duration;
+        default: return 0;
+      }
+  }
+
+  function calculateBookingsFee(userPosition, bookings, stadium) {
+    if (!bookings || bookings.length <= 0)
+      return 0;
+
+    let sumFee = bookings.reduce((sum, booking) => sum + this.calculateBookingFee(userPosition, booking, stadium), 0);
+    
+    return sumFee;
+  }
+
+  function calculateSlotFee(userPosition, slots, stadium) {
+    if (!slots || slots.length <= 0)
+      return 0;
+    
+      // length half hour
+      let l = slots.length * 0.5;
+
+      switch (userPosition) {
+        case 'general public': return stadium.costPublic * l;
+        case 'member': return stadium.costMember * l;
+        case 'staff': return stadium.costStaff * l;
+        case 'student': return stadium.costStudent *l;
+        default: return 0;
+      }
+  }
 
 export default {
     collectBookingData,
@@ -80,5 +111,7 @@ export default {
     getMyBooking,
     handleSelect,
     manageBookingList,
-    getBookingFee
+    calculateBookingFee,
+    calculateSlotFee,
+    calculateBookingsFee
 }

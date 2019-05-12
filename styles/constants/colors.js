@@ -13,5 +13,10 @@ export const colorsPool = [
     `#ffd14f`,
     `#bad6ab`,
     `#7fc780`,
-    `#25cc73`
+    `#25cc73`,
+    `#BCE7FD`,
+    `#C492B1`,
+    `#AF3B6E`,
+    `#424651`,
+    `#21FA90`
 ]

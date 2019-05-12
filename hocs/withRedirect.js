@@ -10,9 +10,9 @@ export default ComposedComponent => {
 
             console.log(token);
 
-            if (token && token !== 'undefined') {
-                redirect(ctx, '/');
-            }
+            // if (token && token !== 'undefined') {
+            //     redirect(ctx, '/');
+            // }
             return pageProps;
         }
 
