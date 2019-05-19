@@ -6,6 +6,7 @@ import Screen from './screen/reducer';
 import Admin from './admin/reducer';
 import Bill from './bill/reducer';
 import Users from './users/reducer'
+import OperationTime from './operationTime/reducer';
 
 export default combineReducers({
     Admin,
@@ -14,5 +15,6 @@ export default combineReducers({
     Booking,
     Screen,
     Stadium,
-    Users
+    Users,
+    OperationTime
 })

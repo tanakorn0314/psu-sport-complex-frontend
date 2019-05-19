@@ -6,6 +6,7 @@ const bookingApi = `${api}/booking`
 const stadiumApi = `${api}/stadium`
 const courtApi = `${api}/court`
 const billApi = `${api}/bill`
+const operationTimeApi = `${api}/operationTime`
 
 export {
     userApi,
@@ -13,5 +14,6 @@ export {
     bookingApi,
     stadiumApi,
     courtApi,
-    billApi
+    billApi,
+    operationTimeApi
 }

@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyledRow } from './style';
-import {  Col, Collapse, List } from 'antd';
+import { StyledRow, CourtDetailRow } from './style';
+import { Col, Collapse, List, Button } from 'antd';
 import moment from 'moment';
 
 const { Panel } = Collapse;
@@ -9,7 +9,7 @@ class BillCard extends React.Component {
     render() {
         return (
             <Collapse style={{ width: '100%', marginBottom: 10 }}>
-                <Panel header={this.renderHeader()} showArrow={false} style={{padding: 12}}>
+                <Panel header={this.renderHeader()} showArrow={false} style={{ padding: 12 }}>
                     {this.renderCourtDetails(this.props.dataSource.bookings)}
                 </Panel>
             </Collapse>
@@ -24,7 +24,7 @@ class BillCard extends React.Component {
         } = this.props.dataSource;
 
         return (
-            <StyledRow gutter={{sm: 0, md: 16}} >
+            <StyledRow gutter={{ sm: 0, md: 16 }} >
                 <Col sm={24} md={8} className='col basic-detail'>
                     <h4>Sport</h4>
                     <div>{sport.charAt(0).toUpperCase() + sport.slice(1)}</div>
@@ -53,7 +53,7 @@ class BillCard extends React.Component {
             return (
                 <List
                     key={num}
-                    header={<h4 style={{marginBottom: 0}}>{`Court ${num + 1}`}</h4>}
+                    header={<h4 style={{ marginBottom: 0 }}>{`Court ${num + 1}`}</h4>}
                     dataSource={courtDetail}
                     renderItem={item => this.renderCourtDetail(item)}
                 />
@@ -65,9 +65,12 @@ class BillCard extends React.Component {
         const endTime = moment(item).clone().add(30, 'minutes');
         return (
             <List.Item>
-                <div>
-                    {`${moment(item).parseZone().format('MMMM D, YYYY HH:mm')} - ${endTime.parseZone().format('HH:mm')}`}
-                </div>
+                <CourtDetailRow>
+                    <div>
+                        {`${moment(item).parseZone().format('MMMM D, YYYY HH:mm')} - ${endTime.parseZone().format('HH:mm')}`}
+                    </div>
+                    <Button size='small'>Edit</Button>
+                </CourtDetailRow>
             </List.Item>
         )
     }

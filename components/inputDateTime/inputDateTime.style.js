@@ -14,14 +14,17 @@ export const DateSelctContainer = styled.div`
     }
     .select-month {
         width: 50%;
+        min-width: 100px;
         max-width: 120px;
     }
     .select-year {
         width: 25%;
+        min-width: 76px;
         max-width: 120px;
     }
-    .select-date {
+    .select-day {
         width: 15%;
+        min-width: 64px;
         max-width: 120px;
     }
 `;
@@ -30,7 +33,7 @@ export const TimeSelectContainer = styled.div`
     display: flex;
     width: 100%;
     .ant-select {
-        min-width: 40px;
+        min-width: 64px;
         &:first-child {
             margin-right: 10px;
         }
@@ -40,6 +43,7 @@ export const TimeSelectContainer = styled.div`
     }
     .select-hour, .select-minute {
         width: 15%;
+        min-width: 64px;
         max-width: 120px;
     }
 `;

@@ -17,7 +17,7 @@ import BottomAction from '../../../components/bottomAction';
 import moment from 'moment';
 import BookingService from '../../../coreLayer/service/bookingService';
 import Input from '../../../components/uielements/input';
-import DateTimeSelect from '../../../components/inputDateTime';
+import InputDateTime from '../../../components/inputDateTime';
 import CountDown from '../../../components/countDown';
 
 class BookOnline extends React.Component {
@@ -150,7 +150,7 @@ class BookOnline extends React.Component {
                     defaultValue={modal.fee}
                 />
                 <div style={{ marginBottom: 5 }}>Transfer Time </div>
-                <DateTimeSelect
+                <InputDateTime
                     minute={minute}
                     hour={hour}
                     date={date}

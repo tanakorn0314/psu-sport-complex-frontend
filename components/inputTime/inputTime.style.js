@@ -4,7 +4,7 @@ const StyledWrapper = styled.div`
     display: flex;
     width: 100%;
     .ant-select {
-        min-width: 40px;
+        min-width: 64px;
         &:first-child {
             margin-right: 10px;
         }
