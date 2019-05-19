@@ -1,7 +1,7 @@
-import courts from './courts';
 import operationTime from './operationTime';
+import weekdays from './weekdays';
 
 export {
-    courts,
-    operationTime
+    operationTime,
+    weekdays
 }

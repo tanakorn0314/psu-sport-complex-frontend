@@ -28,3 +28,10 @@ export const StyledRow = styled(Row)`
         display: flex;
     }
 `;
+
+export const CourtDetailRow = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+`

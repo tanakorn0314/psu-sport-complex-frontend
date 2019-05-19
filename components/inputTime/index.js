@@ -1,8 +1,10 @@
 import React from 'react';
 import StyledWarpper from './inputTime.style';
-import Select, { SelectOption } from '../uielements/select';
+import { Select } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
+
+const SelectOption = Select.Option;
 
 class InputTime extends React.Component {
 
@@ -28,9 +30,7 @@ class InputTime extends React.Component {
                 <Select
                     defaultValue={hour}
                     onChange={this.changeHour}
-                    showSearch
-                    optionFilterProp='children'
-                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
+                    disabled={this.props.disabled}
                 >
                     {_.range(0, 24).map((hour) => (
                         <SelectOption key={hour} value={hour}>{hour.toString().padStart(2,'0')}</SelectOption>
@@ -40,11 +40,9 @@ class InputTime extends React.Component {
                 <Select
                     defaultValue={minute}
                     onChange={this.changeMinute}
-                    showSearch
-                    optionFilterProp='children'
-                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
+                    disabled={this.props.disabled}
                 >
-                    {_.range(0, 24).map((minute) => (
+                    {_.range(0, 60).map((minute) => (
                         <SelectOption key={minute} value={minute}>{minute.toString().padStart(2,'0')}</SelectOption>
                     ))}
                 </Select>
@@ -58,7 +56,6 @@ class InputTime extends React.Component {
         time.set('hour', hour);
         time.set('minute', minute);
         this.props.onChange && this.props.onChange(time)
-
     }
 
     changeHour = hour => {

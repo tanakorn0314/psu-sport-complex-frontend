@@ -40,12 +40,20 @@ class InputDateTime extends React.Component {
         };
     }
 
-    componentWillReceiveProps() {
-        this.changeMinute(moment().minute());
-        this.changeHour(moment().hour());
-        this.changeDate(moment().date());
-        this.changeMonth(moment().month());
-        this.changeYear(moment().year());
+    componentWillReceiveProps(nextProps) {
+        if (this.props.refreshCurrent) {
+            this.changeMinute(moment().minute());
+            this.changeHour(moment().hour());
+            this.changeDate(moment().date());
+            this.changeMonth(moment().month());
+            this.changeYear(moment().year());
+        } else {
+            this.changeMinute(nextProps.minute);
+            this.changeHour(nextProps.hour);
+            this.changeDate(nextProps.date);
+            this.changeMonth(nextProps.month);
+            this.changeYear(nextProps.year);
+        }
     }
 
     render() {
@@ -59,7 +67,7 @@ class InputDateTime extends React.Component {
 
         return (
             <div style={this.props.style}>
-                <DateSelctContainer>
+                <DateSelctContainer style={this.props.dateContainerStyle}>
                     <Select
                         value={date}
                         defaultValue={date}
@@ -91,7 +99,7 @@ class InputDateTime extends React.Component {
                         ))}
                     </Select>
                 </DateSelctContainer>
-                <TimeSelectContainer>
+                <TimeSelectContainer style={this.props.timeContainerStyle}>
                     <Select
                         value={hour}
                         defaultValue={hour}
@@ -119,27 +127,42 @@ class InputDateTime extends React.Component {
     }
 
     changeMinute = (value) => {
-        this.setState({minute: value});
+        const { minute } = this.state;
+        if (minute === value)  return ;
+
+        this.setState({ minute: value });
         this.props.onChange && this.props.onChange('minute', value);
     }
 
     changeHour = (value) => {
-        this.setState({hour: value})
+        const { hour } = this.state;
+        if (hour === value)  return ;
+
+        this.setState({ hour: value })
         this.props.onChange && this.props.onChange('hour', value);
     }
 
     changeDate = (value) => {
-        this.setState({date: value})
+        const { date } = this.state;
+        if (date === value)  return ;
+
+        this.setState({ date: value })
         this.props.onChange && this.props.onChange('date', value);
     }
 
     changeMonth = (value) => {
-        this.setState({month: value})
+        const { month } = this.state;
+        if (month === value)  return ;
+        
+        this.setState({ month: value })
         this.props.onChange && this.props.onChange('month', value);
     }
 
     changeYear = (value) => {
-        this.setState({year: value})
+        const { year } = this.state;
+        if (year === value)  return ;
+
+        this.setState({ year: value })
         this.props.onChange && this.props.onChange('year', value);
     }
 

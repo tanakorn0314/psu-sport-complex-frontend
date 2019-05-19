@@ -41,10 +41,10 @@ class LayoutDashboard extends React.Component {
                                 <Icon type='user' />
                                 <span>Users</span>
                             </Menu.Item>
-                            {/* <Menu.Item key="openclose" onClick={this.navigate}>
+                            <Menu.Item key="operationTime" onClick={this.navigate}>
                                 <Icon type='calendar' />
-                                <span>Open / Close</span>
-                            </Menu.Item> */}
+                                <span>Operation Time</span>
+                            </Menu.Item>
                         </Menu>
                     </Sider>
                     <Content>
