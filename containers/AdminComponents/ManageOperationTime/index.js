@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import OperatioTimeAction from '../../../redux/operationTime/actions';
-import { Row, Col, Card, Button, Input, Table, Divider, Modal, Checkbox, notification } from 'antd';
+import { Card, Button, Modal, notification } from 'antd';
 import OperationTimeDay from '../../../components/optimeDay';
-import moment from 'moment';
-import { weekdays } from '../../../commonData'
 
 class ManageOperationTime extends React.Component {
 

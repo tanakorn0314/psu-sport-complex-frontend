@@ -5,7 +5,6 @@ const actions = {
   FETCH_BOOKING: 'FETCH_BOOKING',
   FETCH_BOOKING_ERROR: 'FETCH_BOOKING_ERROR',
   FETCH_BOOKING_SUCESS: 'FETCH_BOOKING_SUCESS',
-  FETCH_MY_BOOKING_SUCCESS: 'FETCH_MY_BOOKING_SUCCESS',
   BOOKING_REQUEST: 'BOOKING_REQUEST',
   BOOKING_SUCCESS: 'BOOKING_SUCCESS',
   BOOKING_ERROR: 'BOOKING_ERROR',
@@ -27,13 +26,6 @@ const actions = {
     }
     return result;
   },
-  fetchMyBooking: (token) => async (dispatch) => {
-    const result = await Booking.getMyBooking(token);
-    if (result && !result.error) {
-      dispatch({ type: actions.FETCH_MY_BOOKING_SUCCESS, bookings: result });
-    }
-    return result;
-  },
   reserve: (token, bookingInfo) => async (dispatch, getState) => {
     const result = await Booking.reserve(token, bookingInfo);
     await refreshBooking(dispatch, getState);
@@ -49,7 +41,7 @@ const actions = {
     await refreshBooking(dispatch, getState);
     return result;
   },
-  selectStadium: (stadiumId) => async (dispatch, getState) => {
+  selectStadium: (stadiumId) => async (dispatch) => {
     const result = await dispatch(actions.fetchBooking(stadiumId));
     await dispatch({ type: actions.SELECT_STADIUM, stadiumId });
 

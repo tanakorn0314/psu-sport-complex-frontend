@@ -59,7 +59,6 @@ function manageBookingList(selectedBookings) {
 }
 
 function calculateBookingFee(userPosition, booking, stadium) {
-    console.log(userPosition, booking, stadium);
     if (!booking)
       return 0;
 

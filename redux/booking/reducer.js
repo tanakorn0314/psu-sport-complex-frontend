@@ -2,9 +2,8 @@ import actions from "./actions";
 import moment from 'moment';
 
 const initState = {
-    stadiumId: 0,
+    stadiumId: 1,
     bookings: {},
-    myBookings: [],
     stadiumBooking: [],
     selectedBooking: {},
     bookingList: [],
@@ -24,11 +23,6 @@ export default function bookingReducer(state = initState, action) {
                 ...state,
                 bookings: action.bookings
             };
-        case actions.FETCH_MY_BOOKING_SUCCESS:
-            return {
-                ...state,
-                myBookings: action.bookings
-            }
         case actions.SELECT_STADIUM:
             return {
                 ...state,

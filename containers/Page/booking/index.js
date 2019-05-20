@@ -101,7 +101,7 @@ class BookOnline extends React.Component {
                     onClick={this.handleClick}
                 />
                 <Modal
-                    onCancel={modal.cancel}
+                    onCancel={this.toggle}
                     visible={modal.isOpen}
                     toggle={this.toggle}
                     title={modal.title}
