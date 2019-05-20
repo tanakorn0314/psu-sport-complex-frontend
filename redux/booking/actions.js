@@ -82,9 +82,7 @@ const actions = {
 
 async function refreshBooking(dispatch, getState) {
   const stadiumId = getState().Booking.stadiumId;
-  const token = getState().Auth.idToken;
   await dispatch(actions.fetchBooking(stadiumId));
-  await dispatch(actions.fetchMyBooking(token));
   await dispatch(actions.selectStadium(stadiumId));
 }
 

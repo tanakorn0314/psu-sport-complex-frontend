@@ -43,6 +43,9 @@ export default function bookingReducer(state = initState, action) {
             return {
                 ...state,
                 selectedDate: action.selectedDate,
+                selectedBooking: {},
+                bookingList: [],
+                fee: 0
             }
         case actions.FETCH_BOOKING_ERROR:
             return initState;

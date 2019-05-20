@@ -137,6 +137,7 @@ class Blackout extends React.Component {
                     visible={modal.isOpen}
                     onCancel={this.hideModal}
                     toggle={this.toggleModal}
+                    footer={[<Button onClick={this.toggleModal}>OK</Button>]}
                 >
                     <h3>{modal.title}</h3>
                     <div>Start {modal.start}</div>

@@ -1,67 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-import StyledRow, {
-    SlotTitle,
-    Slot,
-    SlotInfo,
-    Badge
-} from './style';
 import {
-    Col,
-    Icon
+    Col
 } from 'antd';
 import { connect } from 'react-redux';
+import StyledRow from './style';
 import BookingAction from '../../redux/booking/actions';
-
-class BookingSlot extends React.Component {
-    render() {
-        const {
-            court,
-            bookingData,
-            selected
-        } = this.props.dataSource;
-        const isBooked = !!bookingData;
-        const isApproved = bookingData && bookingData.status === 'approved';
-
-        return (
-            <Slot key={this.props.index} seleted={selected} onClick={this.toggleSelect}>
-                <SlotTitle booked={isBooked} approved={isApproved} selected={selected}>
-                    {`สนาม ${court + 1}`}
-                </SlotTitle>
-                <SlotInfo selected={selected}>
-                    {this.renderSlotInfo(isBooked, isApproved, selected, bookingData)}
-                </SlotInfo>
-            </Slot>
-        )
-    }
-
-    renderSlotInfo = (isBooked, isApproved, selected, bookingData) => {
-        if (isApproved || isBooked)
-            return (
-                <>
-                    Booked<br />
-                    by<br />
-                    {bookingData && bookingData.owner.fname}
-                </>
-            )
-        if (selected)
-            return 'Selected';
-        return 'Available';
-    }
-
-    toggleSelect = () => {
-        let { court, start, bookingData, selected } = this.props.dataSource;
-        const isBooked = !!bookingData;
-        if (isBooked)
-            return;
-
-        this.props.onSelect && this.props.onSelect({
-            start,
-            court,
-            selected: !selected
-        })
-    }
-}
+import BookingSlot from '../../components/bookingSlot';
 
 class BookingCard extends React.Component {
     render() {
@@ -71,7 +16,7 @@ class BookingCard extends React.Component {
             numCourt,
             bookingData
         } = this.props.dataSource;
-        const { selectedBooking } = this.props.Booking;
+        const { selectedBooking, selectedDate } = this.props.Booking;
 
         return (
             <StyledRow key={this.props.i} type='flex' align='middle'>
@@ -97,7 +42,8 @@ class BookingCard extends React.Component {
                                 start,
                                 court: num,
                                 bookingData: !bookingData ? null : bookingData[num],
-                                selected
+                                selected,
+                                date: selectedDate
                             }
 
                             return (

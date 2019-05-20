@@ -78,21 +78,6 @@ const dispatcher = {
     }
 }
 
-function getBookingFee(stadium, userPosition) {
-    switch (userPosition) {
-        case 'member':
-            return stadium.costMember;
-        case 'student':
-            return stadium.costStudent;
-        case 'staff':
-            return stadium.costStaff;
-        case 'admin':
-            return 0;
-        default:
-            return stadium.costPublic;
-    }
-}
-
 function createCSV(bookings, stadiums) {
     const csvData = [];
     csvData.push(['No', 'Name', 'PhoneNo / PSUPassport', 'Stadium', 'Play Date', 'time', 'Fee']);
