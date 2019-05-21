@@ -262,7 +262,9 @@ class BookOnline extends React.Component {
     }
 
     handleCancel = async () => {
-        await BookingService.deleteByBillId(this.props.Auth.idToken, this.state.billId);
+        const result = await BookingService.deleteByBillId(this.props.Auth.idToken, this.state.billId);
+        
+        console.log(result);
         this.props.refreshData();
         this.hideModal();
     }
