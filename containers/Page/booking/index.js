@@ -20,6 +20,8 @@ import Input from '../../../components/uielements/input';
 import InputDateTime from '../../../components/inputDateTime';
 import CountDown from '../../../components/countDown';
 
+import stadiumService from '../../../coreLayer/service/stadiumService';
+
 class BookOnline extends React.Component {
 
     constructor(props) {
@@ -262,11 +264,14 @@ class BookOnline extends React.Component {
     }
 
     handleCancel = async () => {
-        const result = await BookingService.deleteByBillId(this.props.Auth.idToken, this.state.billId);
-        
+        // const result = await BookingService.deleteByBillId(this.props.Auth.idToken, this.state.billId);
+
+        // console.log(result);
+        // this.props.refreshData();
+        // this.hideModal();
+
+        const result = await stadiumService.getById(1);
         console.log(result);
-        this.props.refreshData();
-        this.hideModal();
     }
 
     handleChange = e => {
