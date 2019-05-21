@@ -99,6 +99,7 @@ class Blackout extends React.Component {
                         <InputDateTime
                             id='startDate'
                             style={{ display: 'flex' }}
+                            dateContainerStyle={{ display: 'flex', flex: 1, marginRight: 10 }}
                             minute={start.minute}
                             hour={start.hour}
                             date={start.date}
@@ -110,6 +111,7 @@ class Blackout extends React.Component {
                         <InputDateTime
                             id='endDate'
                             style={{ display: 'flex' }}
+                            dateContainerStyle={{ display: 'flex', flex: 1, marginRight: 10 }}
                             minute={end.minute}
                             hour={end.hour}
                             date={end.date}
@@ -194,19 +196,19 @@ class Blackout extends React.Component {
         modal.detail = blackout.detail;
         modal.isOpen = true;
 
-        this.setState({modal});
+        this.setState({ modal });
     }
 
     hideModal = () => {
         const { modal } = this.state;
         modal.isOpen = false;
-        this.setState({modal})
+        this.setState({ modal })
     }
 
     toggleModal = () => {
         const { modal } = this.state;
         modal.isOpen = !modal.isOpen;
-        this.setState({modal})
+        this.setState({ modal })
     }
 }
 
