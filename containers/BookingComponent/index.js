@@ -24,7 +24,7 @@ class BookingComponent extends React.Component {
                     borderRadius: 5
                 }}>
                     <h2 >
-                        No service on {moment(selectedDate).format('dddd').toLowerCase()}s
+                        No service on {moment(selectedDate).format('dddd')}s
                     </h2>
                 </Card>
             )

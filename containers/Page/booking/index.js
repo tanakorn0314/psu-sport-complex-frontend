@@ -307,8 +307,6 @@ class BookOnline extends React.Component {
 
         const result = await this.props.confirmTransaction(idToken, billId, transactionInfo);
 
-        console.log(result);
-
         if (result.error) {
             notification['error']({
                 title: 'Error',
