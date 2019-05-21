@@ -106,8 +106,11 @@ class BookingSlot extends React.Component {
         if (isBooked || isPassed)
             return;
 
+        const end = moment(start, 'HH:mm').add(30, 'minute').format('HH:mm');
+
         this.props.onSelect && this.props.onSelect({
             start,
+            end,
             court,
             selected: !selected
         })

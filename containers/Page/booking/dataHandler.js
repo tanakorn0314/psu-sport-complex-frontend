@@ -1,36 +1,13 @@
-import initData from './initData';
 import moment from 'moment';
-
-const { durations } = initData;
-
-function handleDateInfo(date, start, durationIndex) {
-    const [inputHour, inputMinute] = start.split('.');
-
-    const startTime = new Date(date);
-    startTime.setHours(+inputHour, +inputMinute, 0, 0, 0);
-
-    const finishTime = new Date(date);
-    finishTime.setHours(
-        durations[durationIndex][1] + parseInt(inputHour),
-        durations[durationIndex][2] + parseInt(inputMinute),
-        0,
-        0,
-        0
-    );
-
-    return {
-        startDate: startTime.toISOString(),
-        endDate: finishTime.toISOString()
-    }
-}
 
 function toBookManyDto(bookingList, userId, stadiumId, date) {
     const bookManyDTO = bookingList.map((booking) => {
-        const { court, start } = booking;
-        const [hour, minute] = start.split(':'); 
+        const { court, start, end } = booking;
+        const [sHour, sMinute] = start.split(':'); 
+        const [eHour, eMinute] = end.split(':');
 
-        const startDate = moment(date).hour(+hour).minute(+minute).second(0).millisecond(0);
-        const endDate = moment(date).hour(+hour).minute(+minute + 30).second(0).millisecond(0);
+        const startDate = moment(date).hour(+sHour).minute(+sMinute).second(0).millisecond(0).format();
+        const endDate = moment(date).hour(+eHour).minute(+eMinute).second(0).millisecond(0).format();
 
         const bookingInfo = {
             title: '',
@@ -38,8 +15,8 @@ function toBookManyDto(bookingList, userId, stadiumId, date) {
             userId,
             stadiumId,
             courtId: court + 1,
-            startDate: startDate.toISOString(true).slice(0, 19)+'.000Z',
-            endDate: endDate.toISOString(true).slice(0, 19)+'.000Z'
+            startDate,
+            endDate
         }
 
         return bookingInfo;
@@ -49,6 +26,5 @@ function toBookManyDto(bookingList, userId, stadiumId, date) {
 }
 
 export default {
-    handleDateInfo,
     toBookManyDto
 }

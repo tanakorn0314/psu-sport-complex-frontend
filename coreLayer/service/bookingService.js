@@ -93,7 +93,8 @@ const deleteByBillId = async (accessToken, billId) => {
     const options = {
         method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + accessToken,
+            'Content-Type': 'application/json'
         }
     }
     const response = await fetch(url, options);

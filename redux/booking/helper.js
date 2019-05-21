@@ -1,5 +1,6 @@
 import BookingService from '../../coreLayer/service/bookingService';
 import jwtDecode from 'jwt-decode';
+import _ from 'lodash';
 import moment from 'moment';
 
 async function collectBookingData(store, stadiumId) {
@@ -35,12 +36,12 @@ async function getMyBooking(token) {
 }
 
 function handleSelect(prevBooking, selectData) {
-    const { start, court, selected } = selectData;
+    const { start, end, court, selected } = selectData;
     let result = { ...prevBooking };
     if (selected) {
         if (!result[start])
             result[start] = [];
-        result[start][court] = { start, court };
+        result[start][court] = { start, end, court };
     } else {
         result[start][court] = null;
     }
@@ -49,58 +50,83 @@ function handleSelect(prevBooking, selectData) {
 }
 
 function manageBookingList(selectedBookings) {
-    const bookingList = [];
-    Object.values(selectedBookings).forEach(bookings => {
-        bookings && bookings.forEach((booking) => {
-            booking && bookingList.push(booking);
-        })
+    let bookingList = [];
+    let bookingCourt = [];
+
+    Object.entries(selectedBookings).sort().forEach(([time, bookings]) => {
+        if (bookings) {
+            bookings.forEach((booking, i) => {
+                if (booking) {
+                    if (!bookingCourt[i])
+                        bookingCourt[i] = [];
+                    const lastIdx = bookingCourt[i].length - 1;
+                    const lastBookingCourt = bookingCourt[i][lastIdx];
+                    if (!lastBookingCourt) {
+                        bookingCourt[i].push(booking);
+                    } else {
+                        const { end: end1 } = lastBookingCourt;
+                        const { start, end: end2 } = booking;
+                        const mStart = moment(start, 'HH:mm');
+                        const mEnd = moment(end1, 'HH:mm');
+                        if (mStart.isSame(mEnd, 'minute') && mStart.isSame(mEnd, 'hour')) {
+                            bookingCourt[i][lastIdx] = { ...lastBookingCourt, end: end2 };
+                        } else {
+                            bookingCourt[i].push(booking);
+                        }
+                    }
+                }
+            })
+        }
     })
+
+    bookingCourt.forEach((booking) => { booking.forEach(b => { bookingList.push(b) }) })
+
     return bookingList;
 }
 
 function calculateBookingFee(userPosition, booking, stadium) {
     if (!booking)
-      return 0;
+        return 0;
 
-      const { startDate, endDate } = booking;
-      let hrDiff = moment(endDate).diff(moment(startDate), 'hour');
-      let minDiff = moment(endDate).diff(moment(startDate), 'minute') % 60 >= 30 ? 0.5 : 0;
-    
-      let duration = hrDiff + minDiff;
+    const { startDate, endDate } = booking;
+    let hrDiff = moment(endDate).diff(moment(startDate), 'hour');
+    let minDiff = moment(endDate).diff(moment(startDate), 'minute') % 60 >= 30 ? 0.5 : 0;
 
-      switch (userPosition) {
+    let duration = hrDiff + minDiff;
+
+    switch (userPosition) {
         case 'general public': return stadium.costPublic * duration;
         case 'member': return stadium.costMember * duration;
         case 'staff': return stadium.costStaff * duration;
-        case 'student': return stadium.costStudent *duration;
+        case 'student': return stadium.costStudent * duration;
         default: return 0;
-      }
-  }
+    }
+}
 
-  function calculateBookingsFee(userPosition, bookings, stadium) {
+function calculateBookingsFee(userPosition, bookings, stadium) {
     if (!bookings || bookings.length <= 0)
-      return 0;
+        return 0;
 
     let sumFee = bookings.reduce((sum, booking) => sum + this.calculateBookingFee(userPosition, booking, stadium), 0);
-    
+
     return sumFee;
-  }
+}
 
-  function calculateSlotFee(userPosition, slots, stadium) {
+function calculateSlotFee(userPosition, slots, stadium) {
     if (!slots || slots.length <= 0)
-      return 0;
-    
-      // length half hour
-      let l = slots.length * 0.5;
+        return 0;
 
-      switch (userPosition) {
+    // length half hour
+    let l = slots.length * 0.5;
+
+    switch (userPosition) {
         case 'general public': return stadium.costPublic * l;
         case 'member': return stadium.costMember * l;
         case 'staff': return stadium.costStaff * l;
-        case 'student': return stadium.costStudent *l;
+        case 'student': return stadium.costStudent * l;
         default: return 0;
-      }
-  }
+    }
+}
 
 export default {
     collectBookingData,
