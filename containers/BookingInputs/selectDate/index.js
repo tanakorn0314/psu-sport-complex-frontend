@@ -29,8 +29,6 @@ class SelectDate extends React.Component {
         super(props);
         const defaultDate = moment(props.Booking.selectedDate);
 
-        console.log(defaultDate);
-
         const day = defaultDate ? defaultDate.get('date') : 1;
         const month = defaultDate ? defaultDate.get('month') : 0;
         const year = defaultDate ? defaultDate.get('year') : 1999;

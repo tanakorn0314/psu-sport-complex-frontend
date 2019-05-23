@@ -8,8 +8,6 @@ export default ComposedComponent => {
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
             const token = getToken(ctx.req);
 
-            console.log(token);
-
             // if (token && token !== 'undefined') {
             //     redirect(ctx, '/');
             // }

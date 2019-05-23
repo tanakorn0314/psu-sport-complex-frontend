@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row } from 'antd';
+import { Row, List } from 'antd';
 
 export const StyledRow = styled(Row)`
     padding-right: 12px;
@@ -34,4 +34,9 @@ export const CourtDetailRow = styled.div`
     flex-wrap: wrap;
     width: 100%;
     justify-content: space-between;
+`
+export const StyledList = styled(List)`
+    ul.ant-list-items {
+        padding-left: 0;
+    }
 `

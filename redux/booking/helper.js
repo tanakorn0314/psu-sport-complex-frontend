@@ -24,6 +24,11 @@ async function reserveMany(token, bookManyDTO) {
     return res;
 }
 
+async function updateBooking(token, bookingId, dto) {
+    const res = await BookingService.updateBooking(token, bookingId, dto);
+    return res;
+}
+
 async function remove(token, bookingId) {
     const res = await BookingService.deleteBooking(token, bookingId);
     return res;
@@ -132,6 +137,7 @@ export default {
     collectBookingData,
     reserve,
     reserveMany,
+    updateBooking,
     remove,
     getMyBooking,
     handleSelect,

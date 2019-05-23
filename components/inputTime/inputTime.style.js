@@ -5,12 +5,6 @@ const StyledWrapper = styled.div`
     width: 100%;
     .ant-select {
         min-width: 64px;
-        &:first-child {
-            margin-right: 10px;
-        }
-        &:last-child {
-            margin-left: 10px;
-        }
     }
 `;
 

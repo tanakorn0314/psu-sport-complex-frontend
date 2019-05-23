@@ -59,7 +59,6 @@ class DateSlider extends React.Component {
     }
 
     handleScroll = e => {
-        console.log(e.nativeEvent.target);
     }
 }
 

@@ -10,64 +10,74 @@ class InputTime extends React.Component {
 
     constructor(props) {
         super(props);
-        const defaultDate = props.defaultValue;
+        const { value } = props;
 
-        const minute = defaultDate ? defaultDate.minute() : 0;
-        const hour = defaultDate ? defaultDate.hour() : 0;
+        const minute = value ? moment(value).minute() : 0;
+        const hour = value ? moment(value).hour() : 0;
 
         this.state = {
             hour,
             minute,
         }
-    
-        this.updateTime();
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { value } = nextProps;
+
+        const minute = value ? moment(value).minute() : 0;
+        const hour = value ? moment(value).hour() : 0;
+
+        this.setState({ hour, minute })
     }
 
     render() {
-        const { hour, minute } = this.state;
+        const { value } = this.props;
+
+        const minute = value ? moment(value).minute() : 0;
+        const hour = value ? moment(value).hour() : 0;
+
         return (
             <StyledWarpper style={this.props.style}>
                 <Select
                     defaultValue={hour}
+                    value={hour}
                     onChange={this.changeHour}
                     disabled={this.props.disabled}
                 >
                     {_.range(0, 24).map((hour) => (
-                        <SelectOption key={hour} value={hour}>{hour.toString().padStart(2,'0')}</SelectOption>
+                        <SelectOption key={hour} value={hour}>{hour.toString().padStart(2, '0')}</SelectOption>
                     ))}
                 </Select>
-                <h2>:</h2>
+                <div style={{ fontWeight: 'bold', marginLeft: 5, marginRight: 5 }}>:</div>
                 <Select
                     defaultValue={minute}
+                    value={minute}
                     onChange={this.changeMinute}
                     disabled={this.props.disabled}
                 >
-                    {_.range(0, 60).map((minute) => (
-                        <SelectOption key={minute} value={minute}>{minute.toString().padStart(2,'0')}</SelectOption>
+                    {[0, 30].map((minute) => (
+                        <SelectOption key={minute} value={minute}>{minute.toString().padStart(2, '0')}</SelectOption>
                     ))}
                 </Select>
             </StyledWarpper>
         )
     }
 
-    updateTime = () => {
+    changeMinute = (value) => {
         const { hour, minute } = this.state;
-        const time = moment();
-        time.set('hour', hour);
-        time.set('minute', minute);
-        this.props.onChange && this.props.onChange(time)
+        if (minute === value) return;
+
+        this.setState({ minute: value });
+        this.props.onChange && this.props.onChange(moment().hour(hour).minute(value));
     }
 
-    changeHour = hour => {
-        this.setState({ hour }, () => {
-            this.updateTime();
-        })
-    }
+    changeHour = (value) => {
+        const { hour, minute } = this.state;
+        if (hour === value) return;
 
-    changeMinute = minute => {
-        this.setState({ minute }, () => {
-            this.updateTime();
-        })
+        this.setState({ hour: value })
+        this.props.onChange && this.props.onChange(moment().hour(value).minute(minute));
     }
 
 }

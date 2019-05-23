@@ -36,6 +36,12 @@ const actions = {
     await refreshBooking(dispatch, getState);
     return result;
   },
+  updateBooking: (bookingId, dto) => async (dispatch, getState) => {
+    const { idToken } = getState().Auth;
+    const result = await Booking.updateBooking(idToken, bookingId, dto);
+    await refreshBooking(dispatch, getState);
+    return result;
+  },
   remove: (token, bookingId) => async (dispatch, getState) => {
     const result = await Booking.remove(token, bookingId);
     await refreshBooking(dispatch, getState);

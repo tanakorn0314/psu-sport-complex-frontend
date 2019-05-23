@@ -128,8 +128,6 @@ class SignIn extends React.Component {
         }
         const result = await this.props.login(userInfo);
 
-        console.log(result);
-
         this.setState({loading: false});
         
         if (result.error) {

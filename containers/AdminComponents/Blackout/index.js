@@ -12,9 +12,6 @@ class Blackout extends React.Component {
         const tomorrow = moment().add(1, 'day').hour(0).minute(0);
         const nextDay = moment().add(1, 'day').hour(23).minute(59);
 
-        console.log(tomorrow.month())
-        console.log(tomorrow.format());
-
         this.state = {
             start: {
                 minute: tomorrow.minute(),

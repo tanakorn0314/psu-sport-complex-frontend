@@ -82,7 +82,7 @@ class BookOnline extends React.Component {
                     <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Spin tip='Loading...' size='large' />
                     </div> :
-                    [<Row>
+                    [<Row key={0}>
                         <Col className='select-date' xs={{ order: 2, span: 24 }} sm={12} md={12} lg={12} xl={12}>
                             {isMobile ? <SelectDate style={{ display: 'flex', justifyContent: 'center' }} /> : <InputDate />}
                         </Col>
@@ -90,7 +90,7 @@ class BookOnline extends React.Component {
                             <SelectStadium style={{ width: isMobile ? '100%' : 200 }} />
                         </Col>
                     </Row>,
-                    <div>
+                    <div key={1}>
                         <BookingComponent />
                     </div>
                     ]

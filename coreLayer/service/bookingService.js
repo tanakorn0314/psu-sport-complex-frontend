@@ -7,8 +7,7 @@ const getAll = async (accessToken) => {
     const options = {
         headers: { 'Authorization': 'bearer ' + accessToken }
     }
-    const response = await fetch(url, options);
-    return await response.json();
+    return await fetch(url, options).then((response) => response.json());
 }
 
 const getById = async (accessToken, id) => {
@@ -16,8 +15,7 @@ const getById = async (accessToken, id) => {
     const options = {
         headers: { 'Authorization': 'bearer ' + accessToken }
     }
-    const response = await fetch(url, options);
-    return await response.json();
+    return await fetch(url, options).then((response) => response.json());
 }
 
 const getByUserId = async (accessToken, userId) => {
@@ -56,8 +54,7 @@ const book = async (accessToken, bookingInfo) => {
         },
         body: JSON.stringify(body)
     }
-    const response = await fetch(url, options);
-    return await response.json();
+    return await fetch(url, options).then((response) => response.json());
 }
 
 const bookMany = async (accessToken, bookManyDTO) => {
@@ -71,8 +68,21 @@ const bookMany = async (accessToken, bookManyDTO) => {
         },
         body: JSON.stringify(body)
     }
-    const response = await fetch(url, options);
-    return await response.json();
+    return await fetch(url, options).then((response) => response.json());
+}
+
+const updateBooking = async (accessToken, bookingId, dto) => {
+    const url = `${bookingApi}/${bookingId}`;
+    const body = dto;
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Authorization': 'bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+    return await fetch(url, options).then((response) => response.json());
 }
 
 const deleteBooking = async (accessToken, bookingId) => {
@@ -84,8 +94,7 @@ const deleteBooking = async (accessToken, bookingId) => {
             'Content-Type': 'application/json'
         }
     }
-    const response = await fetch(url, options);
-    return await response.json();
+    return await fetch(url, options).then((response) => response.json());
 }
 
 const deleteByBillId = async (accessToken, billId) => {
@@ -97,8 +106,7 @@ const deleteByBillId = async (accessToken, billId) => {
             'Content-Type': 'application/json'
         }
     }
-    const response = await fetch(url, options);
-    return await response.json();
+    return await fetch(url, options).then((response) => response.json());
 }
 
 const uploadSlip = async (accessToken, formData, bookingId) => {
@@ -121,6 +129,7 @@ export default {
     getByStadiumId,
     book,
     bookMany,
+    updateBooking,
     uploadSlip,
     deleteBooking,
     deleteByBillId

@@ -152,7 +152,6 @@ class UserList extends React.Component {
   })
 
   renderModal = () => {
-    console.log('Test');
     const { startDate, endDate, amount } = this.state;
     return (
       <div>

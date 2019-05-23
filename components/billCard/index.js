@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledRow, CourtDetailRow } from './style';
+import { StyledRow, CourtDetailRow, StyledList } from './style';
 import { Col, Collapse, List, Button } from 'antd';
 import moment from 'moment';
 
@@ -43,36 +43,43 @@ class BillCard extends React.Component {
 
     renderCourtDetails = (bookings) => {
         const courtDetails = [];
-        bookings.forEach((booking, index) => {
+        bookings.forEach((booking) => {
             const { courtId } = booking;
             if (!courtDetails[courtId - 1])
                 courtDetails[courtId - 1] = [];
-            courtDetails[courtId - 1].push(booking.startDate);
-        })
+            courtDetails[courtId - 1].push(booking);
+        });
+        
         return courtDetails.map((courtDetail, num) => {
             return (
-                <List
+                <StyledList
                     key={num}
                     header={<h4 style={{ marginBottom: 0 }}>{`Court ${num + 1}`}</h4>}
                     dataSource={courtDetail}
-                    renderItem={item => this.renderCourtDetail(item)}
+                    renderItem={(item) => this.renderCourtDetail(item)}
                 />
             )
         })
     }
 
     renderCourtDetail = (item) => {
-        const endTime = moment(item).clone().add(30, 'minutes');
+        const { startDate, endDate } = item;
+        const isPassed = moment(startDate).diff(moment()) <= 0;
+
         return (
             <List.Item>
                 <CourtDetailRow>
                     <div>
-                        {`${moment(item).parseZone().format('MMMM D, YYYY HH:mm')} - ${endTime.parseZone().format('HH:mm')}`}
+                        {`${moment(startDate).format('MMMM D, YYYY HH:mm')} - ${moment(endDate).format('HH:mm')}`}
                     </div>
-                    <Button size='small'>Edit</Button>
+                    <Button size='small' onClick={() => {this.handleEdit(item)}} disabled={isPassed}>Edit</Button>
                 </CourtDetailRow>
             </List.Item>
         )
+    }
+
+    handleEdit = item => {
+        this.props.onEdit && this.props.onEdit(item);
     }
 }
 
