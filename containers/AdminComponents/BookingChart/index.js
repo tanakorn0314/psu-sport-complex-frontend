@@ -20,7 +20,7 @@ class BookingChart extends React.Component {
                     <div style={{ width: '40%' }}>
                         {this.renderBar()}
                     </div>
-                    <div style={{ width: '18%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                    <div style={{ width: '18%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                         <h1 style={{ fontSize: 36, fontWeight: 'bold' }}>Total</h1>
                         <CountUp
                             start={0}

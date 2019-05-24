@@ -63,7 +63,7 @@ const actions = {
     const stadium = stadiums[stadiumId - 1];
     const currentBookings = Booking.handleSelect(prevBookings, data);
     const bookingList = Booking.manageBookingList(currentBookings);
-    const fee = Booking.calculateSlotFee(owner.position, bookingList, stadium);
+    const fee = Booking.calculateBookingsFee(owner.position, bookingList, stadium);
 
     dispatch({
       type: actions.SELECT_BOOKING,
@@ -101,7 +101,7 @@ const actions = {
 
     const stadium = stadiums[stadiumId - 1];
 
-    const fee = Booking.calculateSlotFee(position, bookingList, stadium);
+    const fee = Booking.calculateBookingsFee(position, bookingList, stadium);
     const owner = { ...o, position };
 
     dispatch({ type: actions.SET_FEE, fee });

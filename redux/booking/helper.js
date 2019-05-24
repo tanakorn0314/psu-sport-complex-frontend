@@ -93,9 +93,15 @@ function calculateBookingFee(userPosition, booking, stadium) {
     if (!booking)
         return 0;
 
-    const { startDate, endDate } = booking;
-    let hrDiff = moment(endDate).diff(moment(startDate), 'hour');
-    let minDiff = moment(endDate).diff(moment(startDate), 'minute') % 60 >= 30 ? 0.5 : 0;
+    const format = 'HH:mm';
+
+    const { start, end } = booking;
+
+    const mStart = moment(start, format);
+    const mEnd = moment(end, format);
+
+    let hrDiff = mEnd.diff(mStart, 'hour');
+    let minDiff = mEnd.diff(mStart, 'minute') % 60 >= 30 ? 0.5 : 0;
 
     let duration = hrDiff + minDiff;
 
