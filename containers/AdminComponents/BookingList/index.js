@@ -48,15 +48,15 @@ class BookingList extends React.Component {
         }];
         const data = displayBookings.map((booking, index) => {
                 const { stadiums } = this.props.Stadium;
-                const { owner, stadiumId, courtId, startDate, endDate } = booking;
+                const { ownerName, ownerInfo, ownerPosition, stadiumId, courtId, startDate, endDate } = booking;
                 const stadium = stadiums[stadiumId - 1];
-                const userId = owner.phoneNumber.length > 0 ? owner.phoneNumber : owner.psuPassport;
+                const userId = ownerInfo;
                 const startTime = moment(startDate).parseZone().format('HH:mm');
                 const endTime = moment(endDate).parseZone().format('HH:mm');
                 return {
                     no: index + 1,
                     key: index,
-                    name: `${owner.fname} ${owner.lname}`,
+                    name: ownerName,
                     userId,
                     stadium: `${stadium.name} ${courtId}`,
                     playDate: moment(startDate).parseZone().format('MMMM DD, YYYY'),

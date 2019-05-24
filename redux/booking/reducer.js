@@ -8,7 +8,13 @@ const initState = {
     selectedBooking: {},
     bookingList: [],
     fee: 0,
-    selectedDate: moment()
+    selectedDate: moment(),
+    bottomActionVisible: false,
+    owner: {
+        name: '',
+        info: '',
+        position: ''
+    }
 };
 
 export default function bookingReducer(state = initState, action) {
@@ -49,6 +55,21 @@ export default function bookingReducer(state = initState, action) {
             }
         case actions.FETCH_BOOKING_ERROR:
             return initState;
+        case actions.SET_BOTTOM_ACTION_VISIBLE:
+            return {
+                ...state,
+                bottomActionVisible: action.visible
+            }
+        case actions.SET_OWNER:
+            return {
+                ...state,
+                owner: action.owner
+            }
+        case actions.SET_FEE:
+            return {
+                ...state,
+                fee: action.fee
+            }
         default:
             return state;
     }

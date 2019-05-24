@@ -43,9 +43,9 @@ const getByStadiumId = async (stadiumId) => {
     return await response.json();
 }
 
-const book = async (accessToken, bookingInfo) => {
+const book = async (accessToken, bookManyDTO) => {
     const url = bookingApi;
-    const body = {...bookingInfo};
+    const body = bookManyDTO;
     const options = {
         method: 'POST',
         headers: {
@@ -57,9 +57,9 @@ const book = async (accessToken, bookingInfo) => {
     return await fetch(url, options).then((response) => response.json());
 }
 
-const bookMany = async (accessToken, bookManyDTO) => {
-    const url = `${bookingApi}/many`;
-    const body = bookManyDTO;
+const bookByAdmin = async (accessToken, bookByAdminDTO) => {
+    const url = `${bookingApi}/admin`;
+    const body = bookByAdminDTO;
     const options = {
         method: 'POST',
         headers: {
@@ -128,7 +128,7 @@ export default {
     getByCourtId,
     getByStadiumId,
     book,
-    bookMany,
+    bookByAdmin,
     updateBooking,
     uploadSlip,
     deleteBooking,

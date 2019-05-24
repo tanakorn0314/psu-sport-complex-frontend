@@ -8,10 +8,16 @@ class OperationTimeDay extends React.Component {
     constructor(props) {
         super(props);
         const { value } = props;
+        const sStart = value ? value.start : '00:00';
+        const sEnd = value ? value.end : '00:00';
+
+        const start = moment(sStart, 'HH:mm');
+        const end = moment(sEnd, 'HH:mm');
+
         this.state = {
             checked: !!value,
-            start: value ? value.start : '00:00',
-            end: value ? value.end : '00:00',
+            start,
+            end
         }
     }
 
@@ -33,13 +39,13 @@ class OperationTimeDay extends React.Component {
         const disabled = !checked;
         return [
             <Col>
-                <InputTime defaultValue={moment(start, format)} disabled={disabled} onChange={this.handleChangeStart} />
+                <InputTime value={start} disabled={disabled} onChange={this.handleChangeStart} />
             </Col>,
             <Col>
                 -
             </Col>,
             <Col>
-                <InputTime defaultValue={moment(end, format)} disabled={disabled} onChange={this.handleChangeEnd} />
+                <InputTime value={end} disabled={disabled} onChange={this.handleChangeEnd} />
             </Col>
         ]
     }
@@ -51,25 +57,20 @@ class OperationTimeDay extends React.Component {
         });
     }
 
-    handleChangeStart = (v) => {
-        const value = v.format('HH:mm');
-        this.setState({ start: value }, () => {
-            this.updateValue();
-        });
-
+    handleChangeStart = (start) => {
+        this.setState({start} , () => {this.updateValue()});
     }
 
-    handleChangeEnd = (v) => {
-        const value = v.format('HH:mm');
-        this.setState({ end: value }, () => {
-            this.updateValue();
-        });
+    handleChangeEnd = (end) => {
+        this.setState({end}, () => {this.updateValue()});
     }
 
     updateValue = () => {
         const { start, end, checked } = this.state;
         const { name } = this.props;
-        const value = checked ? { start, end } : null;
+
+
+        const value = checked ? { start: start.format('HH:mm'), end: end.format('HH:mm') } : null;
         this.props.onChange && this.props.onChange(name, value);
     }
 }

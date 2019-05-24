@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import StyledRow from './style';
 import BookingAction from '../../redux/booking/actions';
-import BookingSlot from '../../components/bookingSlot';
+import BookingSlot from '../BookingSlot';
 
 class BookingCard extends React.Component {
     render() {
@@ -47,7 +47,7 @@ class BookingCard extends React.Component {
                             }
 
                             return (
-                                <BookingSlot key={num} index={num} dataSource={data} onSelect={this.handleSelect} />
+                                <BookingSlot key={num} index={num} dataSource={data} />
                             )
                         })
                     }
@@ -56,9 +56,6 @@ class BookingCard extends React.Component {
         )
     }
 
-    handleSelect = async data => {
-        await this.props.selectBooking(data);
-    }
 }
 
 export default connect(

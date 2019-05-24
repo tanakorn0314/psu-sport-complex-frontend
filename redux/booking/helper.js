@@ -14,13 +14,13 @@ async function collectBookingData(store, stadiumId) {
     return res;
 }
 
-async function reserve(token, bookingInfo) {
-    const res = await BookingService.book(token, bookingInfo);
+async function reserve(token, bookManyDTO) {
+    const res = await BookingService.book(token, bookManyDTO);
     return res;
 }
 
-async function reserveMany(token, bookManyDTO) {
-    const res = await BookingService.bookMany(token, bookManyDTO);
+async function reserveByAdmin(token, bookAdminDTO) {
+    const res = await BookingService.bookByAdmin(token, bookAdminDTO);
     return res;
 }
 
@@ -136,7 +136,7 @@ function calculateSlotFee(userPosition, slots, stadium) {
 export default {
     collectBookingData,
     reserve,
-    reserveMany,
+    reserveByAdmin,
     updateBooking,
     remove,
     getMyBooking,

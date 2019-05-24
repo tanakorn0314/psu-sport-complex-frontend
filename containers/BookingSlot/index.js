@@ -1,5 +1,7 @@
 import React from 'react';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import BookingAction from '../../redux/booking/actions';
 import {
     SlotTitle,
     Slot,
@@ -90,7 +92,7 @@ class BookingSlot extends React.Component {
                 <>
                     Booked<br />
                     by<br />
-                    {bookingData && bookingData.owner.fname}
+                    {bookingData && bookingData.ownerName}
                 </>
             )
         if (isPassed)
@@ -102,19 +104,22 @@ class BookingSlot extends React.Component {
 
     toggleSelect = () => {
         let { court, start, selected, isPassed, isBooked } = this.state;
+        const { idToken } = this.props.Auth;
 
-        if (isBooked || isPassed)
+        this.props.setBottomActionVisible(true);
+
+        if (isBooked || isPassed || !idToken)
             return;
 
         const end = moment(start, 'HH:mm').add(30, 'minute').format('HH:mm');
 
-        this.props.onSelect && this.props.onSelect({
+        this.props.selectBooking({
             start,
             end,
             court,
             selected: !selected
-        })
+        });
     }
 }
 
-export default BookingSlot;
+export default connect(state => state, BookingAction)(BookingSlot);

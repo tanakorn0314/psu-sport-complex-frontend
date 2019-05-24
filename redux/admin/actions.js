@@ -54,20 +54,19 @@ const dispatcher = {
 
         Object.values(bookings).forEach((stadiumBookings) => {
             stadiumBookings.forEach((booking) => {
-                const { startDate, endDate, owner } = booking;
-                const { phoneNumber, psuPassport, fname, position } = owner;
+                const { startDate, endDate, ownerName, ownerInfo, ownerPosition } = booking;
                 const stadium = stadiums[booking.stadiumId - 1];
 
                 const checkStadiumId = stadiumId === 0 || stadiumId === booking.stadiumId;
                 const inStartRange = moment(start).isSameOrBefore(startDate);
                 const inEndRange = moment(end).isSameOrAfter(endDate);
-                const startwithPhoneNo = userId.length === 0 || phoneNumber.startsWith(userId) || psuPassport.startsWith(userId);
-                const startWithName = name.length === 0 || fname.startsWith(name);
+                const startwithPhoneNo = userId.length === 0 || ownerInfo.startsWith(userId);
+                const startWithName = name.length === 0 || ownerName.startsWith(name);
                 const checkStatus = status === 'all' || status === booking.status;
 
                 if (checkStadiumId && inStartRange && inEndRange && startwithPhoneNo && startWithName && checkStatus) {
                     filteredBooking.push(booking);
-                    fee += bookingHelper.calculateBookingFee(position, booking, stadium);
+                    fee += bookingHelper.calculateBookingFee(ownerPosition, booking, stadium);
                 }
             })
         })
@@ -83,18 +82,17 @@ function createCSV(bookings, stadiums) {
     csvData.push(['No', 'Name', 'PhoneNo / PSUPassport', 'Stadium', 'Play Date', 'time', 'Fee']);
 
     bookings.forEach((booking, index) => {
-        const { owner, startDate, endDate, stadiumId, courtId, fee } = booking;
-        const { fname, lname, phoneNumber, psuPassport } = owner;
+        const { ownerName, ownerInfo, startDate, endDate, stadiumId, courtId, fee } = booking;
         const stadium = stadiums[stadiumId - 1];
 
-        const userId = phoneNumber.length > 0 ? phoneNumber : psuPassport;
+        const userId = ownerInfo;
         const playDate = moment(startDate).parseZone().format('MMMM DD, YYYY');
         const startTime = moment(startDate).parseZone().format('HH:mm');
         const endTime = moment(endDate).parseZone().format('HH:mm');
 
         csvData.push([
             index + 1,
-            `${fname} ${lname}`,
+            ownerName,
             userId,
             `${stadium.name} ${courtId}`,
             playDate,

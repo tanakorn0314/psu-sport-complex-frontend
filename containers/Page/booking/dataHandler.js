@@ -1,18 +1,19 @@
 import moment from 'moment';
 
-function toBookManyDto(bookingList, userId, stadiumId, date) {
-    const bookManyDTO = bookingList.map((booking) => {
+function toBookingDTO(bookingList, userId, owner, stadiumId, date) {
+    const bookByAdminDTO = bookingList.map((booking) => {
         const { court, start, end } = booking;
-        const [sHour, sMinute] = start.split(':'); 
-        const [eHour, eMinute] = end.split(':');
 
-        const startDate = moment(date).hour(+sHour).minute(+sMinute).second(0).millisecond(0).format();
-        const endDate = moment(date).hour(+eHour).minute(+eMinute).second(0).millisecond(0).format();
+        const startDate = convertDate(date, start);
+        const endDate = convertDate(date, end);
 
         const bookingInfo = {
             title: '',
             description: '',
             userId,
+            ownerName: owner.name,
+            ownerInfo: owner.info,
+            ownerPosition: owner.position,
             stadiumId,
             courtId: court + 1,
             startDate,
@@ -22,9 +23,14 @@ function toBookManyDto(bookingList, userId, stadiumId, date) {
         return bookingInfo;
     })
 
-    return bookManyDTO;
+    return bookByAdminDTO;
+}
+
+function convertDate(date, time) {
+    const [hour, minute] = time.split(':');
+    return moment(date).hour(+hour).minute(+minute).second(0).millisecond(0).format();
 }
 
 export default {
-    toBookManyDto
+    toBookingDTO
 }

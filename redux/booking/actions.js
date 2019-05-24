@@ -12,6 +12,9 @@ const actions = {
   SELECT_BOOKING: 'SELECT_BOOKING',
   DELETE_BOOKING: 'DELETE_BOOKING',
   SELECT_DATE: 'SELECT_DATE',
+  SET_OWNER: 'SET_OWNER',
+  SET_FEE: 'SET_FEE',
+  SET_BOTTOM_ACTION_VISIBLE: 'SET_BOTTOM_ACTION_VISIBLE',
   fetchAllBooking: () => async (dispatch, getState) => {
     const { stadiums } = getState().Stadium;
     for (let i = 1; i <= stadiums.length; i++) {
@@ -26,13 +29,13 @@ const actions = {
     }
     return result;
   },
-  reserve: (token, bookingInfo) => async (dispatch, getState) => {
-    const result = await Booking.reserve(token, bookingInfo);
+  reserve: (token, bookManyDTO) => async (dispatch, getState) => {
+    const result = await Booking.reserve(token, bookManyDTO);
     await refreshBooking(dispatch, getState);
     return result;
   },
-  reserveMany: (token, bookManyDTO) => async (dispatch, getState) => {
-    const result = await Booking.reserveMany(token, bookManyDTO);
+  reserveByAdmin: (token, bookByAdminDTO) => async (dispatch, getState) => {
+    const result = await Booking.reserveByAdmin(token, bookByAdminDTO);
     await refreshBooking(dispatch, getState);
     return result;
   },
@@ -54,26 +57,28 @@ const actions = {
     return result;
   },
   selectBooking: (data) => async (dispatch, getState) => {
-    const user = getState().Auth.profile;
-    const stadiumId = getState().Booking.stadiumId;
-    const stadium = getState().Stadium.stadiums[stadiumId - 1];
-    const prevBookings = getState().Booking.selectedBooking;
+    const { stadiumId, selectedBooking: prevBookings, owner } = getState().Booking;
+    const { stadiums } = getState().Stadium;
+
+    const stadium = stadiums[stadiumId - 1];
     const currentBookings = Booking.handleSelect(prevBookings, data);
     const bookingList = Booking.manageBookingList(currentBookings);
-    const fee = Booking.calculateSlotFee(user.position, bookingList, stadium);
+    const fee = Booking.calculateSlotFee(owner.position, bookingList, stadium);
+
     dispatch({
       type: actions.SELECT_BOOKING,
       selectedBooking: currentBookings,
       bookingList,
       fee
     });
+
     return currentBookings;
   },
   confirmTransaction: (accessToken, billId, transactionInfo) => async (dispatch, getState) => {
     const result = await BillService.confirm(accessToken, billId, transactionInfo);
-    if (result.error) 
+    if (result.error)
       return result;
-    
+
     refreshBooking(dispatch, getState);
 
     return result;
@@ -81,8 +86,26 @@ const actions = {
   selectDate: (date) => async (dispatch, getState) => {
     dispatch({ type: actions.SELECT_DATE, selectedDate: date });
   },
+  setBottomActionVisible: (visible) => (dispatch) => {
+    dispatch({ type: actions.SET_BOTTOM_ACTION_VISIBLE, visible });
+  },
   refreshData: () => async (dispatch, getState) => {
     refreshBooking(dispatch, getState);
+  },
+  setOwner: (owner) => async (dispatch) => {
+    dispatch({ type: actions.SET_OWNER, owner });
+  },
+  setOwnerPosition: (position) => async (dispatch, getState) => {
+    const { stadiumId, bookingList, owner: o } = getState().Booking;
+    const { stadiums } = getState().Stadium;
+
+    const stadium = stadiums[stadiumId - 1];
+
+    const fee = Booking.calculateSlotFee(position, bookingList, stadium);
+    const owner = { ...o, position };
+
+    dispatch({ type: actions.SET_FEE, fee });
+    dispatch({ type: actions.SET_OWNER, owner });
   }
 };
 

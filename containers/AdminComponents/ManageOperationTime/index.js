@@ -43,7 +43,7 @@ class ManageOperationTime extends React.Component {
     renderOperationTime = () => {
         const { operationTimes } = this.props.OperationTime;
         return Object.entries(operationTimes).map(([key, value]) => (
-            <OperationTimeDay name={key} day={key} value={value} onChange={this.handleChange}/>
+            <OperationTimeDay key={key} name={key} day={key} value={value} onChange={this.handleChange}/>
         ))
     }
 

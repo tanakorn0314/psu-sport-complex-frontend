@@ -13,12 +13,14 @@ import {
     Spin
 } from 'antd';
 import BookingComponent from '../../BookingComponent';
-import BottomAction from '../../../components/bottomAction';
+import BottomAction from '../../BottomAction';
 import moment from 'moment';
 import BookingService from '../../../coreLayer/service/bookingService';
 import Input from '../../../components/uielements/input';
 import InputDateTime from '../../../components/inputDateTime';
 import CountDown from '../../../components/countDown';
+import ServiceFee from '../../ServiceFee';
+import SelectPosition from '../../SelectPosition';
 
 class BookOnline extends React.Component {
 
@@ -29,9 +31,10 @@ class BookOnline extends React.Component {
         let lastBill = null;
 
         const bills = props.Bill.myBills;
+        const { profile } = props.Auth;
         if (bills && bills.length > 0) {
             lastBill = bills[0];
-            if (!lastBill.transaction)
+            if (!lastBill.transaction && profile.position !== 'admin')
                 shouldRestoreConfirm = true;
         }
 
@@ -40,7 +43,8 @@ class BookOnline extends React.Component {
                 title: '',
                 body: '',
                 isOpen: '',
-                action: '',
+                actionText: '',
+                action: null,
                 cancel: '',
                 cancelAction: null,
                 minute: 0,
@@ -65,7 +69,6 @@ class BookOnline extends React.Component {
     }
 
     render() {
-        const { fee, bookingList } = this.props.Booking;
         const { isLoading, isMobile } = this.props.Screen;
         const { modal, shouldRestoreConfirm, lastBill } = this.state;
 
@@ -95,18 +98,14 @@ class BookOnline extends React.Component {
                     </div>
                     ]
                 }
-                <BottomAction
-                    visible={bookingList.length > 0}
-                    fee={fee}
-                    onClick={this.handleClick}
-                />
+                <BottomAction onClick={this.handleClick} />
                 <Modal
                     onCancel={modal.cancelAction}
                     visible={modal.isOpen}
                     toggle={this.toggle}
                     title={modal.title}
                     footer={[
-                        (modal.action.length > 0 && <Button type="primary" onClick={this.confirmBooking}>{modal.action}</Button>),
+                        (modal.action && <Button type="primary" onClick={modal.action}>{modal.actionText}</Button>),
                         <Button type="secondary" onClick={modal.cancelAction}>{modal.cancel}</Button>
                     ]}
                 >
@@ -127,7 +126,7 @@ class BookOnline extends React.Component {
         } = this.state;
         return (
             <ConfirmContainer>
-                <h2>Service fee : {modal.fee} baht</h2>
+                <ServiceFee/>
                 <h2>Please pay to</h2>
                 <h2>
                     857-2196-068 <br />
@@ -162,14 +161,63 @@ class BookOnline extends React.Component {
         )
     }
 
-    handleClick = async () => {
-        const { bookingList, stadiumId, fee, selectedDate } = this.props.Booking;
+    renderBookByAdmin = () => {
+        const {
+            modal
+        } = this.state;
+        return (
+            <ConfirmContainer>
+                <div style={{ marginBottom: 5 }}>Owner name</div>
+                <Input
+                    style={{ maxWidth: 300 }}
+                    placeholder='firstname lastname'
+                    name='name'
+                    onChange={this.handleChangeAdmin}
+                />
+                <div style={{ marginBottom: 5 }}>Owner information</div>
+                <Input
+                    style={{ maxWidth: 300 }}
+                    placeholder='xxxxxxxxxxx'
+                    name='info'
+                    onChange={this.handleChangeAdmin}
+                />
+                <div style={{ marginBottom: 5 }}>Owner type</div>
+                <SelectPosition/>
+                <ServiceFee/>
+            </ConfirmContainer>
+        )
+    }
+
+    handleClick = () => {
+        const { profile } = this.props.Auth;
+        if (profile.position === 'admin') {
+            this.showAdminBookingModal();
+        } else {
+            this.bookByUser();
+        }
+    }
+
+    bookByAdmin = async () => {
+        const { bookingList, stadiumId, selectedDate, owner } = this.props.Booking;
+        const { idToken, profile } = this.props.Auth;
+
+        const bookAdminDTO = dataHandler.toBookingDTO(bookingList, profile.userId, owner, stadiumId, selectedDate);
+
+        console.log(bookAdminDTO);
+        const result = await this.props.reserveByAdmin(idToken, bookAdminDTO);
+        console.log(result);
+
+        this.notifyResult(result);
+    }
+
+    bookByUser = async () => {
+        const { bookingList, stadiumId, fee, owner, selectedDate } = this.props.Booking;
         const { idToken, profile } = this.props.Auth;
         const { modal, confirm } = this.state;
 
-        const bookManyDTO = dataHandler.toBookManyDto(bookingList, profile.userId, stadiumId, selectedDate);
+        const bookManyDTO = dataHandler.toBookingDTO(bookingList, profile.userId, owner, stadiumId, selectedDate);
 
-        const result = await this.props.reserveMany(idToken, bookManyDTO);
+        const result = await this.props.reserve(idToken, bookManyDTO);
 
         if (result.error) {
             return this.showErrorModal(result)
@@ -215,6 +263,34 @@ class BookOnline extends React.Component {
         this.setState({ modal });
     }
 
+    showConfirmModal = () => {
+        const { modal } = this.state;
+        modal.title = 'Confirm your booking';
+        modal.body = this.renderConfirm();
+        modal.cancel = 'Cancel';
+        modal.actionText = 'Confirm';
+        modal.isOpen = true;
+        modal.action = this.confirmBooking;
+        modal.cancelAction = this.handleCancel;
+        this.setState({
+            modal,
+        });
+    }
+
+    showAdminBookingModal = () => {
+        const { modal } = this.state;
+        modal.title = 'Confirm your booking';
+        modal.body = this.renderBookByAdmin();
+        modal.cancel = 'Cancel';
+        modal.actionText = 'Confirm';
+        modal.isOpen = true;
+        modal.action = this.bookByAdmin;
+        modal.cancelAction = this.handleCancel;
+        this.setState({
+            modal,
+        });
+    }
+
     showErrorModal = ({ error }) => {
         const ErrorView = () => <div>{error}</div>
 
@@ -222,22 +298,10 @@ class BookOnline extends React.Component {
         modal.title = 'Error';
         modal.body = <ErrorView />;
         modal.cancel = 'Cancel';
-        modal.action = '';
+        modal.actionText = '';
         modal.isOpen = true;
+        modal.action = null;
         modal.cancelAction = this.hideModal;
-        this.setState({
-            modal,
-        });
-    }
-
-    showConfirmModal = () => {
-        const { modal } = this.state;
-        modal.title = 'Confirm your booking';
-        modal.body = this.renderConfirm();
-        modal.cancel = 'Cancel';
-        modal.action = 'Confirm';
-        modal.isOpen = true;
-        modal.cancelAction = this.handleCancel;
         this.setState({
             modal,
         });
@@ -249,21 +313,12 @@ class BookOnline extends React.Component {
         this.setState({ modal });
     }
 
-    showModal = (title, body, action, cancel) => {
-        const { modal } = this.state;
-        modal.title = title;
-        modal.body = body;
-        modal.cancel = cancel;
-        modal.action = action;
-        modal.isOpen = true;
-        this.setState({
-            modal,
-        });
-    }
-
     handleCancel = async () => {
-        await BookingService.deleteByBillId(this.props.Auth.idToken, this.state.billId);
-        this.props.refreshData();
+        const { idToken, profile } = this.props.Auth;
+        if (profile.position !== 'admin') {
+            await BookingService.deleteByBillId(idToken, this.state.billId);
+            this.props.refreshData();
+        }
         this.hideModal();
     }
 
@@ -282,6 +337,19 @@ class BookOnline extends React.Component {
         }
 
         this.setState({ confirm });
+    }
+
+    handleChangeAdmin = e => {
+        const { owner } = this.props.Booking;
+        const { name, value } = e.target;
+        
+        owner[name] = value;
+
+        this.props.setOwner(owner);
+    }
+
+    handleSelectPosition = v => {
+
     }
 
     changeTime = (type, value) => {
@@ -307,6 +375,10 @@ class BookOnline extends React.Component {
 
         const result = await this.props.confirmTransaction(idToken, billId, transactionInfo);
 
+        this.notifyResult(result);
+    }
+
+    notifyResult(result) {
         if (result.error) {
             notification['error']({
                 title: 'Error',
