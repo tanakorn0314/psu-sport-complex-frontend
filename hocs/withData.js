@@ -8,6 +8,8 @@ import BookingAction from '../redux/booking/actions';
 import StadiumAction from '../redux/stadium/actions';
 import BillAction from '../redux/bill/actions';
 import OperationTimeAction from '../redux/operationTime/actions';
+import { url } from '../config';
+import io from 'socket.io-client'
 
 export default ComposedComponent => {
     class withData extends React.Component {
@@ -23,15 +25,28 @@ export default ComposedComponent => {
             await store.dispatch(OperationTimeAction.getBlackout());
 
             await store.dispatch(BookingAction.selectStadium(selectedStadium));
-            
+
             if (token && token !== 'undefined') {
                 await store.dispatch(BillAction.fetchMyBills(token));
             }
-            if (query){
+            if (query) {
                 pageProps.query = query;
             }
-            
+
             return pageProps;
+        }
+
+        componentDidMount() {
+            this.socket = io(url);
+            this.socket.on('booking', () => {
+                this.props.refreshData();
+            })
+
+        }
+
+        componentWillUnmount() {
+            this.socket.off('booking');
+            this.socket.close();
         }
 
         render() {

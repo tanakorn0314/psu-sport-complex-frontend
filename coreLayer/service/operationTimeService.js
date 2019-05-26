@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import { operationTimeApi } from '../api/api';
+import { operationTimeApi } from '../api';
 
 const getOperationTime = async () => {
     const url = operationTimeApi;

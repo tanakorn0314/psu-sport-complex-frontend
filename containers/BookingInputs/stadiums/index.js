@@ -8,13 +8,22 @@ import { connect } from 'react-redux';
 const { Option } = Select;
 
 class SelectStadium extends React.Component {
+
+    componentDidMount() {
+        const { enableAll } = this.props;
+        if (enableAll) {
+            this.props.selectStadium(0);
+        }
+    }
+
     render() {
         const {
             name,
             style,
             placeholder,
             Booking,
-            Stadium
+            Stadium,
+            enableAll
         } = this.props;
         const { stadiums } = Stadium;
         const stadium = stadiums[Booking.stadiumId - 1]
@@ -27,7 +36,7 @@ class SelectStadium extends React.Component {
                 placeholder={placeholder || 'Select stadium'}
                 value={sName}
             >
-                <Option key={0} value={0}>All</Option>
+                {enableAll && <Option key={0} value={0}>All</Option>}
                 {stadiums.map((s, index) => {
                     return (
                         <Option key={index} value={s.stadiumId}>{s.name}</Option>
@@ -38,7 +47,6 @@ class SelectStadium extends React.Component {
     }
 
     handleSelectStadium = async (stadiumId) => {
-
         await this.props.selectStadium(stadiumId);
 
         this.props.onChange && await this.props.onChange(stadiumId)

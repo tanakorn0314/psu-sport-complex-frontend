@@ -1,5 +1,6 @@
 import Booking from './helper';
 import BillService from '../../coreLayer/service/billService';
+import BookingService from '../../coreLayer/service/bookingService';
 
 const actions = {
   FETCH_BOOKING: 'FETCH_BOOKING',
@@ -16,10 +17,13 @@ const actions = {
   SET_FEE: 'SET_FEE',
   SET_BOTTOM_ACTION_VISIBLE: 'SET_BOTTOM_ACTION_VISIBLE',
   fetchAllBooking: () => async (dispatch, getState) => {
-    const { stadiums } = getState().Stadium;
-    for (let i = 1; i <= stadiums.length; i++) {
-      await dispatch(actions.fetchBooking(i));
+    let { bookings } = getState().Booking;
+    const result = await BookingService.getAll();
+    if (result && !result.error) {
+      bookings = Booking.pushBookingList(bookings, result);
+      await dispatch({ type: actions.FETCH_BOOKING_SUCESS, bookings });
     }
+    return bookings;
   },
   fetchBooking: (stadiumId) => async (dispatch, getState) => {
     const store = getState().Booking.bookings;
@@ -28,6 +32,13 @@ const actions = {
       dispatch({ type: actions.FETCH_BOOKING_SUCESS, bookings: result });
     }
     return result;
+  },
+  pushBookingData: (booking) => async (dispatch, getState) => {
+    const store = getState().Booking.bookings;
+    const result = Booking.pushBookingData(store, booking);
+
+    dispatch({ type: actions.FETCH_BOOKING_SUCESS, bookings: result });
+
   },
   reserve: (token, bookManyDTO) => async (dispatch, getState) => {
     const result = await Booking.reserve(token, bookManyDTO);
@@ -51,7 +62,14 @@ const actions = {
     return result;
   },
   selectStadium: (stadiumId) => async (dispatch) => {
-    const result = await dispatch(actions.fetchBooking(stadiumId));
+    let result = {};
+
+    if (stadiumId === 0) {
+      result = await dispatch(actions.fetchAllBooking());
+    } else {
+      result = await dispatch(actions.fetchBooking(stadiumId));
+    }
+
     await dispatch({ type: actions.SELECT_STADIUM, stadiumId });
 
     return result;
@@ -111,7 +129,6 @@ const actions = {
 
 async function refreshBooking(dispatch, getState) {
   const stadiumId = getState().Booking.stadiumId;
-  await dispatch(actions.fetchBooking(stadiumId));
   await dispatch(actions.selectStadium(stadiumId));
 }
 

@@ -81,7 +81,7 @@ class UserList extends React.Component {
     }))
 
     return (
-      <Card {...this.props}>
+      <Card style={this.props.style}>
         <Table
           bordered
           columns={column}

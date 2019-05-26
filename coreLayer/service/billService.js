@@ -1,6 +1,6 @@
 import axios from 'axios';
 import fetch from 'isomorphic-unfetch';
-import { billApi } from '../api/api';
+import { billApi } from '../api';
 
 const getSlip = async (billId) => {
     const url = billApi;

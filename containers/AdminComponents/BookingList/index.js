@@ -65,7 +65,7 @@ class BookingList extends React.Component {
                 }
         })
         return (
-            <Card {...this.props}>
+            <Card style={this.props.style}>
                 <Table
                     columns={column}
                     dataSource={data}

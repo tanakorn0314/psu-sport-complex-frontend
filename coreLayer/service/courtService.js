@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import { courtApi } from '../api/api';
+import { courtApi } from '../api';
 
 const get = async () => {
     const url = courtApi;

@@ -1,13 +1,10 @@
 import fetch from 'isomorphic-unfetch';
 import axios from 'axios';
-import { bookingApi } from '../api/api';
+import { bookingApi } from '../api';
 
-const getAll = async (accessToken) => {
-    const url = bookingApi;
-    const options = {
-        headers: { 'Authorization': 'bearer ' + accessToken }
-    }
-    return await fetch(url, options).then((response) => response.json());
+const getAll = async () => {
+    const url = `${bookingApi}/all`;
+    return await fetch(url).then((response) => response.json());
 }
 
 const getById = async (accessToken, id) => {
@@ -122,7 +119,7 @@ const uploadSlip = async (accessToken, formData, bookingId) => {
 }
 
 export default {
-    get: getAll,
+    getAll,
     getById,
     getByUserId,
     getByCourtId,

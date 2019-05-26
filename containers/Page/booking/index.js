@@ -22,8 +22,6 @@ import CountDown from '../../../components/countDown';
 import ServiceFee from '../../ServiceFee';
 import SelectPosition from '../../SelectPosition';
 
-import io from 'socket.io-client'
-
 class BookOnline extends React.Component {
 
     constructor(props) {
@@ -68,21 +66,6 @@ class BookOnline extends React.Component {
             lastBill
         }
 
-    }
-
-    componentDidMount() {
-        this.socket = io('http://localhost:3001');
-        this.socket.on('connect', (message) => {
-            console.log(message);
-        })
-        this.socket.on('booking', (message) => {
-            console.log(message);
-        })
-    }
-
-    componentWillUnmount() {
-        this.socket.off('booking');
-        this.socket.close();
     }
 
     render() {

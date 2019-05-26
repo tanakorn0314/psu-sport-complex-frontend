@@ -20,14 +20,14 @@ class SearchForm extends React.Component {
 
     render() {
         return (
-            <Card {...this.props}>
+            <Card>
                 <Form layout='inline'>
                     <Row justify='space-between'>
                         <Col span={7} >
                             <Form.Item
                                 label='Sports'
                             >
-                                <SelectStadium onChange={this.selectStadium} />
+                                <SelectStadium onChange={this.selectStadium} enableAll/>
                             </Form.Item>
                         </Col>
                         <Col span={7} >

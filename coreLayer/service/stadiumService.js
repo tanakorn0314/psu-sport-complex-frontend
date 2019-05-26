@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import { stadiumApi } from '../api/api';
+import { stadiumApi } from '../api';
 
 const getAll = async () => {
     const url = `${stadiumApi}/all`;

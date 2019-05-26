@@ -14,6 +14,22 @@ async function collectBookingData(store, stadiumId) {
     return res;
 }
 
+function pushBookingList(store, bookingList) {
+    bookingList.forEach((booking) => {
+        store = pushBookingData(store, booking);
+    });
+
+    return store;
+}
+
+function pushBookingData(store, booking) {
+    const { stadiumId } = booking;
+    if (!store[stadiumId])
+        store[stadiumId] = [];
+    store[stadiumId].push(booking);
+    return store;
+}
+
 async function reserve(token, bookManyDTO) {
     const res = await BookingService.book(token, bookManyDTO);
     return res;
@@ -141,6 +157,8 @@ function calculateSlotFee(userPosition, slots, stadium) {
 
 export default {
     collectBookingData,
+    pushBookingData,
+    pushBookingList,
     reserve,
     reserveByAdmin,
     updateBooking,

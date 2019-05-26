@@ -1,4 +1,4 @@
-import { authApi } from '../api/api';
+import { authApi } from '../api';
 import fetch from 'isomorphic-unfetch';
 
 const signIn = (signInfo, password) => {

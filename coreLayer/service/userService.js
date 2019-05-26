@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import axios from 'axios';
-import { userApi } from '../api/api';
+import { userApi } from '../api';
 
 const createUser = (user) => {
     const url = `${userApi}/signup`;
