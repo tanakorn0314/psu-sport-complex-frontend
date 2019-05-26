@@ -105,8 +105,8 @@ class BookOnline extends React.Component {
                     toggle={this.toggle}
                     title={modal.title}
                     footer={[
-                        (modal.action && <Button type="primary" onClick={modal.action}>{modal.actionText}</Button>),
-                        <Button type="secondary" onClick={modal.cancelAction}>{modal.cancel}</Button>
+                        (modal.action && <Button key={0} type="primary" onClick={modal.action}>{modal.actionText}</Button>),
+                        <Button key={1} type="secondary" onClick={modal.cancelAction}>{modal.cancel}</Button>
                     ]}
                 >
                     {modal.body}

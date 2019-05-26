@@ -41,6 +41,7 @@ class BookingSlot extends React.Component {
             date,
             start
         } = nextProps.dataSource;
+        const { selected } = this.state;
 
         const h = start.split(':')[0];
         const m = start.split(':')[1];
@@ -49,6 +50,10 @@ class BookingSlot extends React.Component {
         const isPassed = moment().diff(d) >= 0;
         const isBooked = !!bookingData;
         const isApproved = bookingData && bookingData.status === 'approved';
+
+        if (isPassed || isBooked || isApproved) {
+            if (selected) this.unSelect();
+        }
 
         this.setState({
             ...nextProps.dataSource,
@@ -119,6 +124,20 @@ class BookingSlot extends React.Component {
             court,
             selected: !selected
         });
+    }
+
+    unSelect = () => {
+        let { court, start, selected, isPassed, isBooked } = this.state;
+        const { idToken } = this.props.Auth;
+        const end = moment(start, 'HH:mm').add(30, 'minute').format('HH:mm');
+
+        this.props.selectBooking({
+            start,
+            end,
+            court,
+            selected: false
+        });
+
     }
 }
 

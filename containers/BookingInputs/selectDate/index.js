@@ -25,34 +25,19 @@ const MONTHS = [
 
 class SelectDate extends React.Component {
 
-    constructor(props) {
-        super(props);
-        const defaultDate = moment(props.Booking.selectedDate);
+    render() {
+        const defaultDate = moment(this.props.Booking.selectedDate);
 
         const day = defaultDate ? defaultDate.get('date') : 1;
         const month = defaultDate ? defaultDate.get('month') : 0;
         const year = defaultDate ? defaultDate.get('year') : 1999;
-        
-        this.state = {
-            day,
-            month,
-            year
-        }
 
-        this.updateDate();
-    }
-
-    render() {
-        const { day, month, year } = this.state;
         const thisYear = parseInt(moment().format('YYYY'));
         return (
             <StyledWarpper style={this.props.style}>
                 <Select
                     defaultValue={day}
                     onChange={this.changeDay}
-                    showSearch
-                    optionFilterProp='children'
-                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                 >
                     {_.range(1, 31).map((day) => (
                         <SelectOption key={day} value={day}>{day}</SelectOption>
@@ -61,9 +46,6 @@ class SelectDate extends React.Component {
                 <Select
                     defaultValue={month}
                     onChange={this.changeMonth}
-                    showSearch
-                    optionFilterProp='children'
-                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                     className='select-month'
                     style={{width: '100%'}}
                 >
@@ -74,9 +56,6 @@ class SelectDate extends React.Component {
                 <Select
                     defaultValue={year}
                     onChange={this.changeYear}
-                    showSearch
-                    optionFilterProp='children'
-                    filterOption={(input, option) => option.props.children.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0}
                 >
                     {_.range(1900, parseInt(thisYear) + 1).map((year) => (
                         <SelectOption key={year} value={year} >{year}</SelectOption>
@@ -86,32 +65,26 @@ class SelectDate extends React.Component {
         )
     }
 
-    updateDate = () => {
-        const { day, month, year } = this.state;
-
-        const date = moment();
-        date.set('day', day);
-        date.set('month', month);
-        date.set('year', year);
-        this.props.onChange && this.props.selectDate(date)
-    }
 
     changeDay = day => {
-        this.setState({ day }, () => {
-            this.updateDate();
-        })
+        let { selectedDate } = this.props.Booking;
+
+        let updated = moment(selectedDate).clone().date(day);
+        this.props.selectDate(updated);
     }
 
     changeMonth = month => {
-        this.setState({ month }, () => {
-            this.updateDate();
-        })
+        let { selectedDate } = this.props.Booking;
+
+        let updated = moment(selectedDate).clone().month(month);
+        this.props.selectDate(updated);
     }
 
     changeYear = year => {
-        this.setState({ year }, () => {
-            this.updateDate();
-        })
+        let { selectedDate } = this.props.Booking;
+
+        let updated = moment(selectedDate).clone().year(year);
+        this.props.selectDate(updated);
     }
 }
 

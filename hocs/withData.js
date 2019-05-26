@@ -39,6 +39,7 @@ export default ComposedComponent => {
         componentDidMount() {
             this.socket = io(url);
             this.socket.on('booking', () => {
+                console.log('booking');
                 this.props.refreshData();
             })
 

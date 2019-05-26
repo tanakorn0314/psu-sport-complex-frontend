@@ -42,23 +42,23 @@ const actions = {
   },
   reserve: (token, bookManyDTO) => async (dispatch, getState) => {
     const result = await Booking.reserve(token, bookManyDTO);
-    await refreshBooking(dispatch, getState);
+    // await refreshBooking(dispatch, getState);
     return result;
   },
   reserveByAdmin: (token, bookByAdminDTO) => async (dispatch, getState) => {
     const result = await Booking.reserveByAdmin(token, bookByAdminDTO);
-    await refreshBooking(dispatch, getState);
+    // await refreshBooking(dispatch, getState);
     return result;
   },
   updateBooking: (bookingId, dto) => async (dispatch, getState) => {
     const { idToken } = getState().Auth;
     const result = await Booking.updateBooking(idToken, bookingId, dto);
-    await refreshBooking(dispatch, getState);
+    // await refreshBooking(dispatch, getState);
     return result;
   },
   remove: (token, bookingId) => async (dispatch, getState) => {
     const result = await Booking.remove(token, bookingId);
-    await refreshBooking(dispatch, getState);
+    // await refreshBooking(dispatch, getState);
     return result;
   },
   selectStadium: (stadiumId) => async (dispatch) => {
@@ -129,7 +129,10 @@ const actions = {
 
 async function refreshBooking(dispatch, getState) {
   const stadiumId = getState().Booking.stadiumId;
+  const selectedBooking = getState().Booking.selectedBooking;
+  console.log('before', selectedBooking);
   await dispatch(actions.selectStadium(stadiumId));
+  console.log('after', selectedBooking);
 }
 
 export default actions;

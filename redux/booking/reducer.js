@@ -34,9 +34,9 @@ export default function bookingReducer(state = initState, action) {
                 ...state,
                 stadiumId: action.stadiumId,
                 stadiumBooking: state.bookings[action.stadiumId],
-                selectedBooking: {},
-                bookingList: [],
-                fee: 0
+                // selectedBooking: {},
+                // bookingList: [],
+                // fee: 0
             };
         case actions.SELECT_BOOKING:
             return {
