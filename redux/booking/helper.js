@@ -3,26 +3,38 @@ import jwtDecode from 'jwt-decode';
 import _ from 'lodash';
 import moment from 'moment';
 
-async function collectBookingData(store, stadiumId) {
-    const res = await BookingService.getByStadiumId(stadiumId);
-    if (res && !res.error) {
-        if (!store[stadiumId])
-            store[stadiumId] = [];
-        store[stadiumId] = res;
-        return store;
-    }
-    return res;
+function setBookings(store, stadiumId, bookings) {
+    if (!store[stadiumId])
+        store[stadiumId] = [];
+    store[stadiumId] = bookings;
+    return store;
 }
 
 function pushBookingList(store, bookingList) {
     bookingList.forEach((booking) => {
-        store = pushBookingData(store, booking);
+        store = pushBooking(store, booking);
     });
 
     return store;
 }
 
-function pushBookingData(store, booking) {
+function updateBookingList(store, bookingList) {
+    bookingList.forEach((booking) => {
+        store = updateBooking(store, booking);
+    });
+
+    return store;
+}
+
+function deleteBookingList(store, bookingList) {
+    bookingList.forEach((booking) => {
+        store = deleteBooking(store, booking);
+    });
+
+    return store;
+}
+
+function pushBooking(store, booking) {
     const { stadiumId } = booking;
     if (!store[stadiumId])
         store[stadiumId] = [];
@@ -30,30 +42,26 @@ function pushBookingData(store, booking) {
     return store;
 }
 
-async function reserve(token, bookManyDTO) {
-    const res = await BookingService.book(token, bookManyDTO);
-    return res;
+function updateBooking(store, booking) {
+    const { stadiumId } = booking;
+    const storedBookings = store[stadiumId];
+    if (storedBookings && storedBookings.length > 0) {
+        const index = storedBookings.findIndex((b) => b.bookingId === booking.bookingId);
+        if (index >= 0) {
+            storedBookings[index] = booking;
+        }
+    }
+    return store;
 }
 
-async function reserveByAdmin(token, bookAdminDTO) {
-    const res = await BookingService.bookByAdmin(token, bookAdminDTO);
-    return res;
-}
-
-async function updateBooking(token, bookingId, dto) {
-    const res = await BookingService.updateBooking(token, bookingId, dto);
-    return res;
-}
-
-async function remove(token, bookingId) {
-    const res = await BookingService.deleteBooking(token, bookingId);
-    return res;
-}
-
-async function getMyBooking(token) {
-    const user = jwtDecode(token);
-    const res = await BookingService.getByUserId(token, user.userId);
-    return res;
+function deleteBooking(store, booking) {
+    const { stadiumId } = booking;
+    const storedBookings = store[stadiumId];
+    if (storedBookings && storedBookings.length > 0) {
+        const filtered = storedBookings.filter((b) => b.bookingId !== booking.bookingId);
+        store[stadiumId] = filtered;
+    }
+    return store;
 }
 
 function handleSelect(prevBooking, selectData) {
@@ -139,34 +147,14 @@ function calculateBookingsFee(userPosition, bookings, stadium) {
     return sumFee;
 }
 
-function calculateSlotFee(userPosition, slots, stadium) {
-    if (!slots || slots.length <= 0)
-        return 0;
-
-    // length half hour
-    let l = slots.length * 0.5;
-
-    switch (userPosition) {
-        case 'general public': return stadium.costPublic * l;
-        case 'member': return stadium.costMember * l;
-        case 'staff': return stadium.costStaff * l;
-        case 'student': return stadium.costStudent * l;
-        default: return 0;
-    }
-}
 
 export default {
-    collectBookingData,
-    pushBookingData,
+    setBookings,
     pushBookingList,
-    reserve,
-    reserveByAdmin,
-    updateBooking,
-    remove,
-    getMyBooking,
+    updateBookingList,
+    deleteBookingList,
     handleSelect,
     manageBookingList,
     calculateBookingFee,
-    calculateSlotFee,
     calculateBookingsFee
 }

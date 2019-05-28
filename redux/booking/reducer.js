@@ -19,15 +19,11 @@ const initState = {
 
 export default function bookingReducer(state = initState, action) {
     switch (action.type) {
-        case actions.FETCH_BOOKING_SUCESS:
+        case actions.SET_BOOKINGS:
             return {
                 ...state,
-                bookings: action.bookings
-            };
-        case actions.BOOKING_SUCCESS:
-            return {
-                ...state,
-                bookings: action.bookings
+                bookings: action.bookings,
+                stadiumBooking: state.bookings[state.stadiumId],
             };
         case actions.SELECT_STADIUM:
             return {
@@ -53,8 +49,6 @@ export default function bookingReducer(state = initState, action) {
                 bookingList: [],
                 fee: 0
             }
-        case actions.FETCH_BOOKING_ERROR:
-            return initState;
         case actions.SET_BOTTOM_ACTION_VISIBLE:
             return {
                 ...state,

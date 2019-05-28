@@ -9,8 +9,11 @@ import moment from 'moment';
 class BookingComponent extends React.Component {
 
     render() {
-        const { stadiumBooking, selectedDate } = this.props.Booking;
+        const { stadiumBooking, selectedDate, bookings } = this.props.Booking;
         const { operationTimes, blackoutSeries } = this.props.OperationTime;
+
+        console.log(bookings);
+        console.log(stadiumBooking)
 
         const operationTime = dataHandler.generateTimeIndex(selectedDate, operationTimes);
         if (!operationTime) {

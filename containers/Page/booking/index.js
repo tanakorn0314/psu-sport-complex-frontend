@@ -126,7 +126,7 @@ class BookOnline extends React.Component {
         } = this.state;
         return (
             <ConfirmContainer>
-                <ServiceFee/>
+                <ServiceFee />
                 <h2>Please pay to</h2>
                 <h2>
                     857-2196-068 <br />
@@ -182,8 +182,8 @@ class BookOnline extends React.Component {
                     onChange={this.handleChangeAdmin}
                 />
                 <div style={{ marginBottom: 5 }}>Owner type</div>
-                <SelectPosition/>
-                <ServiceFee/>
+                <SelectPosition />
+                <ServiceFee />
             </ConfirmContainer>
         )
     }
@@ -317,7 +317,6 @@ class BookOnline extends React.Component {
         const { idToken, profile } = this.props.Auth;
         if (profile.position !== 'admin') {
             await BookingService.deleteByBillId(idToken, this.state.billId);
-            this.props.refreshData();
         }
         this.hideModal();
     }
@@ -342,15 +341,12 @@ class BookOnline extends React.Component {
     handleChangeAdmin = e => {
         const { owner } = this.props.Booking;
         const { name, value } = e.target;
-        
+
         owner[name] = value;
 
         this.props.setOwner(owner);
     }
 
-    handleSelectPosition = v => {
-
-    }
 
     changeTime = (type, value) => {
         this.setState({ [type]: value });
@@ -375,7 +371,22 @@ class BookOnline extends React.Component {
 
         const result = await this.props.confirmTransaction(idToken, billId, transactionInfo);
 
-        this.notifyResult(result);
+        if (result.error) {
+            this.hideModal();
+
+            this.showErrorModal({
+                error: `We can't find your payment. 
+            Please wait for 20 minutes and please contact to 0864373098
+             if your booking is disappeared.`})
+        } else {
+            notification['success']({
+                title: 'Success',
+                message: 'Confirm booking successful',
+                duration: 3
+            });
+
+            this.hideModal();
+        }
     }
 
     notifyResult(result) {

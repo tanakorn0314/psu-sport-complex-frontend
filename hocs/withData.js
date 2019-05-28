@@ -38,15 +38,25 @@ export default ComposedComponent => {
 
         componentDidMount() {
             this.socket = io(url);
-            this.socket.on('booking', () => {
-                console.log('booking');
-                this.props.refreshData();
-            })
+            this.socket.on('createBookings', (bookings) => {
+                console.log('created', bookings);
+                this.props.callbackCreate(bookings);
+            });
+            this.socket.on('updateBookings', (bookings) => {
+                console.log('updated', bookings);
+                this.props.callbackUpdate(bookings);
+            });
+            this.socket.on('deleteBookings', (bookings) => {
+                console.log('deleted', bookings);
+                this.props.callbackDelete(bookings);
+            });
 
         }
 
         componentWillUnmount() {
-            this.socket.off('booking');
+            this.socket.off('createBookings');
+            this.socket.off('updateBookings');
+            this.socket.off('deleteBookings');
             this.socket.close();
         }
 
