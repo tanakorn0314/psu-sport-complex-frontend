@@ -5,5 +5,3 @@ const serverHttp = 'http://192.168.192.75:3001';
 export const url = server;
 
 export const api = `${url}/api`;
-
-export const socketUrl = `${server}/socket`
