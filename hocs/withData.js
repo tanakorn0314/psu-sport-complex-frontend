@@ -8,7 +8,7 @@ import BookingAction from '../redux/booking/actions';
 import StadiumAction from '../redux/stadium/actions';
 import BillAction from '../redux/bill/actions';
 import OperationTimeAction from '../redux/operationTime/actions';
-import { url } from '../config';
+import { socketUrl } from '../config';
 import io from 'socket.io-client'
 
 export default ComposedComponent => {
@@ -37,7 +37,7 @@ export default ComposedComponent => {
         }
 
         componentDidMount() {
-            this.socket = io(url);
+            this.socket = io(socketUrl);
             this.socket.on('createBookings', (bookings) => {
                 console.log('created', bookings);
                 this.props.callbackCreate(bookings);
