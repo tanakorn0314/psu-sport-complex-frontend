@@ -1,5 +1,5 @@
 import React from 'react';
-import StyledWrapper from './style';
+import StyledWrapper, {ResponsiveModal as Modal} from './style';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
@@ -7,7 +7,7 @@ import BillCard from '../../../components/billCard';
 import BillActions from '../../../redux/bill/actions';
 import BookingActions from '../../../redux/booking/actions';
 
-import { Spin, Modal, DatePicker, notification } from 'antd';
+import { Spin, DatePicker, notification } from 'antd';
 import InputTimeRange from '../../../components/inputTimeRange';
 
 import EditTime from '../../../components/editTime';

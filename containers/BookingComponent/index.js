@@ -12,9 +12,6 @@ class BookingComponent extends React.Component {
         const { stadiumBooking, selectedDate, bookings } = this.props.Booking;
         const { operationTimes, blackoutSeries } = this.props.OperationTime;
 
-        console.log(bookings);
-        console.log(stadiumBooking)
-
         const operationTime = dataHandler.generateTimeIndex(selectedDate, operationTimes);
         if (!operationTime) {
             return (

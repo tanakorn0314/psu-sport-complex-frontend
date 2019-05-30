@@ -49,7 +49,7 @@ class InputTime extends React.Component {
                         <SelectOption key={hour} value={hour}>{hour.toString().padStart(2, '0')}</SelectOption>
                     ))}
                 </Select>
-                <div style={{ fontWeight: 'bold', marginLeft: 5, marginRight: 5 }}>:</div>
+                <div style={{ fontWeight: 'bold', marginLeft: 3, marginRight: 3 }}>:</div>
                 <Select
                     defaultValue={minute}
                     value={minute}

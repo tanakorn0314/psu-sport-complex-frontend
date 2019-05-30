@@ -1,5 +1,6 @@
 import React from 'react';
 import BookingAction from '../../../redux/booking/actions';
+import ModalAction from '../../../redux/modal/actions';
 import StyledWrapper, { ConfirmContainer } from './style';
 import { connect } from 'react-redux';
 import dataHandler from './dataHandler';
@@ -42,7 +43,6 @@ class BookOnline extends React.Component {
             modal: {
                 title: '',
                 body: '',
-                isOpen: '',
                 actionText: '',
                 action: null,
                 cancel: '',
@@ -408,4 +408,7 @@ class BookOnline extends React.Component {
     }
 }
 
-export default connect(state => state, BookingAction)(BookOnline);
+export default connect(
+    state => state,
+    {...BookingAction, ...ModalAction}
+)(BookOnline);
