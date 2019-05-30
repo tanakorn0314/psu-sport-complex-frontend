@@ -5,8 +5,6 @@ import StyledWrapper from './style';
 import UsersAction from '../../../../redux/users/actions';
 import UserList from '../../../AdminComponents/UserList';
 
-const { dispatcher } = UsersAction;
-
 class Users extends React.Component {
     
     render() {
@@ -18,4 +16,4 @@ class Users extends React.Component {
     }
 }
 
-export default connect(state => state, dispatcher)(Users);
+export default connect(state => state, UserAction)(Users);

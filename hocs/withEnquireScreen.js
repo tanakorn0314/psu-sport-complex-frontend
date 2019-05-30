@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import ScreenAction from '../redux/screen/actions';
 import enquire from 'enquire-js';
 
-const { dispatcher } = ScreenAction;
-
 export default ComposedComponent => {
     class withEnquireScreen extends React.Component {
 
@@ -37,5 +35,5 @@ export default ComposedComponent => {
 
     }
 
-    return connect(state => state.Screen, dispatcher)(withEnquireScreen);
+    return connect(state => state.Screen, ScreenAction)(withEnquireScreen);
 }

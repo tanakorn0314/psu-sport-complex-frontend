@@ -4,7 +4,7 @@ import 'isomorphic-unfetch';
 import {
     getToken
 } from '../helpers/token';
-import AuthAction from '../redux/auth/actions';
+import AdminActions from '../redux/admin/actions';
 import { connect } from 'react-redux';
 import redirect from '../helpers/redirect';
 import jwtDecode from 'jwt-decode';

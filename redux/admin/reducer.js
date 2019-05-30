@@ -1,7 +1,7 @@
 import AdminAction from './actions';
 import moment from 'moment';
 
-const { types } = AdminAction;
+const types = AdminAction;
 
 const initialState = {
     start: moment(),

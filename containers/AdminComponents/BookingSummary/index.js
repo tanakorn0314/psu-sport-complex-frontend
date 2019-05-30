@@ -9,8 +9,6 @@ import { connect } from 'react-redux';
 import AdminAction from '../../../redux/admin/actions';
 import { CSVLink } from 'react-csv';
 
-const { dispatcher } = AdminAction;
-
 class BookingSummary extends React.Component {
 
     render() {
@@ -32,4 +30,4 @@ class BookingSummary extends React.Component {
 
 }
 
-export default connect(state => state, dispatcher)(BookingSummary)
+export default connect(state => state, AdminAction)(BookingSummary)

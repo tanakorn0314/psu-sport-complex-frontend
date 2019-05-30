@@ -1,38 +1,36 @@
 import moment from 'moment';
 import bookingHelper from '../booking/helper';
 
-const types = {
+const actions = {
     FILTER_STADIUM: 'FILTER_STADIUM',
     FILTER_START: 'FILTER_START',
     FILTER_END: 'FILTER_END',
     FILTER_USER_ID: 'FILTER_USER_ID',
     FILTER_NAME: 'FILTER_NAME',
     FILTER_STATUS: 'FILTER_STATUS',
-    REFRESH_DATA: 'REFRESH_DATA'
-}
-
-const dispatcher = {
+    REFRESH_DATA: 'REFRESH_DATA',
     filterStart: (start) => (dispatch) => {
-        dispatch({ type: types.FILTER_START, start });
-        dispatch(dispatcher.refreshData());
+        dispatch({ type: actions.FILTER_START, start });
+        dispatch(actions.refreshData());
     },
     filterEnd: (end) => (dispatch) => {
-        dispatch({ type: types.FILTER_END, end });
-        dispatch(dispatcher.refreshData());
+        dispatch({ type: actions.FILTER_END, end });
+        dispatch(actions.refreshData());
     },
     filterUserId: (userId) => (dispatch) => {
-        dispatch({ type: types.FILTER_USER_ID, userId });
-        dispatch(dispatcher.refreshData());
+        dispatch({ type: actions.FILTER_USER_ID, userId });
+        dispatch(actions.refreshData());
     },
     filterName: (name) => (dispatch) => {
-        dispatch({ type: types.FILTER_NAME, name });
-        dispatch(dispatcher.refreshData());
+        dispatch({ type: actions.FILTER_NAME, name });
+        dispatch(actions.refreshData());
     },
     filterStatus: (status) => (dispatch) => {
-        dispatch({ type: types.FILTER_STATUS, status });
-        dispatch(dispatcher.refreshData());
+        dispatch({ type: actions.FILTER_STATUS, status });
+        dispatch(actions.refreshData());
     },
     refreshData: () => async (dispatch, getState) => {
+        console.log('refresh');
         const {
             start,
             end,
@@ -62,7 +60,7 @@ const dispatcher = {
                 const inEndRange = moment(end).isSameOrAfter(endDate);
                 const startwithPhoneNo = userId.length === 0 || ownerInfo.startsWith(userId);
                 const startWithName = name.length === 0 || ownerName.startsWith(name);
-                const checkStatus = status === 'all' || status === booking.status;
+                const checkStatus = booking.status === 'approved';
 
                 if (checkStadiumId && inStartRange && inEndRange && startwithPhoneNo && startWithName && checkStatus) {
                     filteredBooking.push(booking);
@@ -73,7 +71,10 @@ const dispatcher = {
 
         csv = createCSV(filteredBooking, stadiums)
 
-        dispatch({ type: types.REFRESH_DATA, displayBookings: filteredBooking, fee, csv })
+        dispatch({ type: actions.REFRESH_DATA, displayBookings: filteredBooking, fee, csv })
+    },
+    callbackAdmin: () => (dispatch) => {
+        dispatch(actions.refreshData());
     }
 }
 
@@ -103,7 +104,4 @@ function createCSV(bookings, stadiums) {
     return csvData;
 }
 
-export default {
-    types,
-    dispatcher
-}
+export default actions;

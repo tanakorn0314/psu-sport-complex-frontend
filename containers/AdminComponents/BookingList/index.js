@@ -7,8 +7,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import AdminAction from '../../../redux/admin/actions';
 
-const { dispatcher } = AdminAction;
-
 class BookingList extends React.Component {
 
     componentDidMount() {
@@ -75,4 +73,4 @@ class BookingList extends React.Component {
     }
 }
 
-export default connect(state => state, dispatcher)(BookingList);
+export default connect(state => state, AdminAction)(BookingList);

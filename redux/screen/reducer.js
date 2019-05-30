@@ -1,6 +1,6 @@
 import ScreenAction from './actions';
 
-const { types } = ScreenAction;
+const types = ScreenAction;
 
 const initialState = {
     isLoading: true,

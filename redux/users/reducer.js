@@ -1,6 +1,6 @@
 import UsersActions from './actions';
 
-const { types } = UsersActions;
+const types = UsersActions;
 
 const initialState = {
     users: []

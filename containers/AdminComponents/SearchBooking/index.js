@@ -13,7 +13,6 @@ import { SelectStadium } from '../../BookingInputs';
 import { connect } from 'react-redux';
 import AdminAction from '../../../redux/admin/actions';
 
-const { dispatcher } = AdminAction;
 const { Option } = Select;
 
 class SearchForm extends React.Component {
@@ -98,5 +97,5 @@ class SearchForm extends React.Component {
 
 export default connect(
     state => state,
-    dispatcher
+    AdminAction
 )(SearchForm)

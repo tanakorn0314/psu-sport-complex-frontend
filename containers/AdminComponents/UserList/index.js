@@ -16,8 +16,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import UsersAction from '../../../redux/users/actions';
 
-const { dispatcher } = UsersAction;
-
 class UserList extends React.Component {
 
   state = {
@@ -270,4 +268,4 @@ class UserList extends React.Component {
   }
 }
 
-export default connect(state => state, dispatcher)(UserList);
+export default connect(state => state, UserAction)(UserList);

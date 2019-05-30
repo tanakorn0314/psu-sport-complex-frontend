@@ -4,6 +4,7 @@ import {
     getToken
 } from '../helpers/token';
 import { connect } from 'react-redux';
+import AdminAction from '../redux/admin/actions';
 import BookingAction from '../redux/booking/actions';
 import StadiumAction from '../redux/stadium/actions';
 import BillAction from '../redux/bill/actions';
@@ -38,17 +39,20 @@ export default ComposedComponent => {
 
         componentDidMount() {
             this.socket = io(url);
-            this.socket.on('createBookings', (bookings) => {
+            this.socket.on('createBookings', async (bookings) => {
                 console.log('created', bookings);
-                this.props.callbackCreate(bookings);
+                await this.props.callbackCreate(bookings);
+                this.props.callbackAdmin();
             });
-            this.socket.on('updateBookings', (bookings) => {
+            this.socket.on('updateBookings', async (bookings) => {
                 console.log('updated', bookings);
-                this.props.callbackUpdate(bookings);
+                await this.props.callbackUpdate(bookings);
+                this.props.callbackAdmin();
             });
-            this.socket.on('deleteBookings', (bookings) => {
+            this.socket.on('deleteBookings', async (bookings) => {
                 console.log('deleted', bookings);
-                this.props.callbackDelete(bookings);
+                await this.props.callbackDelete(bookings);
+                this.props.callbackAdmin();
             });
 
         }
@@ -66,5 +70,5 @@ export default ComposedComponent => {
             )
         }
     }
-    return connect(state => state, BookingAction)(withData);
+    return connect(state => state, {...AdminAction, ...BookingAction})(withData);
 }

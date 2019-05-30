@@ -10,6 +10,8 @@ import BookingActions from '../../../redux/booking/actions';
 import { Spin, Modal, DatePicker, notification } from 'antd';
 import InputTimeRange from '../../../components/inputTimeRange';
 
+import EditTime from '../../../components/editTime';
+
 class BookingHistory extends React.Component {
 
     state = {
@@ -116,25 +118,15 @@ class BookingHistory extends React.Component {
             endTime,
             modal
         } = this.state;
-        const body = [
-            <div>
-                <h3>{stadiumName}</h3>
-                <p>{currentDateStr}</p>
-                <p>Change Schedule to</p>
-                <DatePicker
-                    style={{ marginBottom: 10 }}
-                    value={date}
-                    onChange={this.handleChangeDate}
-                    format='MMM DD, YYYY'
-                />
-                <InputTimeRange
-                    start={startTime}
-                    end={endTime}
-                    onChange={this.handleChangeTime}
-                    endDisabled
-                />
-            </div>
-        ]
+        const body = <EditTime
+            stadiumName={stadiumName}
+            currentDateStr={currentDateStr}
+            date={date}
+            startTime={startTime}
+            endTime={endTime}
+            onChangeDate={this.handleChangeDate}
+            onChangeTime={this.handleChangeTime}
+        />
 
         modal.body = body;
         modal.visible = true;
@@ -167,7 +159,7 @@ class BookingHistory extends React.Component {
     handleConfirm = async () => {
         const { idToken } = this.props.Auth;
         const { booking, date, startTime, endTime } = this.state;
-        const { bookingId, title, description, userId, stadiumId, courtId } = booking
+        const { bookingId, title, description, userId, stadiumId, courtId, ownerName, ownerInfo, ownerPosition } = booking
 
         const startHr = startTime.hour();
         const startMin = startTime.minute();
@@ -181,6 +173,9 @@ class BookingHistory extends React.Component {
             title,
             description,
             userId,
+            ownerName,
+            ownerInfo,
+            ownerPosition,
             stadiumId,
             courtId,
             startDate,
