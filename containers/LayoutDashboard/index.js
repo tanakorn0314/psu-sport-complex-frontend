@@ -6,14 +6,18 @@ import {
     Menu,
     Icon
 } from 'antd';
-import Router from 'next/router';
+import Router, { withRouter } from 'next/router';
 
 const { Sider, Content } = Layout;
 
 class LayoutDashboard extends React.Component {
 
-    state = {
-        collapsed: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            collapsed: false,
+            current: props.router.pathname.split('/')[2]
+        }
     }
 
     render() {
@@ -29,7 +33,7 @@ class LayoutDashboard extends React.Component {
                     >
                         <Menu
                             mode="inline"
-                            defaultSelectedKeys={['1']}
+                            selectedKeys={[this.state.current]}
                             defaultOpenKeys={['sub1']}
                             style={{ height: '100%' }}
                         >
@@ -64,4 +68,4 @@ class LayoutDashboard extends React.Component {
     }
 }
 
-export default LayoutDashboard;
+export default withRouter(LayoutDashboard);

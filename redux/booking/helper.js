@@ -3,7 +3,15 @@ import jwtDecode from 'jwt-decode';
 import _ from 'lodash';
 import moment from 'moment';
 
-function setBookings(store, stadiumId, bookings) {
+function setAllBooking(bookings) {
+    let store = {}
+    bookings.forEach((booking) => {
+        pushBooking(store, booking)
+    })
+    return store;
+}
+
+function setBookingStadium(store, stadiumId, bookings) {
     if (!store[stadiumId])
         store[stadiumId] = [];
     store[stadiumId] = bookings;
@@ -149,7 +157,8 @@ function calculateBookingsFee(userPosition, bookings, stadium) {
 
 
 export default {
-    setBookings,
+    setAllBooking,
+    setBookingStadium,
     pushBookingList,
     updateBookingList,
     deleteBookingList,

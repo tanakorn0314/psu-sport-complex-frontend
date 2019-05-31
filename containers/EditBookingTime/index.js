@@ -26,9 +26,7 @@ class EditBookingTime extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
         this.token = PubSub.subscribe('confirm-edit', () => {
-            console.log('get confirm-edit message');
             this.handleConfirm();
         })
     }

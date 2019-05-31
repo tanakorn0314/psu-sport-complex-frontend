@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { Card } from 'antd';
 import StyledWrapper from './style';
-import UsersAction from '../../../../redux/users/actions';
+import UserAction from '../../../../redux/users/actions';
 import UserList from '../../../AdminComponents/UserList';
 
 class Users extends React.Component {

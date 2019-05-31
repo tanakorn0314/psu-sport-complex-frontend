@@ -14,7 +14,7 @@ import Input from '../../../components/input';
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import UsersAction from '../../../redux/users/actions';
+import UserAction from '../../../redux/users/actions';
 
 class UserList extends React.Component {
 

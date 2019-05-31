@@ -6,6 +6,7 @@ import {
 import moment from 'moment';
 import { connect } from 'react-redux';
 import AdminAction from '../../../redux/admin/actions';
+import ModalAction from '../../../redux/modal/actions';
 
 class BookingList extends React.Component {
 
@@ -31,35 +32,39 @@ class BookingList extends React.Component {
             title: 'Stadium',
             dataIndex: 'stadium',
             key: 'stadium',
-        }, {
-            title: 'Play Date',
-            dataIndex: 'playDate',
-            key: 'playDate',
-        }, {
-            title: 'Time',
-            dataIndex: 'time',
-            key: 'time',
         },{
-            title: 'Fee',
-            dataIndex: 'fee',
-            key: 'fee',
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+        },{
+            title: 'Action',
+            key: 'action',
+            render: item => {
+                const booking = displayBookings[item.key];
+                console.log(booking);
+                return (
+                    <a href='#' onClick={() => {this.showEditModal(booking)}}>Edit</a>
+                )
+            }
         }];
         const data = displayBookings.map((booking, index) => {
                 const { stadiums } = this.props.Stadium;
-                const { ownerName, ownerInfo, ownerPosition, stadiumId, courtId, startDate, endDate } = booking;
+                const { ownerName, ownerInfo, stadiumId, courtId, startDate, endDate } = booking;
                 const stadium = stadiums[stadiumId - 1];
                 const userId = ownerInfo;
-                const startTime = moment(startDate).parseZone().format('HH:mm');
-                const endTime = moment(endDate).parseZone().format('HH:mm');
+
+                const mStart = moment(startDate);
+                const mEnd = moment(endDate);
+
+                const format = mStart.isSame(mEnd, 'date') ? 'HH:mm' : 'DD/MM/YYYY HH:mm'
+
                 return {
-                    no: index + 1,
                     key: index,
-                    name: ownerName,
                     userId,
+                    no: index + 1,
+                    name: ownerName,
                     stadium: `${stadium.name} ${courtId}`,
-                    playDate: moment(startDate).parseZone().format('MMMM DD, YYYY'),
-                    time: `${startTime} - ${endTime}`,
-                    fee: booking.fee
+                    date: `${mStart.format('DD/MM/YYYY HH:mm')} - ${mEnd.format(format)}`,
                 }
         })
         return (
@@ -71,6 +76,13 @@ class BookingList extends React.Component {
             </Card>
         )
     }
+
+    showEditModal = (booking) => {
+        this.props.modalChangeSchedule(booking);
+    }
 }
 
-export default connect(state => state, AdminAction)(BookingList);
+export default connect(
+    state => state,
+    { ...AdminAction, ...ModalAction}
+)(BookingList);

@@ -1,10 +1,9 @@
 import React from 'react';
 import StyleLayout from './layout.style';
 import Link from 'next/link';
-import Router from 'next/router';
+import Router, { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
-import { withRouter } from 'next/router';
 import {
     Layout,
     Row,

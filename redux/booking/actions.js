@@ -11,19 +11,18 @@ const actions = {
   SET_FEE: 'SET_FEE',
   SET_BOTTOM_ACTION_VISIBLE: 'SET_BOTTOM_ACTION_VISIBLE',
   fetchAllBooking: () => async (dispatch, getState) => {
-    let store = {};
     const result = await BookingService.getAll();
     if (result && !result.error) {
-      let bookings = helper.pushBookingList(store, result);
+      let bookings = helper.setAllBooking(result);
       await dispatch({ type: actions.SET_BOOKINGS, bookings });
     }
-    return bookings;
+    return result;
   },
   fetchBookingByStadium: (stadiumId) => async (dispatch, getState) => {
     let store = getState().Booking.bookings;
     const result = await BookingService.getByStadiumId(stadiumId);
     if (result && !result.error) {
-      store = helper.setBookings(store, stadiumId, result);
+      store = helper.setBookingStadium(store, stadiumId, result);
       await dispatch({ type: actions.SET_BOOKINGS, bookings: store });
     }
     return store;
