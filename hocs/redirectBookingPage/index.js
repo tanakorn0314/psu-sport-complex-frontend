@@ -5,5 +5,6 @@ import withData from '../withData';
 import withTheme from '../withTheme';
 import withEnquireScreen from '../withEnquireScreen';
 import withCheckAuth from '../withCheckAuth';
+import withModal from '../withModal';
 
-export default compose(withAuth, withCheckAuth, withData, withTheme, withEnquireScreen, withLayout);
+export default compose(withAuth, withCheckAuth, withData, withModal, withTheme, withEnquireScreen, withLayout);

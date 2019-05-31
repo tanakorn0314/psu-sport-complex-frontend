@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'antd';
+import Modal from '../components/responsiveModal';
 
 export default ComposedComponent => {
     class withModal extends React.Component {

@@ -23,10 +23,9 @@ export default function modalReducer(state = initState, action) {
         case actions.HIDE_MODAL:
             return {
                 ...state,
-                ...action.modal,
                 visible: false
             }
-        case actions.TOGGLE:
+        case actions.TOGGLE_MODAL:
             return {
                 ...state,
                 visible: !state.visible

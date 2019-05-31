@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BookingAction from '../../redux/booking/actions';
+import ModalAction from '../../redux/modal/actions';
 import {
     SlotTitle,
     Slot,
@@ -73,7 +74,7 @@ class BookingSlot extends React.Component {
         } = this.state;
 
         return (
-            <Slot seleted={selected} onClick={this.toggleSelect}>
+            <Slot seleted={selected} onClick={this.handleClick}>
                 <SlotTitle booked={isBooked} approved={isApproved} selected={selected} isPassed={isPassed}>
                     {`Court ${court + 1}`}
                 </SlotTitle>
@@ -105,6 +106,15 @@ class BookingSlot extends React.Component {
         if (selected)
             return 'Selected';
         return 'Available';
+    }
+
+    handleClick = () => {
+        let { isPassed, isApproved, bookingData } = this.state;
+        if (bookingData && isApproved && !isPassed) {
+            this.props.modalChangeSchedule(bookingData);
+        } else {
+            this.toggleSelect();
+        }
     }
 
     toggleSelect = () => {
@@ -141,4 +151,7 @@ class BookingSlot extends React.Component {
     }
 }
 
-export default connect(state => state, BookingAction)(BookingSlot);
+export default connect(
+    state => state,
+     { ...BookingAction, ...ModalAction }
+     )(BookingSlot);

@@ -1,35 +1,32 @@
 import React from 'react';
-import StyledWrapper, {ResponsiveModal as Modal} from './style';
+import StyledWrapper, { ResponsiveModal as Modal } from './style';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import BillCard from '../../../components/billCard';
 import BillActions from '../../../redux/bill/actions';
 import BookingActions from '../../../redux/booking/actions';
+import ModalActions from '../../../redux/modal/actions';
 
 import { Spin, DatePicker, notification } from 'antd';
 import InputTimeRange from '../../../components/inputTimeRange';
 
-import EditTime from '../../../components/editTime';
+import PubSub from 'pubsub-js';
+
 
 class BookingHistory extends React.Component {
-
-    state = {
-        modal: {
-            body: '',
-            visible: false
-        },
-        staiudmName: '',
-        currentDateStr: '',
-        date: moment(),
-        startTime: moment(),
-        endTime: moment(),
-        booking: null
-    }
 
     componentDidMount() {
         const { idToken } = this.props.Auth;
         this.props.fetchMyBills(idToken);
+        
+        this.token = PubSub.subscribe('update-bill', () => {
+            this.props.fetchMyBills(idToken);
+        });
+    }
+
+    componentWillUnmount() {
+        PubSub.unsubscribe(this.token);
     }
 
     render() {
@@ -45,7 +42,6 @@ class BookingHistory extends React.Component {
         const { isLoading } = this.props.Screen;
         const { myBills } = this.props.Bill;
         const { stadiums } = this.props.Stadium;
-        const { modal } = this.state;
 
         if (isLoading)
             return (
@@ -78,131 +74,18 @@ class BookingHistory extends React.Component {
                         )
                     })
                 }
-                <Modal
-                    title='Change Schedule'
-                    onOk={this.handleConfirm}
-                    onCancel={this.toggle}
-                    toggle={this.toggle}
-                    visible={modal.visible}
-                >
-                    {modal.body}
-                </Modal>
             </div>
         )
 
     }
 
     handleEdit = (booking) => {
-        const { stadiums } = this.props.Stadium;
-        const { stadiumId, courtId, startDate, endDate } = booking;
-        const mStart = moment(startDate);
-        const mEnd = moment(endDate);
-
-        this.setState({
-            stadiumName: `${stadiums[stadiumId].name} Court ${courtId}`,
-            currentDateStr: `${mStart.format('MMM DD, YYYY HH:mm')} - ${mEnd.format('HH:mm')}`,
-            date: mStart,
-            startTime: mStart,
-            endTime: mEnd,
-            booking
-        }, () => { this.showEditModal() });
-
-    }
-
-    showEditModal = () => {
-        const {
-            stadiumName,
-            currentDateStr,
-            date,
-            startTime,
-            endTime,
-            modal
-        } = this.state;
-        const body = <EditTime
-            stadiumName={stadiumName}
-            currentDateStr={currentDateStr}
-            date={date}
-            startTime={startTime}
-            endTime={endTime}
-            onChangeDate={this.handleChangeDate}
-            onChangeTime={this.handleChangeTime}
-        />
-
-        modal.body = body;
-        modal.visible = true;
-
-        this.setState({ modal });
-    }
-
-    toggle = () => {
-        const { modal } = this.state;
-        modal.visible = !modal.visible;
-        this.setState({ modal })
-    }
-
-    handleChangeDate = (date) => {
-        this.setState({ date }, () => { this.showEditModal(); });
-    }
-
-    handleChangeTime = (start) => {
-        let { startTime, endTime } = this.state;
-
-        const hDiff = endTime.diff(startTime, 'hour');
-        const hMin = endTime.diff(startTime, 'minute') % 60;
-
-        startTime = start;
-        endTime = start.clone().add(hDiff, 'hour').add(hMin, 'minute');
-
-        this.setState({ startTime, endTime }, () => { this.showEditModal(); });
-    }
-
-    handleConfirm = async () => {
-        const { idToken } = this.props.Auth;
-        const { booking, date, startTime, endTime } = this.state;
-        const { bookingId, title, description, userId, stadiumId, courtId, ownerName, ownerInfo, ownerPosition } = booking
-
-        const startHr = startTime.hour();
-        const startMin = startTime.minute();
-        const endHr = endTime.hour();
-        const endMin = endTime.minute();
-
-        const startDate = moment(date).hour(startHr).minute(startMin).second(0).millisecond(0).format();
-        const endDate = moment(date).hour(endHr).minute(endMin).second(0).millisecond(0).format();
-
-        const dto = {
-            title,
-            description,
-            userId,
-            ownerName,
-            ownerInfo,
-            ownerPosition,
-            stadiumId,
-            courtId,
-            startDate,
-            endDate
-        }
-
-        const result = await this.props.updateBooking(bookingId, dto);
-
-        if (result.error) {
-            notification['error']({
-                message: 'Error',
-                description: result.error,
-                duration: 3
-            });
-        } else {
-            notification['success']({
-                message: 'Success',
-                description: 'Update schedule success',
-                duration: 3
-            });
-
-            await this.props.fetchMyBills(idToken);
-            this.toggle();
-        }
-
+        this.props.modalChangeSchedule(booking);
     }
 
 }
 
-export default connect(state => state, { ...BillActions, ...BookingActions })(BookingHistory);
+export default connect(
+    state => state,
+    { ...BillActions, ...BookingActions, ...ModalActions }
+)(BookingHistory);
