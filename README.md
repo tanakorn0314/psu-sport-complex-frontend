@@ -1,234 +1,181 @@
-This project was bootstrapped with [Create Next App](https://github.com/segmentio/create-next-app).
+# รวมทุกประเด็นการพัฒนาเว็บนี้ ด้วย Next js
 
-Find the most recent version of this guide at [here](https://github.com/segmentio/create-next-app/blob/master/lib/templates/default/README.md). And check out [Next.js repo](https://github.com/zeit/next.js) for the most up-to-date info.
+## 1. การติดตั้ง styled-components และ antd
+### 1.1 ติดตั้ง module ดังนี้
+npm i -s antd styled-components
+### 1.2 ทำการ preload css และ แก้ปัญหาการกระพริบเมื่อใช้ styled-components
+ในโฟลเดอร์ pages ทำการสร้าง _document.js สำหรับดึง css ของ antd
 
-## Table of Contents
+import Document, { Head, Main, NextScript } from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
 
-- [Questions? Feedback?](#questions-feedback)
-- [Folder Structure](#folder-structure)
-- [Available Scripts](#available-scripts)
-  - [npm run dev](#npm-run-dev)
-  - [npm run build](#npm-run-build)
-  - [npm run start](#npm-run-start)
-- [Using CSS](#using-css)
-- [Adding Components](#adding-components)
-- [Fetching Data](#fetching-data)
-- [Custom Server](#custom-server)
-- [Syntax Highlighting](#syntax-highlighting)
-- [Using the `static` Folder](#using-the-static-folder)
-- [Deploy to Now](#deploy-to-now)
-- [Something Missing?](#something-missing)
-
-## Questions? Feedback?
-
-Check out [Next.js FAQ & docs](https://github.com/zeit/next.js#faq) or [let us know](https://github.com/segmentio/create-next-app/issues) your feedback.
-
-## Folder Structure
-
-After creating an app, it should look something like:
-
-```
-.
-├── README.md
-├── components
-│   ├── head.js
-│   └── nav.js
-├── next.config.js
-├── node_modules
-│   ├── [...]
-├── package.json
-├── pages
-│   └── index.js
-├── static
-│   └── favicon.ico
-└── yarn.lock
-```
-
-Routing in Next.js is based on the file system, so `./pages/index.js` maps to the `/` route and
-`./pages/about.js` would map to `/about`.
-
-The `./static` directory maps to `/static` in the `next` server, so you can put all your
-other static resources like images or compiled CSS in there.
-
-Out of the box, we get:
-
-- Automatic transpilation and bundling (with webpack and babel)
-- Hot code reloading
-- Server rendering and indexing of `./pages`
-- Static file serving. `./static/` is mapped to `/static/`
-
-Read more about [Next's Routing](https://github.com/zeit/next.js#routing)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm run dev`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any errors in the console.
-
-### `npm run build`
-
-Builds the app for production to the `.next` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-### `npm run start`
-
-Starts the application in production mode.
-The application should be compiled with \`next build\` first.
-
-See the section in Next docs about [deployment](https://github.com/zeit/next.js/wiki/Deployment) for more information.
-
-## Using CSS
-
-[`styled-jsx`](https://github.com/zeit/styled-jsx) is bundled with next to provide support for isolated scoped CSS. The aim is to support "shadow CSS" resembling of Web Components, which unfortunately [do not support server-rendering and are JS-only](https://github.com/w3c/webcomponents/issues/71).
-
-```jsx
-export default () => (
-  <div>
-    Hello world
-    <p>scoped!</p>
-    <style jsx>{`
-      p {
-        color: blue;
+export default class MyDocument extends Document {
+    static async getInitialProps({ renderPage }) {
+        const sheet = new ServerStyleSheet();
+        const page = renderPage(App => props =>
+          sheet.collectStyles(<App {...props} />)
+        );
+        const styleTags = sheet.getStyleElement();
+        return { ...page, styleTags };
       }
-      div {
-        background: red;
-      }
-      @media (max-width: 600px) {
-        div {
-          background: blue;
-        }
-      }
-    `}</style>
-  </div>
-)
-```
 
-Read more about [Next's CSS features](https://github.com/zeit/next.js#css).
-
-## Adding Components
-
-We recommend keeping React components in `./components` and they should look like:
-
-### `./components/simple.js`
-
-```jsx
-const Simple = () => <div>Simple Component</div>
-
-export default Simple // don't forget to export default!
-```
-
-### `./components/complex.js`
-
-```jsx
-import { Component } from 'react'
-
-class Complex extends Component {
-  state = {
-    text: 'World'
-  }
-
-  render() {
-    const { text } = this.state
-    return <div>Hello {text}</div>
-  }
-}
-
-export default Complex // don't forget to export default!
-```
-
-## Fetching Data
-
-You can fetch data in `pages` components using `getInitialProps` like this:
-
-### `./pages/stars.js`
-
-```jsx
-const Page = props => <div>Next stars: {props.stars}</div>
-
-Page.getInitialProps = async ({ req }) => {
-  const res = await fetch('https://api.github.com/repos/zeit/next.js')
-  const json = await res.json()
-  const stars = json.stargazers_count
-  return { stars }
-}
-
-export default Page
-```
-
-For the initial page load, `getInitialProps` will execute on the server only. `getInitialProps` will only be executed on the client when navigating to a different route via the `Link` component or using the routing APIs.
-
-_Note: `getInitialProps` can **not** be used in children components. Only in `pages`._
-
-Read more about [fetching data and the component lifecycle](https://github.com/zeit/next.js#fetching-data-and-component-lifecycle)
-
-## Custom Server
-
-Want to start a new app with a custom server? Run `create-next-app --example customer-server custom-app`
-
-Typically you start your next server with `next start`. It's possible, however, to start a server 100% programmatically in order to customize routes, use route patterns, etc
-
-This example makes `/a` resolve to `./pages/b`, and `/b` resolve to `./pages/a`:
-
-```jsx
-const { createServer } = require('http')
-const { parse } = require('url')
-const next = require('next')
-
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
-
-app.prepare().then(() => {
-  createServer((req, res) => {
-    // Be sure to pass `true` as the second argument to `url.parse`.
-    // This tells it to parse the query portion of the URL.
-    const parsedUrl = parse(req.url, true)
-    const { pathname, query } = parsedUrl
-
-    if (pathname === '/a') {
-      app.render(req, res, '/b', query)
-    } else if (pathname === '/b') {
-      app.render(req, res, '/a', query)
-    } else {
-      handle(req, res, parsedUrl)
+    render() {
+        return (
+            <html>
+                <Head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.19.0/antd.min.css" />
+                    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+                    {this.props.styleTags}
+                </Head>
+                <body>
+                    <Main />
+                    <NextScript />
+                </body>
+            </html>
+        );
     }
-  }).listen(3000, err => {
-    if (err) throw err
-    console.log('> Ready on http://localhost:3000')
-  })
+}
+
+## 2. การตั้งค่าให้สามรถ import รูปจาก folder ตรง ๆ ใช้ next-optimized-images 
+### 2.1 ติดตั้ง module
+npm i -s next-optimized-images imagemin-mozjpeg imagemin-optipng imagemin-svgo next-compose-plugins
+ในที่นี้จะซัพพอร์ตเฉพาะ jpg, jpegm png, svg ถ้าต้องการเพิ่มตัวอื่น ต้องติดตั้ง module เพิ่มเติม ดูได้จาก https://github.com/cyrilwanner/next-optimized-images
+### 2.2 สร้างไฟล์ next.config.js
+const withPlugins = require('next-compose-plugins');
+const optimizedImages = require('next-optimized-images');
+
+module.exports = withPlugins([
+  [optimizedImages],
+  // your other plugins here
+]);
+
+## 3. การใช้ font จากไฟล์ 
+### 3.1 ติดตั้ง module
+npm i -s next-fonts 
+
+### 3.2 ตัวอย่างการ config
+ดูได้จาก https://github.com/rohanray/next-fonts
+ถ้าใช้กับ styled-components ดูวิธีแก้ใน https://github.com/rohanray/font-error
+
+## 4 การใช้ redux
+### 4.1 ติดตั้ง module
+npm i -s redux redux-thunk react-redux next-redux-wrapper
+### 4.2 วางโครงสร้าง
+สร้างโฟลเดอร์ redux สำหรับเก็บโครงสร้าง redux ภายในมีลักษณะ แบบนี้
+redux
+|-/Screen (ตัวอย่าง 1 ใน reducer)
+|--actions.js
+|--reducer.js
+|
+|-/Screen (ตัวอย่าง 1 ใน reducer)
+|--actions.js
+|--reducer.js
+|
+|-/etc.. (มี reducer อื่น ๆ ได้อีก)
+|--actions.js
+|--reducer.js
+|
+|-reducers.js
+|-store.js
+
+### 4.3 ตัวอย่าง reducer.js
+import types from './actions';
+
+const initialState = {
+    isLoading: true,
+    isMobile: false
+}
+
+export default function ScreenReducer(state = initialState, action) {
+    switch(action.type) {
+        case types.START_LOAD:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case types.END_LOAD:
+            return {
+                ...state,
+                isLoading: false
+            }
+        case types.CHANGE_SIZE:
+            return {
+                ...state,
+                isMobile: action.isMobile
+            }
+        default: 
+            return state;
+    }
+}
+
+### 4.4 ตัวอย่าง actions.js
+const actions = {
+    CHANGE_SIZE: 'CHANGE_SIZE',
+    START_LOAD: 'START_LOAD',
+    END_LOAD: 'END_LOAD',
+    startLoad: () => (dispatch) => {
+        dispatch({type: actions.START_LOAD})
+    },
+    endLoad: () => (dispatch) => {
+        dispatch({type: actions.END_LOAD})
+    },
+    setMobileScreen: (isMobile) => async (dispatch) => {
+        dispatch({type: actions.CHANGE_SIZE, isMobile})
+    }
+}
+
+export default actions
+
+### 4.5 reducers.js
+import { combineReducers } from 'redux';
+import Screen from './screen/reducer';
+
+export default combineReducers({
+    Screen
 })
-```
 
-Then, change your `start` script to `NODE_ENV=production node server.js`.
+### 4.6 store.js
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-Read more about [custom server and routing](https://github.com/zeit/next.js#custom-server-and-routing)
+import reducers from './reducers';
 
-## Syntax Highlighting
+function configureStore(initialState = {}) {
+  const store = createStore(
+    reducers,
+    initialState,
+    applyMiddleware(thunk)
+  );
 
-To configure the syntax highlighting in your favorite text editor, head to the [relevant Babel documentation page](https://babeljs.io/docs/editors) and follow the instructions. Some of the most popular editors are covered.
+  return store;
+}
 
-## Deploy to Now
+export default configureStore;
 
-[now](https://zeit.co/now) offers a zero-configuration single-command deployment.
+### 4.7 ในโฟลเดอร์ pages สร้าง _app.js
+import React from 'react';
+import App, { Container } from 'next/app';
+import withRedux from 'next-redux-wrapper';
+import initialStore from '../redux/store';
+import { Provider } from 'react-redux';
 
-1.  Install the `now` command-line tool either via the recommended [desktop tool](https://zeit.co/download) or via node with `npm install -g now`.
+class CustomApp extends App {
+    static async getInitialProps({ Component, ctx }) {
+        const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+        return { pageProps };
+    }
 
-2.  Run `now` from your project directory. You will see a **now.sh** URL in your output like this:
+    render() {
+        const { Component, pageProps, store } = this.props;
+        return (
+            <Container>
+                <Provider store={store}>
+                    <Component pageContext={this.pageContext} {...pageProps} />
+                </Provider>
+            </Container>
+        )
+    }
+}
 
-    ```
-    > Ready! https://your-project-dirname-tpspyhtdtk.now.sh (copied to clipboard)
-    ```
-
-    Paste that URL into your browser when the build is complete, and you will see your deployed app.
-
-You can find more details about [`now` here](https://zeit.co/now).
-
-## Something Missing?
-
-If you have ideas for how we could improve this readme or the project in general, [let us know](https://github.com/segmentio/create-next-app/issues) or [contribute some!](https://github.com/segmentio/create-next-app/edit/master/lib/templates/default/README.md)
+export default withRedux(initialStore)(CustomApp);

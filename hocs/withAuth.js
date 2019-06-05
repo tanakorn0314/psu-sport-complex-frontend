@@ -1,7 +1,10 @@
 import React from 'react';
 import 'isomorphic-unfetch';
 import {
-    getToken
+    getToken,
+    removeToken,
+    removeExpires,
+    isTokenValid
 } from '../helpers/token';
 import AuthAction from '../redux/auth/actions';
 import { connect } from 'react-redux';
@@ -9,11 +12,23 @@ import { connect } from 'react-redux';
 export default ComposedComponent => {
     class withAuth extends React.Component {
         static async getInitialProps(ctx) {
-            const {req, store} = ctx;
+            const { req, store } = ctx;
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
             const token = getToken(req);
-            if(token) {
+            const isValid = isTokenValid(req);
+
+            if (!isValid) {
+                removeToken();
+                removeExpires();
+            }
+            else if (token) {
                 const result = await store.dispatch(AuthAction.loginJwt(token));
+                if (result && !result.error)
+                    pageProps.token = result.accessToken;
+                else {
+                    removeToken();
+                    removeExpires();
+                }
             }
 
             return pageProps;

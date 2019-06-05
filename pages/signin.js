@@ -1,13 +1,12 @@
-import React from 'react';
 import Head from 'next/head';
-import SignIn from '../containers/Page/signin';
-import SignPage from '../hocs/signPage';
+import Page from '../hocs/mainPage';
+import HomeScreen from '../Screen/Home';
 
-export default SignPage(() => (
+export default Page(() => (
     <>
         <Head>
-            <title>Sign in</title>
+            <title>Home</title>
         </Head>
-        <SignIn />
+        <HomeScreen />
     </>
-));
+  ));

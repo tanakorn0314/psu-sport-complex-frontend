@@ -1,49 +1,55 @@
-import auth from '../../helpers/authentication';
-import { setToken, removeToken } from '../../helpers/token';
-import Router from 'next/router';
+import auth from './helper';
+import { setToken, removeToken, setExpires, removeExpires } from '../../helpers/token';
+import authService from '../../core/service/authService';
+import BookingAction from '../booking/actions';
 
 const actions = {
-  LOGIN_REQUEST: 'LOGIN_REQUEST',
-  JWT_LOGIN_REQUEST: 'JWT_LOGIN_REQUEST',
   LOGOUT: 'LOGOUT',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
-  LOGIN_ERROR: 'LOGIN_ERROR',
-  REGISTER_REQUEST: 'REGISTER_REQUEST',
-  REGISTER_SUCCESS: 'REGISTER_SUCCESS',
-  REGISTER_ERROR: 'REGISTER_ERROR',
   login: (userInfo) => async (dispatch) => {
     const result = await auth.login(userInfo);
-    if (result.error) {
-      dispatch({ type: actions.LOGIN_ERROR });
-    } else {
+    if (result && !result.error) {
+      const owner = auth.ownerFromToken(result.accessToken);
       dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, profile: result.profile });
+      dispatch(BookingAction.setOwner(owner));
       setToken(result.accessToken);
-      Router.replace('/');
+      setExpires(result.expiresAt);
     }
     return result;
   },
   loginJwt: (token) => async (dispatch) => {
     const result = await auth.loginJWT(token);
-    if (result.error) {
-      dispatch({ type: actions.LOGIN_ERROR });
-    } else {
+    if (result && !result.error) {
+      const owner = auth.ownerFromToken(result.accessToken);
       dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, profile: result.profile });
+      dispatch(BookingAction.setOwner(owner));
       setToken(result.accessToken);
+      setExpires(result.expiresAt);
     }
     return result;
   },
-  logout: () => async (dispatch) => {
-    dispatch({ type: actions.LOGOUT });
-    removeToken()
+  logout: () => async (dispatch, getState) => {
+    const { idToken } = getState().Auth;
+    const result = await authService.signout(idToken);
+    if (result && !result.error) {
+      dispatch({ type: actions.LOGOUT });
+      removeToken();
+      removeExpires();
+    }
+    return result;
   },
   register: userInfo => async () => {
     const result = await auth.register(userInfo);
-    if (!result.error) {
-      alert('Register success');
-      Router.push('/login');
-    } else {
-      alert(result.error)
-    }
+    return result;
+  },
+  sendResetRequest: phoneNumber => async () => {
+    const result = await authService.sendResetRequest(phoneNumber);
+    return result;
+  },
+  resetPassword: (token, password) => async () => {
+    if (!password)
+      return { error: 'Password required' };
+    const result = await authService.resetPassword(token, password);
     return result;
   }
 };

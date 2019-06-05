@@ -1,9 +1,9 @@
-import StadiumService from '../../coreLayer/service/stadiumService';
+import StadiumService from '../../core/service/stadiumService';
 
 const actions = {
   FETCH_STADIUM_SUCCESS: 'FETCH_STADIUM_SUCCESS',
   fetchStadium: () => async (dispatch) => {
-    const result = await StadiumService.get();
+    const result = await StadiumService.getAll();
     dispatch({type: actions.FETCH_STADIUM_SUCCESS, payload: result});
     return result;
   }

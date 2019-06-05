@@ -1,13 +1,12 @@
-import React from 'react';
 import Head from 'next/head';
-import Booking from '../containers/Page/booking';
 import Page from '../hocs/bookingPage';
+import BookingScreen from '../Screen/Booking';
 
 export default Page(() => (
     <>
         <Head>
-            <title>Booking</title>
+            <title>Home</title>
         </Head>
-        <Booking/>
+        <BookingScreen />
     </>
-))
+  ));
