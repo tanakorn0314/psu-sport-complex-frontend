@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import StyledRow from './style';
 import BookingAction from '../../redux/booking/actions';
-import BookingSlot from '../BookingSlot';
+import BookingSlot from '../bookingSlot';
 import { Label } from '../../components/typo';
 
 class BookingCard extends React.Component {
