@@ -1,0 +1,89 @@
+import React from 'react';
+import { StyledRow, CourtDetailRow, StyledList } from './style';
+import { Col, Collapse, List } from 'antd';
+import moment from 'moment';
+import { H3, Text, TextButton } from '../typo';
+import text, { locale } from '../../common/text';
+import Button from '../../components/button';
+
+const { Panel } = Collapse;
+
+class BillCard extends React.Component {
+    render() {
+        return (
+            <Collapse style={{ width: '100%', marginBottom: 10 }}>
+                <Panel header={this.renderHeader()} showArrow={false} style={{ padding: 12 }}>
+                    {this.renderCourtDetails(this.props.dataSource.bookings)}
+                </Panel>
+            </Collapse>
+        )
+    }
+
+    renderHeader = () => {
+        const {
+            bookingTime,
+            balance,
+            sport
+        } = this.props.dataSource;
+
+        return (
+            <StyledRow gutter={{ sm: 0, md: 16 }} >
+                <Col sm={24} md={8} className='col basic-detail'>
+                    <H3 msg='sport'/>
+                    <Text msg={sport}/>
+                </Col>
+                <Col sm={24} md={8} className='col basic-detail'>
+                    <H3 msg='bookingTimestamp'/>
+                    <Text>{bookingTime.locale(locale).format('DD MMMM YYYY HH:mm')}</Text>
+                </Col>
+                <Col sm={24} md={8} className='col basic-detail'>
+                    <H3 msg='fee'/>
+                    <Text>{balance} {text['baht']}</Text>
+                </Col>
+            </StyledRow>
+        )
+    }
+
+    renderCourtDetails = (bookings) => {
+        const courtDetails = [];
+        bookings.forEach((booking) => {
+            const { courtId } = booking;
+            if (!courtDetails[courtId - 1])
+                courtDetails[courtId - 1] = [];
+            courtDetails[courtId - 1].push(booking);
+        });
+        
+        return courtDetails.map((courtDetail, num) => {
+            return (
+                <StyledList
+                    key={num}
+                    header={<H3>{text['court']} {num + 1}</H3>}
+                    dataSource={courtDetail}
+                    renderItem={(item) => this.renderCourtDetail(item)}
+                />
+            )
+        })
+    }
+
+    renderCourtDetail = (item) => {
+        const { startDate, endDate } = item;
+        const isPassed = moment(startDate).diff(moment()) <= 0;
+
+        return (
+            <List.Item>
+                <CourtDetailRow>
+                    <Text>
+                        {`${moment(startDate).locale(locale).format('DD MMMM YYYY HH:mm')} - ${moment(endDate).format('HH:mm')}`}
+                    </Text>
+                    <Button size='small' onClick={() => {this.handleEdit(item)}} disabled={isPassed}><TextButton msg='edit'/></Button>
+                </CourtDetailRow>
+            </List.Item>
+        )
+    }
+
+    handleEdit = item => {
+        this.props.onEdit && this.props.onEdit(item);
+    }
+}
+
+export default BillCard;
