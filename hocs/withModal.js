@@ -25,7 +25,7 @@ export default ComposedComponent => {
                 footer,
                 cancel,
                 toggle,
-                style
+                style,
             } = this.props;
             return (
                 <div>

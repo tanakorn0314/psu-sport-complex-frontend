@@ -13,10 +13,11 @@ import InputDate from '../../containers/datePicker';
 import BookingBoard from '../../containers/bookingBoard';
 import BottomAction from '../../containers/bottomAction';
 
-
-import { Row, Col } from 'antd';
+import { Row, Col, notification } from 'antd';
 import { PageTitle } from '../../components/typo';
 import PageLoader from '../../components/pageLoader';
+import text from '../../common/text';
+import PubSub from 'pubsub-js';
 
 class BookingScreen extends React.Component {
 
@@ -39,11 +40,19 @@ class BookingScreen extends React.Component {
     componentDidMount() {
         this.token1 = PubSub.subscribe('showTransactionErrorModal', () => {
             this.showTransactionError();
-        })
+        });
+        this.token2 = PubSub.subscribe('bookingApproved', () => {
+            this.notifyApproved();
+        });
+        this.token3 = PubSub.subscribe('bookingRejected', () => {
+            this.notifyRejected();
+        });
     }
 
     componentWillUnmount() {
         PubSub.unsubscribe(this.token1);
+        PubSub.unsubscribe(this.token2);
+        PubSub.unsubscribe(this.token3);
     }
 
     render() {
@@ -104,25 +113,45 @@ class BookingScreen extends React.Component {
                 this.props.showRefreshModal('unauthorizedDetail', '/booking');
             }
         } else {
-            const dataSource = dataHandler.createConfirmDataSource(fee, result.billId, result.createdAt);
+            const dataSource = dataHandler.createConfirmDataSource(fee, result.billId, result.expiresAt);
 
-            this.props.showConfirmModal(dataSource);
+            this.props.showBookingConfirmModal(dataSource);
         }
     }
 
     restoreConfirmModal = () => {
-        const { billId, fee, createdAt } = this.lastBill;
+        const { billId, fee, expiresAt } = this.lastBill;
 
         this.billId = billId;
         this.shouldRestoreConfirm = false;
 
-        const dataSource = dataHandler.createConfirmDataSource(fee, billId, createdAt);
+        const dataSource = dataHandler.createConfirmDataSource(fee, billId, expiresAt);
 
-        this.props.showConfirmModal(dataSource);
+        this.props.showBookingConfirmModal(dataSource);
     }
 
     showTransactionError = () => {
         this.props.showTransactionErrorModal();
+    }
+
+    notifyApproved = () => {
+        _.throttle(() => {
+            notification['success']({
+                message: text['success'],
+                description: text['yourBookingIsApproved'],
+                duration: 2
+            });
+        }, 2000);
+    }
+
+    notifyRejected = () => {
+        _.throttle(() => {
+            notification['info']({
+                message: text['fail'],
+                description: text['yourBookingIsRejected'],
+                duration: 2
+            })
+        }, 2000);
     }
 
 }

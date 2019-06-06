@@ -31,41 +31,54 @@ class ConfirmBooking extends React.Component {
     componentDidMount() {
         this.token1 = PubSub.subscribe('confirmBooking', () => {
             this.confirmBooking();
-        });
+        }, true);
         this.token2 = PubSub.subscribe('cancelBooking', () => {
             this.cancelBooking();
-        })
+        }, true)
     }
 
     componentWillUnmount() {
-        PubSub.subscribe(this.token1);
-        PubSub.subscribe(this.token2);
+        PubSub.unsubscribe(this.token1);
+        PubSub.unsubscribe(this.token2);
     }
 
     componentWillReceiveProps(nextProps) {
+        if (nextProps.dataSource.billId === this.props.dataSource.billId)
+            return;
+
         const { dataSource } = nextProps;
         this.setState({
             billId: dataSource.billId,
             deposit: dataSource.fee,
+            account: ''
         })
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextState !== this.state)
+            return true;
+        if (nextProps === this.props)
+            return false;
+        return true;
+    }
+
     render() {
-        const { minute, hour, date, month, year } = this.state;
+        const { minute, hour, date, month, year, account, deposit } = this.state;
         const { dataSource } = this.props;
-        const { startCount, fee } = dataSource;
+        const { expiresAt, fee } = dataSource;
 
         return (
             <StyledWrapper>
                 <H2 msg='pleasePayTo' style={{ marginTop: 10 }}/>
                 <Text msg='scbAccount'/>
                 <H2>{text['serviceFee']} : {fee} {text['baht']}</H2>
-                <CountDown minute={startCount.minute} second={startCount.second} onTimeout={this.hideModal} />
+                <CountDown expiresAt={expiresAt} onTimeout={this.cancelBooking} />
                 <div style={{ marginBottom: 5 }}><Label msg='accountNumber'/></div>
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='xxxxxxxxxx'
                     name='account'
+                    value={account}
                     onChange={this.handleChange}
                 />
                 <div style={{ marginBottom: 5 }}><Label msg='amount'/></div>
@@ -73,6 +86,7 @@ class ConfirmBooking extends React.Component {
                     style={{ maxWidth: 300 }}
                     placeholder='Amount'
                     name='deposit'
+                    value={deposit}
                     onChange={this.handleChange}
                     defaultValue={fee}
                 />
@@ -92,6 +106,7 @@ class ConfirmBooking extends React.Component {
 
     handleChange = e => {
         const { name, value } = e.target;
+        console.log(name, value);
         switch (name) {
             case 'account':
                 this.setState({account: value})
@@ -116,6 +131,8 @@ class ConfirmBooking extends React.Component {
         const { billId } = this.state;
         const dto = dataHandler.createConfirmBookingDTO(this.state);
 
+        console.log('confirm booking');
+
         const result = await this.props.confirmTransaction(idToken, billId, dto);
 
         if (result.error) {
@@ -134,6 +151,8 @@ class ConfirmBooking extends React.Component {
     cancelBooking = async () => {
         const { billId } = this.state;
         const { idToken, profile } = this.props.Auth;
+
+        console.log('Cancel bill Id : ', billId);
 
         if (profile.position !== 'admin') {
             await this.props.removeByBillId(idToken, billId);

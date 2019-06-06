@@ -6,34 +6,16 @@ const login = async userInfo => {
     if (!userInfo.signInfo || !userInfo.password) {
         return { error: errors('please fill in the input') };
     }
-    return await authService.signIn(userInfo.signInfo, userInfo.password)
-        .then(res => {
-            const result = {};
-            if (res.accessToken) {
-                result.profile = jwtDecode(res.accessToken);
-                result.accessToken = res.accessToken;
-                result.expiresAt = res.expiresAt;
-                return result;
-            }
-        })
-        .catch(error => (error));
+    const response = await authService.signIn(userInfo.signInfo, userInfo.password);
+    return responseToUser(response);
 };
 
 const loginJWT = async token => {
     if (!token) {
         return { error: errors('token invalid') }
     }
-    return await authService.signWithToken(token)
-        .then(res => {
-            const result = {};
-            if (res.accessToken) {
-                result.profile = jwtDecode(res.accessToken);
-                result.accessToken = res.accessToken;
-                result.expiresAt = res.expiresAt;
-                return result;
-            }
-        })
-        .catch(error => (error));
+    const response = await authService.signWithToken(token)
+    return responseToUser(response);
 }
 
 const register = async userInfo => {
@@ -54,6 +36,17 @@ const ownerFromToken = (token) => {
         position: user.position
     }
     return owner;
+}
+
+const responseToUser = (response) => {
+    if (response && response.accessToken) {
+        return {
+            profile: jwtDecode(response.accessToken),
+            accessToken: response.accessToken,
+            expiresAt: response.expiresAt
+        }
+    } 
+    return response;
 }
 
 export default {

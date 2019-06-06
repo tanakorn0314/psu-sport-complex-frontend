@@ -14,7 +14,7 @@ const colors = {
     available: '#c3d2f7',
     selected: '#555',
     booked: '#0085ad',
-    approved: '#08acdd',
+    approved: '#ff7b7b',
     passed: '#ddd',
 
     shadow: '#a0a1a2',

@@ -66,6 +66,7 @@ export default {
     income: `Income`,
     incomeSummary: 'Income Summary',
     incorrectConfirmPassword: `Incorrect confirm password!`,
+    isBooking: 'Booking',
     //---------------------J-------------------//
     //---------------------K-------------------//
     //---------------------L-------------------//
@@ -136,6 +137,8 @@ export default {
     //---------------------X-------------------//
     //---------------------Y-------------------//
     yes: 'Yes',
+    yourBookingIsApproved: 'Your bookings have been approved',
+    yourBookingIsRejected: `Your bookings have been rejected. We can't find your confirmation`,
     //---------------------Z-------------------//
     
     //months

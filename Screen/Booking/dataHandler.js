@@ -1,13 +1,10 @@
 import moment from 'moment';
 
-function createConfirmDataSource(fee, billId, createdAt) {
+function createConfirmDataSource(fee, billId, expiresAt) {
     return {
         fee,
         billId,
-        startCount: {
-            minute: ((19 - moment().diff(moment(createdAt), 'minute')) % 20),
-            second: ((59 - moment().diff(moment(createdAt), 'second')) % 60)
-        }
+        expiresAt
     }
 }
 

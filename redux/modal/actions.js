@@ -16,7 +16,7 @@ const actions = {
   SHOW_MODAL: 'SHOW_MODAL',
   HIDE_MODAL: 'HIDE_MODAL',
   TOGGLE_MODAL: 'TOGGLE_MODAL',
-  showAuthModal: () => (dispatch, getState) => {
+  showAuthModal: () => (dispatch) => {
     const modal = {
       title: <H2 msg='authentication' />,
       body: renderAuth(),
@@ -27,9 +27,11 @@ const actions = {
 
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
-  showConfirmModal: (dataSource) => (dispatch) => {
+  showBookingConfirmModal: (dataSource) => (dispatch) => {
     const action = () => { PubSub.publish('confirmBooking') };
     const cancel = () => { PubSub.publish('cancelBooking') };
+
+    PubSub.publish('setExpiresCountDown', (dataSource.expiresAt));
 
     const modal = {
       title: <H2 msg='confirmBooking' />,
@@ -116,7 +118,7 @@ const actions = {
     const modal = {
       title: <H2 msg='error' />,
       body: <Text msg='transactinoNotFoundDetail' />,
-      footer: renderFooter(cancel, 'ok'),
+      footer: renderOKFooter(cancel, text['ok']),
       cancel: cancel,
       toggle: cancel,
     }

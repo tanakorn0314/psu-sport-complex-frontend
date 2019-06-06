@@ -1,45 +1,67 @@
 import React from 'react';
 import { H1 } from '../typo';
+import moment from 'moment';
+import PubSub from 'pubsub-js';
 
 class CountDown extends React.Component {
 
     constructor(props) {
         super(props);
-        const minute = props.minute ? props.minute : 20;
-        const second = props.second ? props.second : 0;
+
+        const { expiresAt } = props;
+        const mExpire = moment(expiresAt);
+        const now = moment();
+        const remainMinute = mExpire.diff(now, 'minute') % 60;
+        const remainSecond = mExpire.diff(now, 'second') % 60;
+
         this.state = {
-            minute,
-            second
+            minute: remainMinute,
+            second: remainSecond
         }
+    }
+
+    componentWillMount() {
+        this.token1 = PubSub.subscribe('setExpiresCountDown', (name, expiresAt) => {
+            const mExpire = moment(expiresAt);
+            const now = moment();
+            const remainMinute = mExpire.diff(now, 'minute') % 60;
+            const remainSecond = mExpire.diff(now, 'second') % 60;
+
+            this.setState({
+                minute: remainMinute,
+                second: remainSecond
+            })
+        })
+    }
+
+    componentWillUnmount() {
+        PubSub.unsubscribe(this.token1);
     }
 
     render() {
         const { minute, second } = this.state;
+        let min = minute >= 0 ? minute : 0;
+        let sec = minute >= 0 ? second : 0;
         return (
-            <H1>{minute} : {second.toString().padStart(2, '0')}</H1>
+            <H1>{min} : {sec.toString().padStart(2, '0')}</H1>
         );
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const minute = nextProps.minute ? nextProps.minute : 20;
-        const second = nextProps.second ? nextProps.second : 0;
-        this.setState({ minute, second });
     }
 
     componentDidMount() {
         this.interval = setInterval(() => {
             let { minute, second } = this.state;
-                second--;
-                if (second < 0) {
-                    minute--;
-                    second = 59;
-                }
-                if (minute < 0) {
-                    this.props.onTimeout && this.props.onTimeout();
-                    clearInterval(this.interval);
-                    this.interval = null;
-                }
-                this.setState({ second, minute });
+            second--;
+            if (second < 0) {
+                minute--;
+                second = 59;
+            }
+            if (minute < 0) {
+                this.props.onTimeout && this.props.onTimeout();
+                clearInterval(this.interval);
+                this.interval = null;
+            }
+            // if (minute >=0 && second >= 0)
+            this.setState({ second, minute });
         }, 1000);
     }
 

@@ -91,19 +91,27 @@ class BookingSlot extends React.Component {
             isApproved,
             bookingData
         } = this.state;
-        if (isApproved || isBooked)
+        if (isApproved)
             return (
                 <>
-                    <P msg='booked'/>
-                    <P msg='by'/>
-                    {bookingData && <P msg={bookingData.ownerName}/>}
+                    <P msg='booked' />
+                    <P msg='by' />
+                    {bookingData && <P msg={bookingData.ownerName} />}
+                </>
+            )
+        if (isBooked)
+            return (
+                <>
+                    <P msg='isBooking' />
+                    <P msg='by' />
+                    {bookingData && <P msg={bookingData.ownerName} />}
                 </>
             )
         if (isPassed)
-            return <P msg='passed'/>
+            return <P msg='passed' />
         if (selected)
-            return <P msg='selected'/>
-        return <P msg='available'/>
+            return <P msg='selected' />
+        return <P msg='available' />
     }
 
     handleClick = () => {
@@ -153,5 +161,5 @@ class BookingSlot extends React.Component {
 
 export default connect(
     state => state,
-     { ...BookingAction, ...ModalAction }
-     )(BookingSlot);
+    { ...BookingAction, ...ModalAction }
+)(BookingSlot);

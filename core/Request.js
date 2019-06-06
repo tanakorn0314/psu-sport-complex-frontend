@@ -56,8 +56,8 @@ export default class Request {
         const options = this.createOptions();
 
         const res = await new Promise(async (resolve, reject) => {
-            const respose = await fetch(this.url, options).catch((e) => { reject({ error: e }) });
-            const result = await respose.json().catch((e) => { reject({ error: e }) });
+            const response = await fetch(this.url, options);
+            const result = await response.json();
             if (result)
                 resolve(result);
             else

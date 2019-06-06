@@ -1,8 +1,6 @@
 import React from 'react';
 import 'isomorphic-unfetch';
-import {
-    getToken
-} from '../helpers/token';
+import PubSub from 'pubsub-js';
 import { connect } from 'react-redux';
 import AdminAction from '../redux/admin/actions';
 import BookingAction from '../redux/booking/actions';
@@ -51,6 +49,15 @@ export default ComposedComponent => {
             this.socket.on('deleteBookings', async (bookings) => {
                 await this.props.callbackDelete(bookings);
                 this.props.callbackAdmin();
+            });
+
+            this.socket.on('bookingApproved', async (bill) => {
+                if (bill.userId === this.props.Auth.profile.userId) 
+                    PubSub.publish('bookingApproved');
+            });
+            this.socket.on('bookingRejected', async (bill) => {
+                if (bill.userId === this.props.Auth.profile.userId) 
+                    PubSub.publish('bookingRejected');
             });
 
         }

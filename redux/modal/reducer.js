@@ -10,7 +10,7 @@ const initState = {
     toggle: () => {},
     actionText: '',
     cancelText: '',
-    style: {}
+    style: {},
 };
 
 export default function modalReducer(state = initState, action) {
@@ -19,7 +19,7 @@ export default function modalReducer(state = initState, action) {
             return {
                 ...state,
                 ...action.modal,
-                visible: true
+                visible: true,
             }
         case actions.HIDE_MODAL:
             return {
