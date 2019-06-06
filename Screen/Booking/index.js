@@ -135,7 +135,7 @@ class BookingScreen extends React.Component {
     }
 
     notifyApproved = () => {
-        _.throttle(() => {
+        _.debounce(() => {
             notification['success']({
                 message: text['success'],
                 description: text['yourBookingIsApproved'],
@@ -145,7 +145,7 @@ class BookingScreen extends React.Component {
     }
 
     notifyRejected = () => {
-        _.throttle(() => {
+        _.debounce(() => {
             notification['info']({
                 message: text['fail'],
                 description: text['yourBookingIsRejected'],
