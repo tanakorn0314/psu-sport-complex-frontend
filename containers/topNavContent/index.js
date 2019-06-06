@@ -14,7 +14,6 @@ import {
     Icon
 } from 'antd';
 import Button from '../../components/button';
-import { withNamespaces } from 'react-i18next';
 
 class TopNavContent extends React.Component {
 
@@ -72,9 +71,6 @@ class TopNavContent extends React.Component {
     }
 
     renderMenuItems = () => {
-        const { t } = this.props;
-        
-        console.log('t', t);
 
         const { isMobile } = this.props.Screen;
         const { profile } = this.props.Auth;
@@ -84,8 +80,8 @@ class TopNavContent extends React.Component {
         return (
             <Menu selectedKey={this.state.current} mode={menuMode}>
                 {profile && profile.position === 'admin' &&
-                    <MenuItem name='dashboard'><Link href='/dashboard/booking'>{t('admin')}</Link></MenuItem>},
-                    <MenuItem name='booking'><Link href='/booking'>{t('booking')}</Link></MenuItem>,
+                    <MenuItem name='dashboard'><Link href='/dashboard/booking'><TextMenuItem msg='admin'/></Link></MenuItem>},
+                    <MenuItem name='booking'><Link href='/booking'><TextMenuItem msg='booking'/></Link></MenuItem>,
                     {this.renderAccountMenu()}
             </Menu>
         )
@@ -163,9 +159,7 @@ class TopNavContent extends React.Component {
 
 }
 
-const transComp = withNamespaces('common')(TopNavContent);
-
 export default connect(
     state => state,
     { ...AuthAction, ...ModalAction },
-)(withRouter(transComp));
+)(withRouter(TopNavContent));

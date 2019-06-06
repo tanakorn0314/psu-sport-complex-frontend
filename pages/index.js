@@ -7,6 +7,6 @@ export default Page(() => (
         <Head>
             <title>Home</title>
         </Head>
-        <HomeScreen />
+        <HomeScreen/>
     </>
 ));
