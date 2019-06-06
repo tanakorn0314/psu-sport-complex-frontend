@@ -5,5 +5,9 @@ export const StyledPopover = styled(Popover)`
     .ant-popover-inner-content {
         padding: 12px 2px;
     }
+    .lang-container {
+        display: flex;
+        align-items: center;
+    }
 `
 

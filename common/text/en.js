@@ -49,6 +49,7 @@ export default {
     email: 'Email',
     end: 'End',
     endDate: 'End Date',
+    english: 'English',
     error: 'Error',
     exportExcel: 'Export Excel',
     //---------------------F-------------------//
@@ -121,6 +122,7 @@ export default {
     success: 'Success',
     //---------------------T-------------------//
     tenCharactersPhoneNumber: '10 Characters phone number',
+    thai: 'Thai',
     total: 'Total',
     toMember: 'To Member',
     transferTime: `Transfer time`,

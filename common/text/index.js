@@ -1,11 +1,11 @@
+import { getLang } from '../../helpers/lang';
 import en from './en';
 import th from './th';
 import month from './month';
 import position from './position';
 import error from './error';
 
-
-const selectedLang = 'th';
+const selectedLang = 'en';
 
 const text = {
     en,

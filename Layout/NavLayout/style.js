@@ -40,6 +40,20 @@ export const StyledFooter = styled(Footer)`
     text-align: center;
     background-color: ${cl.footer};
     font-family: 'db_chuanpim_psu_bd';
+    position: relative;
+
+    .option-bar {
+        background-color: ${colors.main2};
+        position: absolute;
+        height: 20px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 20px;
+    }
 `
 
 export default StyleLayout;

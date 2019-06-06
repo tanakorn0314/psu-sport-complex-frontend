@@ -34,16 +34,18 @@ class TopNavContent extends React.Component {
         const { isLoading } = this.state;
 
         return (
-            <Row type='flex' justify='space-between'>
-                <Col className='logo-container' style={{ flex: 1 }} key={1}>
-                    <Link href='/'>
-                        <img src={logo} width='120px' style={{ cursor: 'pointer' }} />
-                    </Link>
-                </Col>
-                <Col className='menu-container'>
-                    {!isLoading && this.renderMenu()}
-                </Col>
-            </Row>
+            <div>
+                <Row type='flex' justify='space-between' align='middle'>
+                    <Col className='logo-container' style={{ flex: 1 }} key={1}>
+                        <Link href='/'>
+                            <img src={logo} width='120px' style={{ cursor: 'pointer' }} />
+                        </Link>
+                    </Col>
+                    <Col className='menu-container'>
+                        {!isLoading && this.renderMenu()}
+                    </Col>
+                </Row>
+            </div>
         )
     }
 
@@ -76,7 +78,7 @@ class TopNavContent extends React.Component {
 
         return (
             <Menu selectedKey={this.state.current} mode={menuMode}>
-                    {profile && profile.position === 'admin' &&
+                {profile && profile.position === 'admin' &&
                     <MenuItem name='dashboard'><Link href='/dashboard/booking'><TextMenuItem msg='admin' /></Link></MenuItem>},
                     <MenuItem name='booking'><Link href='/booking'><TextMenuItem msg='booking' /></Link></MenuItem>,
                     {this.renderAccountMenu()}
