@@ -7,6 +7,11 @@ import ScreenLoader from '../components/screenLoader';
 export default ComposedComponent => {
     class withEnquireScreen extends React.Component {
 
+        static async getInitialProps(ctx) {
+            const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
+            return pageProps;
+        }
+
         constructor(props) {
             super(props);
             this.props.startLoad();

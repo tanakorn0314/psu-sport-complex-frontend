@@ -25,7 +25,6 @@ class NavLayout extends React.Component {
                         <div className='option-bar'>
                             <SelectLanguage/>
                         </div>
-                        
                     </Footer>
                 }
             </StyleLayout>

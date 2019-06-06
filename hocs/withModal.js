@@ -7,6 +7,12 @@ import ModalAction from '../redux/modal/actions';
 export default ComposedComponent => {
     class withModal extends React.Component {
 
+        static async getInitialProps(ctx) {
+            console.log('withModal');
+            const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
+            return pageProps;
+        }
+
         componentDidMount() {
             this.token = PubSub.subscribe('hideModal', () => {
                 this.props.hideModal();

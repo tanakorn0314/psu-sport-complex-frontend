@@ -1,19 +1,19 @@
 import React from 'react';
-import NavLayout from '../Layout/NavLayout';
 
 export default ComposedComponent => {
-    return class withNavLayout extends React.Component {
+    return class withTranslate extends React.Component {
         static async getInitialProps(ctx) {
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
+
+            pageProps.namespacesRequired= ['common', 'footer'];
+
             return pageProps;
         }
 
         render() {
             return (
-                <NavLayout>
-                    <ComposedComponent {...this.props}/>
-                </NavLayout>
+                <ComposedComponent {...this.props} />
             )
         }
     }
-}
+};
