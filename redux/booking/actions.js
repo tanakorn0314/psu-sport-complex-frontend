@@ -10,7 +10,7 @@ const actions = {
   SET_OWNER: 'SET_OWNER',
   SET_FEE: 'SET_FEE',
   SET_BOTTOM_ACTION_VISIBLE: 'SET_BOTTOM_ACTION_VISIBLE',
-  fetchAllBooking: () => async (dispatch, getState) => {
+  fetchAllBooking: () => async (dispatch) => {
     const result = await BookingService.getAll();
     if (result && !result.error) {
       let bookings = helper.setAllBooking(result);

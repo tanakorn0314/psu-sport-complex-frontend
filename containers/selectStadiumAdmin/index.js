@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import BookingAction from '../../redux/booking/actions';
+import AdminAction from '../../redux/admin/actions';
 import { Label } from '../../components/typo';
 import fonts from '../../styles/fonts';
 import text from '../../common/text';
@@ -9,19 +9,18 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-class SelectStadium extends React.Component {
+class SelectStadiumAdmin extends React.Component {
 
     render() {
         const {
             name,
             style,
             placeholder,
-            Booking,
+            Admin,
             Stadium,
-            enableAll
         } = this.props;
         const { stadiums } = Stadium;
-        const stadium = stadiums[Booking.stadiumId - 1]
+        const stadium = stadiums[Admin.stadiumId - 1]
         const sName = stadium ? stadium.name : 'all'
         return (
             <Select
@@ -31,6 +30,7 @@ class SelectStadium extends React.Component {
                 placeholder={placeholder || 'Select stadium'}
                 value={text[sName]}
             >
+                <Option key={0} value={0}><Label msg='all'/></Option>
                 {stadiums.map((s, index) => {
                     return (
                         <Option key={index} value={s.stadiumId}><Label msg={s.name}/></Option>
@@ -41,7 +41,7 @@ class SelectStadium extends React.Component {
     }
 
     handleSelectStadium = async (stadiumId) => {
-        await this.props.selectStadium(stadiumId);
+        await this.props.filterStadium(stadiumId);
 
         this.props.onChange && await this.props.onChange(stadiumId)
     }
@@ -49,5 +49,5 @@ class SelectStadium extends React.Component {
 
 export default connect(
     state => state,
-    BookingAction
-)(SelectStadium)
+    AdminAction
+)(SelectStadiumAdmin)

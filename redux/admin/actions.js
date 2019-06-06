@@ -8,6 +8,7 @@ const actions = {
     FILTER_USER_ID: 'FILTER_USER_ID',
     FILTER_NAME: 'FILTER_NAME',
     FILTER_STATUS: 'FILTER_STATUS',
+    FILTER_STADIUM: 'FILTER_STATUS',
     REFRESH_DATA: 'REFRESH_DATA',
     filterStart: (start) => (dispatch) => {
         dispatch({ type: actions.FILTER_START, start });
@@ -29,6 +30,10 @@ const actions = {
         dispatch({ type: actions.FILTER_STATUS, status });
         dispatch(actions.refreshData());
     },
+    filterStadium: (stadiumId) => (dispatch) => {
+        dispatch({ type: actions.FILTER_STADIUM, stadiumId });
+        dispatch(actions.refreshData());
+    },
     refreshData: () => async (dispatch, getState) => {
         const {
             start,
@@ -36,10 +41,10 @@ const actions = {
             userId,
             name,
             status,
+            stadiumId
         } = await getState().Admin;
         const {
-            bookings,
-            stadiumId
+            bookings
         } = await getState().Booking;
         const {
             stadiums

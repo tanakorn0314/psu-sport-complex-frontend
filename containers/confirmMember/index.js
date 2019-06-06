@@ -4,7 +4,7 @@ import PubSub from 'pubsub-js';
 import moment from 'moment';
 import { Row, Col, notification } from 'antd';
 
-import { locale } from '../../common/text';
+import text, { locale } from '../../common/text';
 import UserAction from '../../redux/users/actions';
 import DatePicker from '../../components/datePicker';
 import Input from '../../components/input';
@@ -114,14 +114,14 @@ class ConfirmMember extends React.Component {
 
         if (result.error) {
             notification['error']({
-                message: message['error'],
+                message: text['error'],
                 description: errors(result.error),
                 duration: 3
             })
         } else {
             notification['success']({
-                message: message['success'],
-                description: message['upgradeUserSuccess'],
+                message: text['success'],
+                description: text['upgradeUserSuccess'],
                 duration: 3
             });
             this.hideModal();

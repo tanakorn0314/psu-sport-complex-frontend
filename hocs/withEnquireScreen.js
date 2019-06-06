@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ScreenAction from '../redux/screen/actions';
 import enquire from 'enquire-js';
-import { Spin, Icon } from 'antd';
+import ScreenLoader from '../components/screenLoader';
 
 export default ComposedComponent => {
     class withEnquireScreen extends React.Component {
@@ -29,15 +29,9 @@ export default ComposedComponent => {
         }
 
         render() {
-            const antIcon = <Icon type="loading-3-quarters" style={{ fontSize: 24 }} spin />;
             return (
                 <div>
-                    {this.props.isLoading && <Spin indicator={antIcon} style={{
-                        position: 'fixed',
-                        right: 20,
-                        top: 80,
-                        zIndex: 100
-                    }} />}
+                    {this.props.isLoading && <ScreenLoader />}
                     <ComposedComponent {...this.props} />
                 </div>
 

@@ -12,7 +12,7 @@ import AdminAction from '../../redux/admin/actions';
 
 import Input from '../../components/input';
 import DatePicker from '../../components/datePicker';
-import SelectStadium from '../selectStadium';
+import SelectStadium from '../selectStadiumAdmin';
 import { Label, H2 } from '../../components/typo';
 import text, { locale } from '../../common/text';
 

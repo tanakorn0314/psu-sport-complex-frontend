@@ -11,6 +11,7 @@ const initialState = {
     status: 'all',
     displayBookings: [],
     fee: 0,
+    stadiumId: 0,
     csv: [],
 }
 
@@ -40,6 +41,11 @@ export default function AdminReducer(state = initialState, action) {
             return {
                 ...state,
                 status: action.status,
+            }
+        case types.FILTER_STADIUM:
+            return {
+                ...state,
+                stadiumId: action.stadiumId,
             }
         case types.REFRESH_DATA:
             return {
