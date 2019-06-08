@@ -8,7 +8,7 @@ import BookingAction from '../../redux/booking/actions';
 import moment from 'moment';
 import PubSub from 'pubsub-js';
 import { H2, Text, Label } from '../../components/typo';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 import dataHandler from './dataHandler';
 import { notification } from 'antd';
 
@@ -29,11 +29,11 @@ class ConfirmBooking extends React.Component {
     }
 
     componentDidMount() {
-        this.token1 = PubSub.subscribe('confirmBooking', () => {
-            this.confirmBooking();
+        this.token1 = PubSub.subscribe('confirmBooking', async () => {
+            await this.confirmBooking();
         }, true);
-        this.token2 = PubSub.subscribe('cancelBooking', () => {
-            this.cancelBooking();
+        this.token2 = PubSub.subscribe('cancelBooking', async () => {
+            await this.cancelBooking();
         }, true)
     }
 
@@ -64,14 +64,14 @@ class ConfirmBooking extends React.Component {
 
     render() {
         const { minute, hour, date, month, year, account, deposit } = this.state;
-        const { dataSource } = this.props;
+        const { dataSource, t } = this.props;
         const { expiresAt, fee } = dataSource;
 
         return (
             <StyledWrapper>
                 <H2 msg='pleasePayTo' style={{ marginTop: 10 }}/>
                 <Text msg='scbAccount'/>
-                <H2>{text['serviceFee']} : {fee} {text['baht']}</H2>
+                <H2>{t('serviceFee')} : {fee} {t('baht')}</H2>
                 <CountDown expiresAt={expiresAt} onTimeout={this.cancelBooking} />
                 <div style={{ marginBottom: 5 }}><Label msg='accountNumber'/></div>
                 <Input
@@ -131,16 +131,14 @@ class ConfirmBooking extends React.Component {
         const { billId } = this.state;
         const dto = dataHandler.createConfirmBookingDTO(this.state);
 
-        console.log('confirm booking');
-
         const result = await this.props.confirmTransaction(idToken, billId, dto);
 
         if (result.error) {
             PubSub.publish('showTransactionErrorModal');
         } else {
             notification['success']({
-                title: text['success'],
-                message: text['bookingSuccess'],
+                title: t('success'),
+                message: t('bookingSuccess'),
                 duration: 3
             });
 
@@ -152,8 +150,6 @@ class ConfirmBooking extends React.Component {
         const { billId } = this.state;
         const { idToken, profile } = this.props.Auth;
 
-        console.log('Cancel bill Id : ', billId);
-
         if (profile.position !== 'admin') {
             await this.props.removeByBillId(idToken, billId);
         }
@@ -161,4 +157,4 @@ class ConfirmBooking extends React.Component {
     }
 }
 
-export default connect(state => state, BookingAction)(ConfirmBooking);
+export default connect(state => state, BookingAction)(withNamespaces('common')(ConfirmBooking));

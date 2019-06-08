@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from '../../containers/link';
-import Router, { withRouter } from 'next/router';
+import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
 import ModalAction from '../../redux/modal/actions';

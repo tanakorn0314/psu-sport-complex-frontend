@@ -5,9 +5,9 @@ import OperationTimeAction from '../../redux/operationTime/actions';
 import { Card, Divider } from 'antd';
 import Table from '../../components/table';
 import { H2, TextLink } from '../../components/typo';
-import text, { locale } from '../../common/text';
 import moment from 'moment';
 import colors from '../../styles/colors';
+import { withNamespaces, i18n } from '../../i18n';
 
 class BlackoutList extends React.Component {
 
@@ -16,7 +16,8 @@ class BlackoutList extends React.Component {
     }
 
     render() {
-
+        const locale = i18n.language || 'en';
+        const { t } = this.props;
         const { blackoutSeries } = this.props.OperationTime;
         const column = [
             {
@@ -25,22 +26,22 @@ class BlackoutList extends React.Component {
                 key: 'no',
             },
             {
-                title: text['title'],
+                title: t('blackoutTitle'),
                 dataIndex: 'title',
                 key: 'title',
             },
             {
-                title: text['start'],
+                title: t('start'),
                 dataIndex: 'start',
                 key: 'start',
             },
             {
-                title: text['end'],
+                title: t('end'),
                 dataIndex: 'end',
                 key: 'end',
             },
             {
-                title: text['action'],
+                title: t('action'),
                 key: 'action',
                 dataIndex: 'id',
                 render: (id) => (
@@ -81,6 +82,7 @@ class BlackoutList extends React.Component {
     }
 
     showDetail = (e) => {
+        const locale = i18n.language || 'en';
         const { id } = e.target;
         const { blackoutSeries } = this.props.OperationTime;
 
@@ -105,4 +107,4 @@ class BlackoutList extends React.Component {
 export default connect(
     state => state, 
     { ...OperationTimeAction, ...ModalAction }
-)(BlackoutList);
+)(withNamespaces('common')(BlackoutList));

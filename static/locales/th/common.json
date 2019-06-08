@@ -142,5 +142,11 @@
     "tabletennis": "เทเบิลเทนนิส",
     "tennis": "เทนนิส",
     "swimming": "ว่ายน้ำ",
-    "volleyball": "วอลเลย์บอล"
+    "volleyball": "วอลเลย์บอล",
+    "user not found": "ไม่พบผู้ใช้",
+    "overlap booking": "จองซ้อนทับ",
+    "user exist": "มีชื่อผู้ใช้นี้อยู่แล้ว",
+    "please fill in the input": "กรุณาระบุข้อมูลการล็อคอิน",
+    "token invalid": "token ไม่ถูกต้อง",
+    "incorrect password": "รหัสผ่านไม่ถูกต้อง"
 }

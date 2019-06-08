@@ -1,6 +1,6 @@
 import React from 'react';
 import StyledWrapper from './style';
-import Link from 'next/link';
+import Link from '../../containers/link';
 
 class PostBox extends React.Component {
     render() {

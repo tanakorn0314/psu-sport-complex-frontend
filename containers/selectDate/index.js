@@ -5,16 +5,17 @@ import _ from 'lodash';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BookingActions from '../../redux/booking/actions';
-import { months as MONTHS } from '../../common/text/';
+import { months } from '../../common/text/';
 import { Label } from '../../components/typo';
-import text from '../../common/text';
-import fonts from '../../styles/fonts';
+import { withNamespaces } from '../../i18n';
 
 const SelectOption = Select.Option;
 
 class SelectDate extends React.Component {
 
     render() {
+        const locale = i18n.language || 'en';
+        const MONTHS = months[locale];
         const defaultDate = moment(this.props.Booking.selectedDate);
 
         const day = defaultDate ? defaultDate.get('date') : 1;
@@ -77,4 +78,4 @@ class SelectDate extends React.Component {
     }
 }
 
-export default connect(state => state, BookingActions)(SelectDate);
+export default connect(state => state, BookingActions)(withNamespaces('common')(SelectDate));

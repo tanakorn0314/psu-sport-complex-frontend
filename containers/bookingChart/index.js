@@ -7,13 +7,14 @@ import { colorsPool } from '../../styles/colors';
 import CountUp from '../../components/countUp';
 import moment from 'moment';
 import helper from './helper';
-import text, { locale } from '../../common/text';
 import { H1, H2 } from '../../components/typo';
 import fonts from '../../styles/fonts';
+import { withNamespaces, i18n } from '../../i18n';
 
 class BookingChart extends React.Component {
 
     render() {
+        const { t } = this.props;
         const { displayBookings } = this.props.Admin;
         const total = displayBookings.reduce((acc, booking) => acc + booking.fee, 0);
 
@@ -30,7 +31,7 @@ class BookingChart extends React.Component {
                             start={0}
                             end={total}
                             useEasing
-                            suffix={` ${text['baht']}`}
+                            suffix={` ${t('baht')}`}
                         />
                     </div>
                     <div style={{ width: '40%' }}>
@@ -42,10 +43,11 @@ class BookingChart extends React.Component {
     }
 
     renderBar = () => {
+        const { t } = this.props;
         const { displayBookings } = this.props.Admin;
         const { stadiums } = this.props.Stadium;
 
-        const labels = stadiums.map((stadium) => text[stadium.name]);
+        const labels = stadiums.map((stadium) => t(stadium.name));
         const data = helper.getSportIncome(displayBookings, stadiums);
         const borderColor = data.map((d, idx) => colorsPool[idx]);
         const backgroundColor = borderColor.map((color, idx) => color + '60');
@@ -56,7 +58,7 @@ class BookingChart extends React.Component {
                 data={{
                     labels,
                     datasets: [{
-                        label: text['income'],
+                        label: t('income'),
                         data,
                         borderColor,
                         backgroundColor,
@@ -80,6 +82,7 @@ class BookingChart extends React.Component {
     }
 
     renderLine = () => {
+        const locale = i18n.language || 'en';
         const { displayBookings, start: startDate, end: endDate } = this.props.Admin;
         let end = moment(endDate);
         let start = moment(startDate);
@@ -144,4 +147,4 @@ class BookingChart extends React.Component {
     }
 }
 
-export default connect(state => state)(BookingChart);
+export default connect(state => state)(withNamespaces('common')(BookingChart));

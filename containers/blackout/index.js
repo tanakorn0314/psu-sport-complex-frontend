@@ -1,16 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Row, Col, Card, Divider, Modal } from 'antd';
+import { Row, Col, Card } from 'antd';
 import OperatioTimeAction from '../../redux/operationTime/actions';
 import InputDateTime from '../../components/inputDateTime';
 import Button from '../../components/button';
 import Input from '../../components/input';
-import Table from '../../components/table';
 import TextArea from '../../components/textArea';
-import { H2, Label, TextLink } from '../../components/typo';
-import text, { locale } from '../../common/text';
-import colors from '../../styles/colors';
+import { H2, Label } from '../../components/typo';
+import { withNamespaces } from '../../i18n';
 
 class Blackout extends React.Component {
 
@@ -40,6 +38,7 @@ class Blackout extends React.Component {
     }
 
     render() {
+        const { t } = this.props;
         const { start, end } = this.state;
 
         return (
@@ -74,12 +73,12 @@ class Blackout extends React.Component {
                     </Col>
                     <Col sm={24} md={24} lg={24} xl={12}>
                         <Label htmlFor='inputTitle' msg='blackoutTitle' /><br />
-                        <Input id='inputTitle' name='title' placeholder={text['blackoutTitleEx']} onChange={this.handleChange} style={{ marginBottom: 10 }} /> <br />
+                        <Input id='inputTitle' name='title' placeholder={t('blackoutTitleEx')} onChange={this.handleChange} style={{ marginBottom: 10 }} /> <br />
                         <Label htmlFor='inputDetail' msg='detail' /><br />
-                        <TextArea id='inputDetail' name='detail' placeholder={text['detail']} row={4} onChange={this.handleChange} style={{ marginBottom: 10 }} /><br />
+                        <TextArea id='inputDetail' name='detail' placeholder={t('detail')} row={4} onChange={this.handleChange} style={{ marginBottom: 10 }} /><br />
                     </Col>
                     <Col span={24} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                        <Button onClick={this.handleAdd} type='primary' style={{ marginBottom: 10 }}>{text['add']}</Button>
+                        <Button onClick={this.handleAdd} type='primary' style={{ marginBottom: 10 }}>{t('add')}</Button>
                     </Col>
                 </Row>
             </Card>
@@ -116,4 +115,4 @@ class Blackout extends React.Component {
 
 }
 
-export default connect(state => state, OperatioTimeAction)(Blackout);
+export default connect(state => state, OperatioTimeAction)(withNamespaces('common')(Blackout));

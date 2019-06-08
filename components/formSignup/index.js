@@ -1,16 +1,14 @@
 import React from 'react';
 import {
     Input,
-    DatePicker,
     Radio
  } from 'antd';
 import Button from '../button';
-import { Typography, Form } from 'antd';
+import { Form } from 'antd';
 import InputDate from '../inputDate';
 import StyledForm from './style';
 import { Label } from '../typo';
-
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 const RadioBox = Radio;
 const RadioGroup = Radio.Group;
@@ -39,6 +37,7 @@ class SignUpForm extends React.Component {
     }
 
     render() {
+        const { t } = this.props;
         const { getFieldDecorator } = this.props.form;
 
         return (
@@ -49,18 +48,18 @@ class SignUpForm extends React.Component {
                         className='form-item'
                         name='fname'
                         required
-                        message={<Label>{text['pleaseInputYour']}{text['firstname']}</Label>}
+                        message={<Label>{t('pleaseInputYour')}{t('firstname')}</Label>}
                         getFieldDecorator={getFieldDecorator}
-                        component={<Input placeholder={text['firstname']} />}
+                        component={<Input placeholder={t('firstname')} />}
                     />
                     <FormItem
                         label={<Label msg='lastname'/>}
                         className='form-item'
                         name='lname'
                         required
-                        message={<Label>{text['pleaseInputYour']}{text['lastname']}</Label>}
+                        message={<Label>{t('pleaseInputYour')}{t('lastname')}</Label>}
                         getFieldDecorator={getFieldDecorator}
-                        component={<Input placeholder={text['lastname']} />}
+                        component={<Input placeholder={t('lastname')} />}
                     />
                 </div>
                 <Form.Item
@@ -71,9 +70,9 @@ class SignUpForm extends React.Component {
                         getFieldDecorator('gender', {
                             initialValue: 'M'
                         })(
-                            <RadioGroup placeholder={text['gender']} name='gender'>
-                                <RadioBox value='M'>{text['male']}</RadioBox>
-                                <RadioBox value='F'>{text['female']}</RadioBox>
+                            <RadioGroup placeholder={t('gender')} name='gender'>
+                                <RadioBox value='M'>{t('male')}</RadioBox>
+                                <RadioBox value='F'>{t('female')}</RadioBox>
                             </RadioGroup>
                         )
                     }
@@ -83,7 +82,7 @@ class SignUpForm extends React.Component {
                     className='form-item'
                     name='dob'
                     required
-                    message={<Label>{text['pleaseInputYour']} {text['dateOfBirth']}</Label>}
+                    message={<Label>{t('pleaseInputYour')} {t('dateOfBirth')}</Label>}
                     getFieldDecorator={getFieldDecorator}
                     component={<InputDate />}
                 />
@@ -96,11 +95,11 @@ class SignUpForm extends React.Component {
                             rules: [
                                 {
                                     required: true,
-                                    message: <Label>{text['pleaseInputYour']}{text['email']}</Label>
+                                    message: <Label>{t('pleaseInputYour')}{t('email')}</Label>
                                 }
                             ]
                         })(
-                            <Input placeholder={text['email']} type='email' />
+                            <Input placeholder={t('email')} type='email' />
                         )
                     }
                 </Form.Item>
@@ -117,11 +116,11 @@ class SignUpForm extends React.Component {
                                 },
                                 {
                                     required: true,
-                                    message: <Label>{text['pleaseInputYour']}{text['phoneNumber']}</Label>
+                                    message: <Label>{t('pleaseInputYour')}{t('phoneNumber')}</Label>
                                 }
                             ]
                         })(
-                            <Input placeholder={text['phoneNumber']} type='text' />
+                            <Input placeholder={t('phoneNumber')} type='text' />
                         )
                     }
                 </Form.Item>
@@ -138,11 +137,11 @@ class SignUpForm extends React.Component {
                                 },
                                 {
                                     required: true,
-                                    message: <Label>{text['pleaseInput']}{text['password']}</Label>
+                                    message: <Label>{t('pleaseInput')}{t('password')}</Label>
                                 }
                             ]
                         })(
-                            <Input placeholder={text['password']} type='password' />
+                            <Input placeholder={t('password')} type='password' />
                         )
                     }
                 </Form.Item>
@@ -155,20 +154,20 @@ class SignUpForm extends React.Component {
                             rules: [
                                 {
                                     required: true,
-                                    message: <Label>{text['pleaseInput']}{text['confirmPassword']}</Label>
+                                    message: <Label>{t('pleaseInput')}{t('confirmPassword')}</Label>
                                 },
                                 {
                                     validator: this.compareToFirstPassword
                                 }
                             ]
                         })(
-                            <Input placeholder={text['confirmPassword']} type='password' />
+                            <Input placeholder={t('confirmPassword')} type='password' />
                         )
                     }
                 </Form.Item>
                 <FormItem
                     className='form-item'
-                    component={<Button type='primary' htmlType='submit' onClick={this.handleSubmit}>{text['register']}</Button>}
+                    component={<Button type='primary' htmlType='submit' onClick={this.handleSubmit}>{t('register')}</Button>}
                 />
             </StyledForm>
         )
@@ -184,9 +183,10 @@ class SignUpForm extends React.Component {
     }
 
     compareToFirstPassword = (rule, value, callback) => {
+        const { t } = this.props;
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
-            callback(text['incorrectConfirmPassword'])
+            callback(t('incorrectConfirmPassword'))
         } else {
             callback();
         }
@@ -194,4 +194,4 @@ class SignUpForm extends React.Component {
 }
 
 const WrapperRegistrationForm = Form.create({ name: 'signup' })(SignUpForm);
-export default WrapperRegistrationForm;
+export default withNamespaces('common')(WrapperRegistrationForm);

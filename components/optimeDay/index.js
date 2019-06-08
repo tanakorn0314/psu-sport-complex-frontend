@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Checkbox } from 'antd';
 import InputTime from '../inputTime';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 import moment from 'moment';
 
 class OperationTimeDay extends React.Component {
@@ -23,12 +23,12 @@ class OperationTimeDay extends React.Component {
     }
 
     render() {
-        const { day } = this.props;
+        const { day, t } = this.props;
         const { checked } = this.state;
         return (
             <Row style={this.props.style} type='flex' align='middle' gutter={24}>
                 <Col><Checkbox checked={checked} onChange={this.handleCheck} /></Col>
-                <Col span={3}>{text[day]}</Col>
+                <Col span={3}>{t(day)}</Col>
                 {this.renderTimeAction()}
             </Row>
         )
@@ -36,16 +36,15 @@ class OperationTimeDay extends React.Component {
 
     renderTimeAction = () => {
         const { start, end, checked } = this.state;
-        const format = 'HH:mm'
         const disabled = !checked;
         return [
-            <Col>
+            <Col key={0}>
                 <InputTime value={start} disabled={disabled} onChange={this.handleChangeStart} />
             </Col>,
-            <Col>
+            <Col key={1}>
                 -
             </Col>,
-            <Col>
+            <Col key={2}>
                 <InputTime value={end} disabled={disabled} onChange={this.handleChangeEnd} />
             </Col>
         ]
@@ -76,4 +75,4 @@ class OperationTimeDay extends React.Component {
     }
 }
 
-export default OperationTimeDay;
+export default withNamespaces('common')(OperationTimeDay);

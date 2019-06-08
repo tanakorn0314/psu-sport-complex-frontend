@@ -14,11 +14,13 @@ import Input from '../../components/input';
 import DatePicker from '../../components/datePicker';
 import SelectStadium from '../selectStadiumAdmin';
 import { Label, H2 } from '../../components/typo';
-import text, { locale } from '../../common/text';
+import { withNamespaces, i18n } from '../../i18n';
 
 class SearchForm extends React.Component {
 
     render() {
+        const { t } = this.props;
+        const locale = i18n.language || 'en';
         return (
             <Card style={this.props.style}>
                 <H2 msg='searchBooking'/>
@@ -59,14 +61,14 @@ class SearchForm extends React.Component {
                             <Form.Item
                                 label={<Label msg='firstname'/>}
                             >
-                                <Input placeholder={text['firstname']} name='fname' onChange={this.handleBlur} />
+                                <Input placeholder={t('firstname')} name='fname' onChange={this.handleBlur} />
                             </Form.Item>
                         </Col>
                         <Col span={16}>
                             <Form.Item
                                 label={<Label msg='phoneNumberOrPSUPassport'/>}
                             >
-                                <Input placeholder={text['phoneNumberOrPSUPassport']} name='userId' style={{width: 300}} onChange={this.handleBlur} />
+                                <Input placeholder={t('phoneNumberOrPSUPassport')} name='userId' style={{width: 300}} onChange={this.handleBlur} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -108,4 +110,4 @@ class SearchForm extends React.Component {
 export default connect(
     state => state,
     AdminAction
-)(SearchForm)
+)(withNamespaces('common')(SearchForm))

@@ -3,7 +3,6 @@ import Admin from './admin/reducer';
 import Auth from './auth/reducer';
 import Bill from './bill/reducer';
 import Booking from './booking/reducer';
-import Lang from './lang/reducer';
 import Modal from './modal/reducer';
 import OperationTime from './operationTime/reducer';
 import Stadium from './stadium/reducer';
@@ -15,7 +14,6 @@ export default combineReducers({
     Auth,
     Bill,
     Booking,
-    Lang,
     Modal,
     OperationTime,
     Screen,

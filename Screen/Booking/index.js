@@ -16,7 +16,7 @@ import BottomAction from '../../containers/bottomAction';
 import { Row, Col, notification } from 'antd';
 import { PageTitle } from '../../components/typo';
 import PageLoader from '../../components/pageLoader';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 import PubSub from 'pubsub-js';
 
 class BookingScreen extends React.Component {
@@ -56,6 +56,7 @@ class BookingScreen extends React.Component {
     }
 
     render() {
+        const { t } = this.props
         const { isLoading, isMobile } = this.props.Screen;
 
         this.shouldRestoreConfirm && this.restoreConfirmModal();
@@ -137,8 +138,8 @@ class BookingScreen extends React.Component {
     notifyApproved = () => {
         _.debounce(() => {
             notification['success']({
-                message: text['success'],
-                description: text['yourBookingIsApproved'],
+                message: t('success'),
+                description: t('yourBookingIsApproved'),
                 duration: 2
             });
         }, 2000);
@@ -147,8 +148,8 @@ class BookingScreen extends React.Component {
     notifyRejected = () => {
         _.debounce(() => {
             notification['info']({
-                message: text['fail'],
-                description: text['yourBookingIsRejected'],
+                message: t('fail'),
+                description: t('yourBookingIsRejected'),
                 duration: 2
             })
         }, 2000);
@@ -159,4 +160,4 @@ class BookingScreen extends React.Component {
 export default connect(
     state => state,
     { ...BookingAction, ...ModalAction }
-)(BookingScreen);
+)(withNamespaces('common')(BookingScreen));

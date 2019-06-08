@@ -2,10 +2,12 @@ import React from 'react';
 import Select, { SelectOption } from '../../components/select'
 import { connect } from 'react-redux';
 import BookingActions from '../../redux/booking/actions';
-import text, { positions } from '../../common/text';
+import { positions } from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 class SelectPosition extends React.Component {
     render() {
+        const { t } = this.props;
         return (
             <Select
                 style={{...this.props.style, width: '100%', maxWidth: 300}}
@@ -13,7 +15,7 @@ class SelectPosition extends React.Component {
                 defaultValue={positions[0]}
             >
                 {positions.map((position, index) => (
-                    <SelectOption key={index} value={position}>{text[position]}</SelectOption>
+                    <SelectOption key={index} value={position}>{t(position)}</SelectOption>
                 ))}
             </Select>
         )
@@ -28,4 +30,4 @@ class SelectPosition extends React.Component {
     }
 }
 
-export default connect(state => state, BookingActions)(SelectPosition);
+export default connect(state => state, BookingActions)(withNamespaces('common')(SelectPosition));

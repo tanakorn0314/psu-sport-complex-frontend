@@ -3,11 +3,8 @@ import { StyledRow, CourtDetailRow, StyledList } from './style';
 import { Col, Collapse, List } from 'antd';
 import moment from 'moment';
 import { H3, Text, TextButton } from '../typo';
-import { i18n } from '../../i18n';
 import Button from '../../components/button';
-import { withNamespaces } from '../../i18n';
-
-const locale = i18n.language;
+import { withNamespaces, i18n } from '../../i18n';
 
 const { Panel } = Collapse;
 
@@ -23,8 +20,11 @@ class BillCard extends React.Component {
     }
 
     renderHeader = () => {
+        const locale = i18n.language || 'en';
         const { t, dataSource } = this.props;
         const { bookingTime, balance, sport } = dataSource;
+
+        console.log(sport);
 
         return (
             <StyledRow gutter={{ sm: 0, md: 16 }} >
@@ -34,7 +34,7 @@ class BillCard extends React.Component {
                 </Col>
                 <Col sm={24} md={8} className='col basic-detail'>
                     <H3>{t('bookingTimestamp')}</H3>
-                    <Text>{bookingTime.locale(locale).format('DD MMMM YYYY HH:mm')}</Text>
+                    <Text>{moment(bookingTime).locale(locale).format('DD MMMM YYYY HH:mm')}</Text>
                 </Col>
                 <Col sm={24} md={8} className='col basic-detail'>
                     <H3>{t('fee')}</H3>
@@ -67,6 +67,7 @@ class BillCard extends React.Component {
     }
 
     renderCourtDetail = (item) => {
+        const locale = i18n.language || 'en';
         const { t } = this.props;
         const { startDate, endDate } = item;
         const isPassed = moment(startDate).diff(moment()) <= 0;

@@ -5,7 +5,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import BookingAction from '../../redux/booking/actions';
 import fonts from '../../styles/fonts';
-import { locale } from '../../common/text';
+import { i18n, withNamespaces } from '../../i18n';
 
 const StyledDatePicker = styled(DatePicker)`
     font-family: ${fonts.psuStidti}
@@ -14,10 +14,11 @@ const StyledDatePicker = styled(DatePicker)`
 class InputDate extends React.Component {
 
     render() {
+        const locale = i18n.language || 'en';
         return (
             <StyledDatePicker 
                 style={{width: 200, ...this.props.style}}
-                value={moment(this.props.selectedDate).locale('th')}
+                value={moment(this.props.selectedDate).locale(locale)}
                 onChange={this.handleChange}
                 format='DD MMMM YYYY'
             />
@@ -30,4 +31,4 @@ class InputDate extends React.Component {
     }
 }
 
-export default connect(state => state.Booking, BookingAction)(InputDate);
+export default connect(state => state.Booking, BookingAction)(withNamespaces('common')(InputDate));

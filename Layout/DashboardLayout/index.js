@@ -8,7 +8,8 @@ import {
     Menu,
     Icon
 } from 'antd';
-import Router, { withRouter } from 'next/router';
+import { withRouter } from 'next/router';
+import { Router } from '../../i18n';
 import { TextMenuItem } from '../../components/typo';
 
 const { Sider, Content } = Layout;

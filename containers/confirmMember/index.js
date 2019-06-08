@@ -4,7 +4,7 @@ import PubSub from 'pubsub-js';
 import moment from 'moment';
 import { Row, Col, notification } from 'antd';
 
-import text, { locale } from '../../common/text';
+import { withNamespaces, i18n } from '../../i18n';
 import UserAction from '../../redux/users/actions';
 import DatePicker from '../../components/datePicker';
 import Input from '../../components/input';
@@ -45,7 +45,7 @@ class ConfirmMember extends React.Component {
     }
 
     render() {
-        console.log(this.selectedId);
+        const locale = i18n.language || 'en';
         const { startDate, endDate, amount } = this.state;
         return (
             <div>
@@ -98,6 +98,7 @@ class ConfirmMember extends React.Component {
     }
 
     confirmMember = async () => {
+        const { t } = this.props;
         const {
             startDate,
             endDate,
@@ -114,14 +115,14 @@ class ConfirmMember extends React.Component {
 
         if (result.error) {
             notification['error']({
-                message: text['error'],
-                description: errors(result.error),
+                message: t('error'),
+                description: t(result.error),
                 duration: 3
             })
         } else {
             notification['success']({
-                message: text['success'],
-                description: text['upgradeUserSuccess'],
+                message: t('success'),
+                description: t('upgradeUserSuccess'),
                 duration: 3
             });
             this.hideModal();
@@ -129,4 +130,4 @@ class ConfirmMember extends React.Component {
     }
 }
 
-export default connect(state => state, UserAction)(ConfirmMember);
+export default connect(state => state, UserAction)(withNamespaces('common')(ConfirmMember));

@@ -4,15 +4,19 @@ import { withNamespaces } from '../i18n';
 export default ComposedComponent => {
     class withText extends React.Component {
         render() {
-            const { msg, children, noTranslate, t } = this.props;
-            const propsText = msg ? msg : children;
+            let { msg, children, noTranslate, t } = this.props;
+            let propsText = msg ? msg : children;
 
-            let display = !noTranslate ? t(propsText) : propsText;
+            if (!isNaN(propsText))
+                propsText = propsText.toString();
+            if (Array.isArray(propsText))
+                propsText = propsText.join('');
 
-            if (!isNaN(display))
-                display = display.toString();
-            if (Array.isArray(display))
-                display = display.join('');
+            let display;
+            if (noTranslate || propsText.includes(' '))
+                display = propsText;
+            else
+                display = t(propsText);
 
             const displayArr = display.split('\n');
             const last = displayArr.length - 1;

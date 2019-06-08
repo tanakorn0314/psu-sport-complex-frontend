@@ -4,9 +4,9 @@ import FormSignin from '../../components/formSignin';
 import FormSignup from '../../components/formSignup';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
-import text, { errors } from '../../common/text';
 import { Label } from '../../components/typo';
 import PubSub from 'pubsub-js';
+import { withNamespaces } from '../../i18n';
 
 const { TabPane } = Tabs;
 
@@ -37,6 +37,7 @@ class AuthTabs extends React.Component {
     }
 
     handleLogin = async (value) => {
+        const { t } = this.props;
         const userInfo = {
             signInfo: value.signInfo,
             password: value.password
@@ -47,8 +48,8 @@ class AuthTabs extends React.Component {
         if (result.error) {
             notification['error']({
                 duration: 2,
-                message: text['error'],
-                description: errors(result.error)
+                message: t('error'),
+                description: t(result.error)
             })
         } else {
             PubSub.publish('hideModal');
@@ -56,6 +57,7 @@ class AuthTabs extends React.Component {
     }
 
     handleRegister = async value => {
+        const { t } = this.props;
         const userInfo = {
             ...value,
             dob: value.dob.format(),
@@ -64,14 +66,14 @@ class AuthTabs extends React.Component {
         if (result.error) {
             notification['error']({
                 duration: 3,
-                message: text['error'],
-                description: errors(result.error)
+                message: t('error'),
+                description: t(result.error)
             })
         } else {
             notification['success']({
                 duration: 2,
-                message: text['success'],
-                description: text['registerSuccess']
+                message: t('success'),
+                description: t('registerSuccess')
             })
             this.setState({current: 'Login'})
         }
@@ -81,4 +83,4 @@ class AuthTabs extends React.Component {
 export default connect(
     state => state.Auth,
     AuthAction
-)(AuthTabs);
+)(withNamespaces('common')(AuthTabs));

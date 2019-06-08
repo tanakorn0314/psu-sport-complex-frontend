@@ -141,5 +141,11 @@
     "tabletennis": "Table Tennis",
     "tennis": "Tennis",
     "swimming": "Swimming",
-    "volleyball": "Volleyball"
+    "volleyball": "Volleyball",
+    "user not found": "User not found",
+    "overlap booking": "Overlap booking",
+    "user exist": "User exist",
+    "please fill in the input": "Please fill in the input",
+    "token invalid": "Token invalid",
+    "incorrect password": "Incorrect password"
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import PubSub from 'pubsub-js';
-import text from '../../common/text';
-import { H2, Text } from '../../components/typo';
+import { H2, Text, TextButton } from '../../components/typo';
 import Button from '../../components/button';
 
 import AuthTabs from '../../containers/authTabs';
@@ -28,15 +27,15 @@ const actions = {
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
   showBookingConfirmModal: (dataSource) => (dispatch) => {
-    const action = () => { PubSub.publish('confirmBooking') };
-    const cancel = () => { PubSub.publish('cancelBooking') };
+    const action = () => { PubSub.publishSync('confirmBooking') };
+    const cancel = () => { PubSub.publishSync('cancelBooking') };
 
     PubSub.publish('setExpiresCountDown', (dataSource.expiresAt));
 
     const modal = {
       title: <H2 msg='confirmBooking' />,
       body: renderConfirmBooking(dataSource),
-      footer: renderFooter(action, cancel, text['confirm'], text['cancel']),
+      footer: renderFooter(action, cancel, 'confirm', 'cancel'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -50,7 +49,7 @@ const actions = {
     const modal = {
       title: <H2 msg='confirmBooking' />,
       body: renderBookByAdmin(),
-      footer: renderFooter(action, cancel, text['confirm'], text['cancel']),
+      footer: renderFooter(action, cancel, 'confirm', 'cancel'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -64,7 +63,7 @@ const actions = {
     const modal = {
       title: <H2 msg='editBooking' />,
       body: renderEditBooking(booking),
-      footer: renderFooter(action, cancel, text['confirm'], text['cancel']),
+      footer: renderFooter(action, cancel, 'confirm', 'cancel'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -78,7 +77,7 @@ const actions = {
     const modal = {
       title: <H2 msg='confirmMember' />,
       body: renderConfirmMember(selectedId),
-      footer: renderFooter(action, cancel, text['confirm'], text['cancel']),
+      footer: renderFooter(action, cancel, 'confirm', 'cancel'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -92,7 +91,7 @@ const actions = {
     const modal = {
       title: <H2 msg='blackoutDetail' />,
       body: renderBlackoutDetail(dataSource),
-      footer: renderOKFooter(action, text['ok']),
+      footer: renderOKFooter(action, 'ok'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -105,7 +104,7 @@ const actions = {
     const modal = {
       title: <H2 msg={title} />,
       body: renderConfirm(msg),
-      footer: renderFooter(action, cancel, text['yes'], text['no']),
+      footer: renderFooter(action, cancel, 'yes', 'no'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -118,7 +117,7 @@ const actions = {
     const modal = {
       title: <H2 msg='error' />,
       body: <Text msg='transactinoNotFoundDetail' />,
-      footer: renderOKFooter(cancel, text['ok']),
+      footer: renderOKFooter(cancel, 'ok'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -148,20 +147,20 @@ const actions = {
 
 const renderFooter = (action, cancel, actionText, cancelText) => (
   <div>
-    <Button key={0} type="primary" onClick={action} loading>{actionText}</Button>
-    <Button key={1} type="secondary" onClick={cancel} loading>{cancelText}</Button>
+    <Button key={0} type="primary" onClick={action} loading><TextButton msg={actionText}/></Button>
+    <Button key={1} type="secondary" onClick={cancel} loading><TextButton msg={cancelText}/></Button>
   </div>
 )
 
 const renderRefreshFooter = (route) => (
   <a href={route}>
-    <Button type="primary">{text['reload']}</Button>
+    <Button type="primary"><TextButton msg={'reload'}/></Button>
   </a>
 )
 
 const renderOKFooter = (action, actionText) => (
   <div>
-    <Button key={0} type="primary" onClick={action} loading>{actionText}</Button>
+    <Button key={0} type="primary" onClick={action} loading><TextButton msg={actionText}/></Button>
   </div>
 )
 

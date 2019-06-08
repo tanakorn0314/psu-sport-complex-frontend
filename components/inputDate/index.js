@@ -3,8 +3,9 @@ import StyledWarpper from './style';
 import { Select } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
-import { months as MONTHS } from '../../common/text/';
+import { months } from '../../common/text/';
 import { Label } from '../typo';
+import { withNamespaces, i18n } from '../../i18n';
 
 const SelectOption = Select.Option;
 
@@ -28,6 +29,8 @@ class InputDate extends React.Component {
     }
 
     render() {
+        const locale = i18n.language;
+        const MONTHS = months[locale];
         const { day, month, year } = this.state;
         const thisYear = parseInt(moment().format('YYYY'));
         return (
@@ -99,4 +102,4 @@ class InputDate extends React.Component {
     }
 }
 
-export default InputDate;
+export default withNamespaces('common')(InputDate);

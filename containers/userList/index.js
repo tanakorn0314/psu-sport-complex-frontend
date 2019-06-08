@@ -11,7 +11,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import UserAction from '../../redux/users/actions';
 import ModalAction from '../../redux/modal/actions';
-import text, { locale } from '../../common/text';
+import { withNamespaces, i18n } from '../../i18n';
 import fonts from '../../styles/fonts';
 import colors from '../../styles/colors';
 import { TextButton, Text, H2 } from '../../components/typo';
@@ -27,28 +27,30 @@ class UserList extends React.Component {
   }
 
   render() {
-    const users = this.props.Users.users;
+    const locale = i18n.language || 'en';
+    const { t, Users } = this.props;
+    const users = Users.users;
     const column = [{
       title: '#',
       dataIndex: 'no',
       key: 'no',
     }, {
-      title: text['name'],
+      title: t('name'),
       dataIndex: 'name',
       key: 'name',
       ...this.getColumnSearchProps('name')
     }, {
-      title: text['phoneNumberOrPSUPassport'],
+      title: t('phoneNumberOrPSUPassport'),
       dataIndex: 'userId',
       key: 'userId',
       ...this.getColumnSearchProps('userId')
     }, {
-      title: text['position'],
+      title: t('position'),
       dataIndex: 'position',
       key: 'position',
       ...this.getColumnSearchProps('position')
     }, {
-      title: text['memberExpires'],
+      title: t('memberExpires'),
       dataIndex: 'expires',
       key: 'expires',
       render: data => {
@@ -66,7 +68,7 @@ class UserList extends React.Component {
       key: index,
       name: user && `${user.fname} ${user.lname}`,
       userId: user && user.psuPassport && user.psuPassport.length > 0 ? user.psuPassport : user.phoneNumber,
-      position: user && text[user.position],
+      position: user && t(user.position),
       expires: user && { id: user.userId, position: user.position, end: user.memberEnd },
     }))
 
@@ -90,7 +92,7 @@ class UserList extends React.Component {
         <div style={{ padding: 8 }}>
           <Input
             ref={node => { this.searchInput = node; }}
-            placeholder={text['search']}
+            placeholder={this.props.t('search')}
             value={selectedKeys[0]}
             onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
@@ -103,14 +105,14 @@ class UserList extends React.Component {
             size="small"
             style={{ width: 90, marginRight: 8 }}
           >
-            {text['search']}
+            {this.props.t('search')}
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            {text['reset']}
+            {this.props.t('reset')}
           </Button>
         </div>
       ),
@@ -148,4 +150,4 @@ class UserList extends React.Component {
 
 }
 
-export default connect(state => state, { ...UserAction, ...ModalAction })(UserList);
+export default connect(state => state, { ...UserAction, ...ModalAction })(withNamespaces('common')(UserList));

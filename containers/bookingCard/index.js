@@ -23,13 +23,13 @@ class BookingCard extends React.Component {
             <StyledRow key={this.props.i} type='flex' align='middle'>
                 <Col className='duration' xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
                     <div className='start-time'>
-                        <Label msg={start} />
+                        <Label msg={start} noTranslate/>
                     </div>
                     <div className='line-container'>
                         <div className='line' />
                     </div>
                     <div className='end-time'>
-                        <Label msg={end} />
+                        <Label msg={end} noTranslate/>
                     </div>
                 </Col>
                 <Col className='slot-container' xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>

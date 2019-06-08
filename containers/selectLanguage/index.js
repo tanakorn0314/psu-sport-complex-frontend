@@ -2,9 +2,10 @@ import React from 'react';
 import { Popover } from 'antd';
 import { Menu, MenuItem } from '../../components/menu';
 import { TextMenuItem } from '../../components/typo';
-import text from '../../common/text';
-import LangAction from '../../redux/lang/actions';
-import { connect } from 'react-redux';
+import { withNamespaces, i18n } from '../../i18n';
+
+import thFlag from '../../static/image/flags/th.png';
+import enFlag from '../../static/image/flags/us.png';
 
 class SelectLanguage extends React.Component {
 
@@ -30,32 +31,31 @@ class SelectLanguage extends React.Component {
     }
 
     getShowFlags = () => {
-        const { lang } = this.props;
-        const enFlagUrl = "http://i65.tinypic.com/2d0kyno.png";
-        const thFlagUrl = "http://i64.tinypic.com/fd60km.png";
-        return lang === 'en' ? enFlagUrl : thFlagUrl;
+        const lang = i18n.language;
+        return lang === 'en' ? enFlag : thFlag;
     }
 
     renderFlags = () => {
+        const { t } = this.props;
         return (
-            <Menu mode='inline' selectedKey='en' onChange={this.handleSelect}>
+            <Menu mode='inline' selectedKey={i18n.language} onChange={this.handleSelect}>
                 <MenuItem name='en' style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="http://i65.tinypic.com/2d0kyno.png" style={{ marginRight: 5 }} />
-                    <TextMenuItem> {text['english']}</TextMenuItem>
+                    <img src={enFlag} style={{ marginRight: 5 }} />
+                    <TextMenuItem> {t('english')}</TextMenuItem>
                 </MenuItem>
                 <MenuItem name='th' style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="http://i64.tinypic.com/fd60km.png" style={{ marginRight: 5 }} />
-                    <TextMenuItem> {text['thai']}</TextMenuItem>
+                    <img src={thFlag} style={{ marginRight: 5 }} />
+                    <TextMenuItem> {t('thai')}</TextMenuItem>
                 </MenuItem>
             </Menu>
         )
     }
 
     handleSelect = lang => {
-        console.log(lang);
-        this.props.setLang(lang);
+        i18n.changeLanguage(lang);
+        this.setState({visible: false})
     }
 
 }
 
-export default connect(state => state.Lang, LangAction)(SelectLanguage);
+export default withNamespaces('common')(SelectLanguage);

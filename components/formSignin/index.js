@@ -6,29 +6,30 @@ import {
 } from 'antd';
 import StyledForm from './style';
 import Button from '../button';
-import text from '../../common/text';
 import { Label } from '../typo';
+import { withNamespaces } from '../../i18n';
 
 class FormSignIn extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { t } = this.props;
         return (
             <StyledForm onSubmit={this.handleSubmit}>
                 <Form.Item
-                    label={text['phoneNumberOrPSUPassport']}
+                    label={t('phoneNumberOrPSUPassport')}
                     className='form-item'
                 >
                     {
-                        getFieldDecorator('signInfo')(<Input placeholder={text['phoneNumberOrPSUPassport']} />)
+                        getFieldDecorator('signInfo')(<Input placeholder={t('phoneNumberOrPSUPassport')} />)
                     }
                 </Form.Item>
                 <Form.Item
-                    label={text['password']}
+                    label={t('password')}
                     className='form-item'
                 >
                     {
-                        getFieldDecorator('password')(<Input type='password' placeholder={text['password']} />)
+                        getFieldDecorator('password')(<Input type='password' placeholder={t('password')} />)
                     }
                 </Form.Item>
                 <div className='input-left-right'>
@@ -55,4 +56,4 @@ class FormSignIn extends React.Component {
 }
 
 const WrapperLoginForm = Form.create({ name: 'signin' })(FormSignIn);
-export default WrapperLoginForm;
+export default withNamespaces('common')(WrapperLoginForm);

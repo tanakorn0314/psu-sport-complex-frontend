@@ -9,11 +9,12 @@ import { connect } from 'react-redux';
 import AdminAction from '../../redux/admin/actions';
 import { CSVLink } from 'react-csv';
 import { H2, TextButton } from '../../components/typo';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 class BookingSummary extends React.Component {
 
     render() {
+        const { t } = this.props;
         const { displayBookings } = this.props.Admin;
         const total = displayBookings.reduce((acc, booking) => acc + booking.fee, 0);
 
@@ -21,7 +22,7 @@ class BookingSummary extends React.Component {
             <Card>
                 <Row type='flex' justify='space-between' align='middle'>
                     <Col span={8}>
-                        <H2 >{text['total']} : {total} {text['baht']}</H2>
+                        <H2 >{t('total')} : {total} {t('baht')}</H2>
                     </Col>
                     <Col span={8} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <CSVLink data={this.props.Admin.csv} filename='booking-data.csv'>
@@ -35,4 +36,4 @@ class BookingSummary extends React.Component {
 
 }
 
-export default connect(state => state, AdminAction)(BookingSummary)
+export default connect(state => state, AdminAction)(withNamespaces('common')(BookingSummary))

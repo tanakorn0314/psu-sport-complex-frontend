@@ -25,14 +25,23 @@ class LoadingButton extends React.Component {
         )
     }
 
+    asyncClick = (e) => {
+        return new Promise(async (resolve, reject) => {
+            const { onClick } = this.props;
+            if (onClick) {
+                await onClick(e);
+                return resolve('done');
+            }
+            return resolve('done');
+        })
+    }
+
     handleClick = async (e) => {
         this.preventDefault(e);
         
         await this.setState({isLoading: true});
 
-        const { onClick } = this.props;
-        if (onClick)
-            await onClick(e);
+        await this.asyncClick(e);
 
         await this.setState({isLoading: false});
     }

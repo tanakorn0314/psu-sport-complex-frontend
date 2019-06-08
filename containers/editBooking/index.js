@@ -3,7 +3,7 @@ import { notification } from 'antd';
 import DatePicker from '../../components/datePicker';
 import InputTimeRange from '../../components/inputTimeRange';
 import { H2, Label, Text } from '../../components/typo';
-import text, { locale, errors } from '../../common/text';
+import { withNamespaces, i18n } from '../../i18n';
 
 import BookingAction from '../../redux/booking/actions';
 import { connect } from 'react-redux';
@@ -51,6 +51,8 @@ class EditBookingTime extends React.Component {
     }
 
     render() {
+        const locale = i18n.language || 'en';
+        const { t } = this.props;
         const { stadiums } = this.props.Stadium;
         const { stadiumId, courtId } = this.props.booking;
         const { startTime, endTime, date } = this.state;
@@ -60,7 +62,7 @@ class EditBookingTime extends React.Component {
 
         return (
             <div>
-                <H2 style={{marginTop: 5}}>{text[stadiums[stadiumId].name]} {text['court']} {courtId}</H2>
+                <H2 style={{marginTop: 5}}>{t(stadiums[stadiumId].name)} {t('court')} {courtId}</H2>
                 <div style={{marginBottom: 5}}><Text>{currentDateStr}</Text></div>
                 <div style={{marginBottom: 10}}><Label msg='changeScheduleTo'/></div>
                 <DatePicker
@@ -96,7 +98,7 @@ class EditBookingTime extends React.Component {
     }
 
     handleConfirm = async () => {
-        const { booking } = this.props;
+        const { booking, t } = this.props;
         const { date, startTime, endTime } = this.state;
         const { bookingId, title, description, userId, stadiumId, courtId, ownerName, ownerInfo, ownerPosition } = booking
 
@@ -125,14 +127,14 @@ class EditBookingTime extends React.Component {
 
         if (result.error) {
             notification['error']({
-                message: 'Error',
-                description: errors(result.error),
+                message: t('error'),
+                description: t(result.error),
                 duration: 3
             });
         } else {
             notification['success']({
-                message: text['success'],
-                description: text['updateScheduleSuccess'],
+                message: t('success'),
+                description: t('updateScheduleSuccess'),
                 duration: 3
             });
 
@@ -149,4 +151,4 @@ class EditBookingTime extends React.Component {
 export default connect(
     state => state,
     BookingAction,
-)(EditBookingTime);
+)(withNamespaces('common')(EditBookingTime));

@@ -1,4 +1,5 @@
-import Router, { withRouter } from 'next/router';
+import { withRouter } from 'next/router';
+import { Router } from '../../i18n';
 import { connect } from 'react-redux';
 import ScreenAction from '../../redux/screen/actions';
 
@@ -22,6 +23,8 @@ class LoadingLink extends React.Component {
             await onClick();
 
         
+        console.log(href);
+
         if (replace)
             Router.replace(href);
         else

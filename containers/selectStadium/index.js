@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import BookingAction from '../../redux/booking/actions';
 import { Label } from '../../components/typo';
 import fonts from '../../styles/fonts';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 import { Select } from 'antd';
 
@@ -18,7 +18,7 @@ class SelectStadium extends React.Component {
             placeholder,
             Booking,
             Stadium,
-            enableAll
+            t
         } = this.props;
         const { stadiums } = Stadium;
         const stadium = stadiums[Booking.stadiumId - 1]
@@ -29,7 +29,7 @@ class SelectStadium extends React.Component {
                 onChange={this.handleSelectStadium}
                 style={{ width: 200, ...style, fontFamily: fonts.psuStidti }}
                 placeholder={placeholder || 'Select stadium'}
-                value={text[sName]}
+                value={t(sName)}
             >
                 {stadiums.map((s, index) => {
                     return (
@@ -50,4 +50,4 @@ class SelectStadium extends React.Component {
 export default connect(
     state => state,
     BookingAction
-)(SelectStadium)
+)(withNamespaces('common')(SelectStadium))

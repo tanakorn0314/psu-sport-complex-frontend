@@ -7,11 +7,12 @@ import { Col } from 'antd';
 import Button from '../../components/button';
 import { countBooking } from './helper';
 import { H2 } from '../../components/typo';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 class BottomAction extends React.Component {
 
     render() {
+        const { t } = this.props;
         let { idToken, profile } = this.props.Auth;
         let { fee, selectedBooking, bottomActionVisible } = this.props.Booking;
 
@@ -20,7 +21,7 @@ class BottomAction extends React.Component {
         let action = null;
 
         const count = countBooking(selectedBooking);
-        const s = count > 1 ? text['s'] : '';
+        const s = count > 1 ? t('s') : '';
 
         if (!idToken) {
             message = `pleaseLogin`;
@@ -29,11 +30,11 @@ class BottomAction extends React.Component {
         } else if(count <= 0) {
             bottomActionVisible = false;
         } else if(profile.position === 'admin') {
-            message = `${text['count']} : ${count} ${text['slot']}${s}`;
+            message = `${t('count')} : ${count} ${t('slot')}${s}`;
             action = this.props.onBook ? this.props.onBook : () => {}
         }
         else {
-            message = `${text['total']} : ${fee} ${text['baht']}`;
+            message = `${t('total')} : ${fee} ${t('baht')}`;
             action = this.props.onBook ? this.props.onBook : () => {}
         }
 
@@ -54,4 +55,4 @@ class BottomAction extends React.Component {
 
 export default connect(
     state => state
-)(BottomAction);
+)(withNamespaces('common')(BottomAction));

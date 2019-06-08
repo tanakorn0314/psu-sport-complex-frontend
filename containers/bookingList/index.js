@@ -7,7 +7,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import AdminAction from '../../redux/admin/actions';
 import ModalAction from '../../redux/modal/actions';
-import text, { locale } from '../../common/text';
+import { withNamespaces, i18n } from '../../i18n';
 import fonts from '../../styles/fonts';
 import { H2 } from '../../components/typo';
 
@@ -18,34 +18,36 @@ class BookingList extends React.Component {
     }
 
     render() {
+        const locale = i18n.language || 'en';
+        const { t } = this.props;
         const { displayBookings } = this.props.Admin;
         const column = [{
             title: '#',
             dataIndex: 'no',
             key: 'no',
         }, {
-            title: text['name'],
+            title: t('name'),
             dataIndex: 'name',
             key: 'name',
         }, {
-            title: text['phoneNumberOrPSUPassport'],
+            title: t('phoneNumberOrPSUPassport'),
             dataIndex: 'userId',
             key: 'userId',
         }, {
-            title: text['stadium'],
+            title: t('stadium'),
             dataIndex: 'stadium',
             key: 'stadium',
         },{
-            title: text['date'],
+            title: t('date'),
             dataIndex: 'date',
             key: 'date',
         },{
-            title: text['action'],
+            title: t('action'),
             key: 'action',
             render: item => {
                 const booking = displayBookings[item.key];
                 return (
-                    <a href='#' onClick={() => {this.showEditModal(booking)}}>{text['edit']}</a>
+                    <a href='#' onClick={() => {this.showEditModal(booking)}}>{t('edit')}</a>
                 )
             }
         }];
@@ -65,7 +67,7 @@ class BookingList extends React.Component {
                     userId,
                     no: index + 1,
                     name: ownerName,
-                    stadium: `${text[stadium.name]} ${courtId}`,
+                    stadium: `${t(stadium.name)} ${courtId}`,
                     date: `${mStart.locale(locale).format('DD MMM YYYY HH:mm')} - ${mEnd.locale(locale).format(format)}`,
                 }
         })
@@ -89,4 +91,4 @@ class BookingList extends React.Component {
 export default connect(
     state => state,
     { ...AdminAction, ...ModalAction}
-)(BookingList);
+)(withNamespaces('common')(BookingList));

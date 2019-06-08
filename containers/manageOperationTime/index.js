@@ -5,7 +5,7 @@ import ModalAction from '../../redux/modal/actions';
 import OperatioTimeAction from '../../redux/operationTime/actions';
 import OperationTimeDay from '../../components/optimeDay';
 import { H2, TextButton } from '../../components/typo';
-import text, { errors } from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 class ManageOperationTime extends React.Component {
 
@@ -51,6 +51,7 @@ class ManageOperationTime extends React.Component {
     }
 
     handleConfirm = async () => {
+        const { t } = this.props;
         const { sunday, monday, tuesday, wednesday, thursday, friday, saturday } = this.state;
         const oprerationTimes = {
            sunday,
@@ -65,14 +66,14 @@ class ManageOperationTime extends React.Component {
         
         if (result.error) {
             notification['error']({
-                message: text['error'],
-                description: errors(result.error),
+                message: t('error'),
+                description: t(result.error),
                 duration: 3
             })
         } else {
             notification['success']({
-                message: text['success'],
-                description: text['operationTimeChanged'],
+                message: t('success'),
+                description: t('operationTimeChanged'),
                 duration: 3
             });
         }
@@ -82,4 +83,4 @@ class ManageOperationTime extends React.Component {
 export default connect(
     state => state,
     { ...OperatioTimeAction, ...ModalAction}
-)(ManageOperationTime);
+)(withNamespaces('common')(ManageOperationTime));

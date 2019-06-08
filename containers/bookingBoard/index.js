@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { Card } from 'antd';
 import moment from 'moment';
 import { H2 } from '../../components/typo';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 import BookingAction from '../../redux/booking/actions';
 
 class BookingComponent extends React.Component {
 
     render() {
-        const { stadiumBooking, selectedDate, stadiumId } = this.props.Booking;
+        const { t } = this.props;
+        const { stadiumBooking, selectedDate } = this.props.Booking;
         const { operationTimes, blackoutSeries } = this.props.OperationTime;
 
         const operationTime = dataHandler.generateTimeIndex(selectedDate, operationTimes);
@@ -26,7 +27,7 @@ class BookingComponent extends React.Component {
                     height: '50vh',
                     borderRadius: 5
                 }}>
-                    <H2>{text['noServiceOn']} {text[moment(selectedDate).locale('en').format('dddd').toLocaleLowerCase()]}{text['s']}</H2>
+                    <H2>{t('noServiceOn')} {t(moment(selectedDate).locale('en').format('dddd').toLocaleLowerCase())}{t('s')}</H2>
                 </Card>
             )
         }
@@ -41,7 +42,7 @@ class BookingComponent extends React.Component {
                 height: '50vh',
                 borderRadius: 5
             }}>
-                <H2>{blackout.title}, {text['noService']}</H2>
+                <H2>{blackout.title}, {t('noService')}</H2>
             </Card>
         }
 
@@ -71,4 +72,4 @@ class BookingComponent extends React.Component {
     }
 }
 
-export default connect(state => state, BookingAction)(BookingComponent);
+export default connect(state => state, BookingAction)(withNamespaces('common')(BookingComponent));

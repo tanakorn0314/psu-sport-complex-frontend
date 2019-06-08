@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import AdminAction from '../../redux/admin/actions';
 import { Label } from '../../components/typo';
 import fonts from '../../styles/fonts';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 import { Select } from 'antd';
 
@@ -18,6 +18,7 @@ class SelectStadiumAdmin extends React.Component {
             placeholder,
             Admin,
             Stadium,
+            t
         } = this.props;
         const { stadiums } = Stadium;
         const stadium = stadiums[Admin.stadiumId - 1]
@@ -28,7 +29,7 @@ class SelectStadiumAdmin extends React.Component {
                 onChange={this.handleSelectStadium}
                 style={{ width: 200, ...style, fontFamily: fonts.psuStidti }}
                 placeholder={placeholder || 'Select stadium'}
-                value={text[sName]}
+                value={t(sName)}
             >
                 <Option key={0} value={0}><Label msg='all'/></Option>
                 {stadiums.map((s, index) => {
@@ -50,4 +51,4 @@ class SelectStadiumAdmin extends React.Component {
 export default connect(
     state => state,
     AdminAction
-)(SelectStadiumAdmin)
+)(withNamespaces('common')(SelectStadiumAdmin))

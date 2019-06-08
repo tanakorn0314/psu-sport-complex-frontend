@@ -1,10 +1,9 @@
 import jwtDecode from 'jwt-decode';
 import authService from '../../core/service/authService';
-import { errors } from '../../common/text';
 
 const login = async userInfo => {
     if (!userInfo.signInfo || !userInfo.password) {
-        return { error: errors('please fill in the input') };
+        return { error: 'please fill in the input' };
     }
     const response = await authService.signIn(userInfo.signInfo, userInfo.password);
     return responseToUser(response);
@@ -12,7 +11,7 @@ const login = async userInfo => {
 
 const loginJWT = async token => {
     if (!token) {
-        return { error: errors('token invalid') }
+        return { error: 'token invalid' }
     }
     const response = await authService.signWithToken(token)
     return responseToUser(response);

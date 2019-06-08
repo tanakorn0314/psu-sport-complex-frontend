@@ -1,7 +1,8 @@
 import React from 'react';
+import { withNamespaces } from '../i18n';
 
 export default ComposedComponent => {
-    return class withTranslate extends React.Component {
+    class withTranslate extends React.Component {
         static async getInitialProps(ctx) {
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
 
@@ -16,4 +17,5 @@ export default ComposedComponent => {
             )
         }
     }
+    return withNamespaces('common')(withTranslate);
 };

@@ -4,16 +4,16 @@ import PubSub from 'pubsub-js';
 import BookingAction from '../../redux/booking/actions';
 import StyledWrapper from './style';
 import Input from '../../components/input';
-import text from '../../common/text';
 import { Label, H2 } from '../../components/typo';
 import SelectPosition from '../selectPosition';
 import dataHandler from './dataHandler';
 import { notification } from 'antd';
+import { withNamespaces } from '../../i18n';
 
 class BookingAdmin extends React.Component {
 
     componentDidMount() {
-        this.token1 = PubSub.subscribe('bookByAdmin', () => { this.bookByAdmin(); })
+        this.token1 = PubSub.subscribe('bookByAdmin', () => { this.bookByAdmin() })
         this.token2 = PubSub.subscribe('edit')
     }
 
@@ -23,12 +23,13 @@ class BookingAdmin extends React.Component {
 
     render() {
         const { fee } = this.props.Booking;
+        const { t } = this.props;
         return (
             <StyledWrapper>
                 <div style={{ marginBottom: 5, marginTop: 5 }}><Label msg='ownerName'/></div>
                 <Input
                     style={{ maxWidth: 300 }}
-                    placeholder={`${text['firstname']} ${text['lastname']}`}
+                    placeholder={`${t('firstname')} ${t('lastname')}`}
                     name='name'
                     onChange={this.handleChange}
                 />
@@ -41,7 +42,7 @@ class BookingAdmin extends React.Component {
                 />
                 <div style={{ marginBottom: 5 }}><Label msg='ownerType'/></div>
                 <SelectPosition style={{ marginBottom: 5} }/>
-                <H2>{text['serviceFee']} : {fee} {text['baht']}</H2>
+                <H2>{t('serviceFee')} : {fee} {t('baht')}</H2>
             </StyledWrapper>
         )
     }
@@ -56,6 +57,7 @@ class BookingAdmin extends React.Component {
     }
 
     bookByAdmin = async () => {
+        const { t } = this.props;
         const { bookingList, stadiumId, selectedDate, owner } = this.props.Booking;
         const { idToken, profile } = this.props.Auth;
 
@@ -65,8 +67,8 @@ class BookingAdmin extends React.Component {
 
         if (result && !result.error) {
             notification['success']({
-                title: text['success'],
-                message: text['bookingSuccess'],
+                title: t('success'),
+                message: t('bookingSuccess'),
                 duration: 3
             });
 
@@ -80,4 +82,4 @@ class BookingAdmin extends React.Component {
 
 }
 
-export default connect(state => state, BookingAction)(BookingAdmin);
+export default connect(state => state, BookingAction)(withNamespaces('common')(BookingAdmin));

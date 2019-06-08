@@ -3,7 +3,8 @@ import { DateSelctContainer, TimeSelectContainer } from './style';
 import Select, { SelectOption } from '../select';
 import _ from 'lodash';
 import moment from 'moment';
-import { months as MONTHS } from '../../common/text';
+import { months } from '../../common/text';
+import { i18n, withNamespaces } from '../../i18n';
 
 class InputDateTime extends React.Component {
 
@@ -50,6 +51,8 @@ class InputDateTime extends React.Component {
             month,
             year
         } = this.state;
+        const locale = i18n.language || 'en';
+        const MONTHS = months[locale];
 
         return (
             <div style={this.props.style}>
@@ -154,4 +157,4 @@ class InputDateTime extends React.Component {
 
 }
 
-export default InputDateTime;
+export default withNamespaces('common')(InputDateTime);

@@ -5,7 +5,7 @@ import BookingAction from '../../redux/booking/actions';
 import ModalAction from '../../redux/modal/actions';
 import { SlotTitle, Slot, SlotInfo } from './style';
 import { Label, P } from '../../components/typo';
-import text from '../../common/text';
+import { withNamespaces } from '../../i18n';
 
 class BookingSlot extends React.Component {
 
@@ -63,6 +63,7 @@ class BookingSlot extends React.Component {
     }
 
     render() {
+        const { t } = this.props;
         const {
             court,
             selected,
@@ -74,7 +75,7 @@ class BookingSlot extends React.Component {
         return (
             <Slot seleted={selected} onClick={this.handleClick}>
                 <SlotTitle booked={isBooked} approved={isApproved} selected={selected} isPassed={isPassed}>
-                    <Label>{`${text['court']} ${court + 1}`}</Label>
+                    <Label>{`${t('court')} ${court + 1}`}</Label>
                 </SlotTitle>
                 <SlotInfo selected={selected}>
                     {this.renderSlotInfo()}
@@ -162,4 +163,4 @@ class BookingSlot extends React.Component {
 export default connect(
     state => state,
     { ...BookingAction, ...ModalAction }
-)(BookingSlot);
+)(withNamespaces('common')(BookingSlot));
