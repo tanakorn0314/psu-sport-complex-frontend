@@ -27,8 +27,8 @@ const actions = {
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
   showBookingConfirmModal: (dataSource) => (dispatch) => {
-    const action = () => { PubSub.publishSync('confirmBooking') };
-    const cancel = () => { PubSub.publishSync('cancelBooking') };
+    const action = () => { PubSub.publish('confirmBooking') };
+    const cancel = () => { PubSub.publish('cancelBooking') };
 
     PubSub.publish('setExpiresCountDown', (dataSource.expiresAt));
 
@@ -145,31 +145,40 @@ const actions = {
   }
 };
 
-const renderFooter = (action, cancel, actionText, cancelText) => (
-  <div>
-    <Button key={0} type="primary" onClick={action} loading><TextButton msg={actionText}/></Button>
-    <Button key={1} type="secondary" onClick={cancel} loading><TextButton msg={cancelText}/></Button>
-  </div>
-)
+const renderFooter = (action, cancel, actionText, cancelText) => {
+  PubSub.publish('done');
+  return (
+    <div>
+      <Button key={0} type="primary" onClick={action} loading><TextButton msg={actionText} /></Button>
+      <Button key={1} type="secondary" onClick={cancel} loading><TextButton msg={cancelText} /></Button>
+    </div>
+  )
+}
 
-const renderRefreshFooter = (route) => (
-  <a href={route}>
-    <Button type="primary"><TextButton msg={'reload'}/></Button>
-  </a>
-)
+const renderRefreshFooter = (route) => {
+  PubSub.publish('done');
+  return (
+    <a href={route}>
+      <Button type="primary"><TextButton msg={'reload'} /></Button>
+    </a>
+  )
+}
 
-const renderOKFooter = (action, actionText) => (
-  <div>
-    <Button key={0} type="primary" onClick={action} loading><TextButton msg={actionText}/></Button>
-  </div>
-)
+const renderOKFooter = (action, actionText) => {
+  PubSub.publish('done');
+  return (
+    <div>
+      <Button key={0} type="primary" onClick={action} ><TextButton msg={actionText} /></Button>
+    </div>
+  )
+}
 
 const renderAuth = () => (<AuthTabs />);
-const renderConfirm = (msg) => (<Confirm msg={msg}/>)
+const renderConfirm = (msg) => (<Confirm msg={msg} />)
 const renderConfirmBooking = (dataSource) => (<ConfirmBooking dataSource={dataSource} />)
 const renderBookByAdmin = () => (<BookByAdmin />)
 const renderEditBooking = (booking) => (<EditBooking booking={booking} />)
 const renderConfirmMember = (selectedId) => (<ConfirmMember selectedId={selectedId} />)
-const renderBlackoutDetail = (dataSource) => (<BlackoutDetail dataSource={dataSource}/>)
+const renderBlackoutDetail = (dataSource) => (<BlackoutDetail dataSource={dataSource} />)
 
 export default actions;

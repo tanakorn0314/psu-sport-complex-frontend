@@ -31,9 +31,11 @@ class ConfirmBooking extends React.Component {
     componentDidMount() {
         this.token1 = PubSub.subscribe('confirmBooking', async () => {
             await this.confirmBooking();
+            PubSub.publish('done');
         }, true);
         this.token2 = PubSub.subscribe('cancelBooking', async () => {
             await this.cancelBooking();
+            PubSub.publish('done');
         }, true)
     }
 

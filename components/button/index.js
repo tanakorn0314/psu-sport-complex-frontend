@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button } from 'antd';
 import { TextButton } from '../typo';
+import PubSub from 'pubsub-js';
+
+const TIMEOUT = 500;
 
 class LoadingButton extends React.Component {
 
@@ -8,6 +11,23 @@ class LoadingButton extends React.Component {
         super(props);
         this.state = {
             isLoading: false
+        }
+    }
+
+    componentDidMount() {
+        this.token = PubSub.subscribe('done', () => {
+            this.setState({isLoading: false});
+        })
+    }
+
+    componentWillUnmount() {
+        PubSub.unsubscribe(this.token);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { loading } = nextProps;
+        if (!loading) {
+            this.setState({isLoading: false})
         }
     }
 
@@ -25,25 +45,14 @@ class LoadingButton extends React.Component {
         )
     }
 
-    asyncClick = (e) => {
-        return new Promise(async (resolve, reject) => {
-            const { onClick } = this.props;
-            if (onClick) {
-                await onClick(e);
-                return resolve('done');
-            }
-            return resolve('done');
-        })
-    }
-
     handleClick = async (e) => {
         this.preventDefault(e);
         
         await this.setState({isLoading: true});
 
-        await this.asyncClick(e);
-
-        await this.setState({isLoading: false});
+        const { onClick } = this.props;
+        if (onClick)
+            onClick(e);
     }
 
     preventDefault = (e) => {

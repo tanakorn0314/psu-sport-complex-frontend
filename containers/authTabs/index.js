@@ -77,6 +77,8 @@ class AuthTabs extends React.Component {
             })
             this.setState({current: 'Login'})
         }
+
+        PubSub.publish('done');
     }
 }
 

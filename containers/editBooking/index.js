@@ -41,8 +41,9 @@ class EditBookingTime extends React.Component {
     }
 
     componentDidMount() {
-        this.token1 = PubSub.subscribe('editBooking', () => {
-            this.handleConfirm();
+        this.token1 = PubSub.subscribe('editBooking', async () => {
+            await this.handleConfirm();
+            PubSub.publish('done');
         })
     }
 

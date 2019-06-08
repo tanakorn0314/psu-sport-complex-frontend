@@ -74,6 +74,8 @@ class BookingAdmin extends React.Component {
 
             this.hideModal();
         } 
+
+        PubSub.publish('done');
     }
 
     hideModal = () => {

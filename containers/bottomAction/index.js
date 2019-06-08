@@ -45,7 +45,7 @@ class BottomAction extends React.Component {
                     <H2 className='tota'>{message}</H2>
                 </Col>
                 <Col className='confirm' xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
-                    <Button onClick={action} type='primary' msg={btnTitle}/>
+                    <Button onClick={action} type='primary' msg={btnTitle} loading/>
                 </Col>
             </StyleWrapper>
         )

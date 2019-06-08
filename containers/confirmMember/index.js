@@ -37,6 +37,7 @@ class ConfirmMember extends React.Component {
     componentDidMount() {
         this.token1 = PubSub.subscribe('confirmMember', () => {
             this.confirmMember();
+            PubSub.publish('done')
         })
     }
 

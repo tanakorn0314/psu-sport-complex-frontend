@@ -8,6 +8,7 @@ import StyledForm from './style';
 import Button from '../button';
 import { Label } from '../typo';
 import { withNamespaces } from '../../i18n';
+import PubSub from 'pubsub-js';
 
 class FormSignIn extends React.Component {
 
@@ -51,7 +52,7 @@ class FormSignIn extends React.Component {
                 password: form.getFieldValue('password')
             })
         }
-
+        PubSub.publish('done');
     }
 }
 
