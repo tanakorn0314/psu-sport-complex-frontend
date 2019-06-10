@@ -129,6 +129,7 @@ class ConfirmBooking extends React.Component {
     }
 
     confirmBooking = async () => {
+        const { t } = this.props;
         const { idToken } = this.props.Auth;
         const { billId } = this.state;
         const dto = dataHandler.createConfirmBookingDTO(this.state);

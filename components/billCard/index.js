@@ -69,8 +69,11 @@ class BillCard extends React.Component {
     renderCourtDetail = (item) => {
         const locale = i18n.language || 'en';
         const { t } = this.props;
-        const { startDate, endDate } = item;
+        const { startDate, endDate, status } = item;
+        const isApproved = status === 'approved';
         const isPassed = moment(startDate).diff(moment()) <= 0;
+
+        const cantEdit = !isApproved || isPassed;
 
         return (
             <List.Item>
@@ -78,7 +81,7 @@ class BillCard extends React.Component {
                     <Text>
                         {`${moment(startDate).locale(locale).format('DD MMMM YYYY HH:mm')} - ${moment(endDate).format('HH:mm')}`}
                     </Text>
-                    <Button size='small' onClick={() => {this.handleEdit(item)}} disabled={isPassed}><TextButton>{t('edit')}</TextButton></Button>
+                    <Button size='small' onClick={() => {this.handleEdit(item)}} disabled={cantEdit}><TextButton>{t('edit')}</TextButton></Button>
                 </CourtDetailRow>
             </List.Item>
         )

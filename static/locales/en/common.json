@@ -154,5 +154,6 @@
     "type": "Type",
     "serviceRate": "Service Rate",
     "baht/hour": "Baht/Hour",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "noData": "No Data"
 }

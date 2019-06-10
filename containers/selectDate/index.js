@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import BookingActions from '../../redux/booking/actions';
 import { months } from '../../common/text/';
 import { Label } from '../../components/typo';
-import { withNamespaces } from '../../i18n';
+import { withNamespaces, i18n } from '../../i18n';
 
 const SelectOption = Select.Option;
 

@@ -2,12 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
-    .mapouter {
-        position: relative;
-        text-align:right;
-        width:70vw;
-        height: 350px;
-    }
+    position: relative;
+    text-align:right;
+    width:70vw;
+    height: 350px;
     .gmap_canvas {
         overflow: hidden;
         background:none!important;
@@ -16,7 +14,9 @@ const StyledWrapper = styled.div`
     }
 
     @media (max-width: 575px) {
-        .mapouter, .gmap_canvas {
+        width:95vw;
+        height: 300px;
+        .mapouter {
             width:95vw;
             height: 300px;
         }

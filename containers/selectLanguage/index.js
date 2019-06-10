@@ -15,6 +15,7 @@ class SelectLanguage extends React.Component {
 
     render() {
         const { visible } = this.state;
+        const flag = this.getShowFlags();
         return (
             <Popover
                 className={this.props.className}
@@ -25,14 +26,14 @@ class SelectLanguage extends React.Component {
                 arrowPointAtCenter
                 onVisibleChange={(visible) => { this.setState({ visible }) }}
             >
-                <img src={this.getShowFlags()} style={{ cursor: 'pointer' }} />
+                <img src={flag} style={{ cursor: 'pointer' }} />
             </Popover>
         )
     }
 
     getShowFlags = () => {
         const lang = i18n.language;
-        return lang === 'en' ? enFlag : thFlag;
+        return lang === 'th' ? thFlag : enFlag;
     }
 
     renderFlags = () => {

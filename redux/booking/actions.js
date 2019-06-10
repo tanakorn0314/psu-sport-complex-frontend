@@ -84,6 +84,7 @@ const actions = {
     if (result.error)
       return result;
 
+    console.log(result);
     return result;
   },
   selectDate: (date) => async (dispatch, getState) => {
