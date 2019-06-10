@@ -92,6 +92,7 @@
     "search": "Search",
     "searchBooking": "Search Booking",
     "selected": "Selected",
+    "serviceFee": "Service Fee",
     "slot": "Slot",
     "sport": "Sport",
     "start": "Start",
@@ -147,5 +148,11 @@
     "user exist": "User exist",
     "please fill in the input": "Please fill in the input",
     "token invalid": "Token invalid",
-    "incorrect password": "Incorrect password"
+    "incorrect password": "Incorrect password",
+    "football": "Footbal",
+    "bookNow": "Book now",
+    "type": "Type",
+    "serviceRate": "Service Rate",
+    "baht/hour": "Baht/Hour",
+    "contactUs": "Contact Us"
 }

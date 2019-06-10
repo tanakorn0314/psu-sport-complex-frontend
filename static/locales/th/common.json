@@ -148,5 +148,11 @@
     "user exist": "มีชื่อผู้ใช้นี้อยู่แล้ว",
     "please fill in the input": "กรุณาระบุข้อมูลการล็อคอิน",
     "token invalid": "token ไม่ถูกต้อง",
-    "incorrect password": "รหัสผ่านไม่ถูกต้อง"
+    "incorrect password": "รหัสผ่านไม่ถูกต้อง",
+    "football": "ฟุตบอล",
+    "bookNow": "จองเลย",
+    "type": "ประเภท",
+    "serviceRate": "อัตราค่าบริการ",
+    "baht/hour": "บาท/ชั่วโมง",
+    "contactUs": "ติดต่อเรา"
 }

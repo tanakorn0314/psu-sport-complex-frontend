@@ -9,7 +9,6 @@ import BillAction from '../redux/bill/actions';
 import OperationTimeAction from '../redux/operationTime/actions';
 import { url } from '../config';
 import io from 'socket.io-client'
-import { getLang } from '../helpers/lang';
 
 export default ComposedComponent => {
     class withData extends React.Component {

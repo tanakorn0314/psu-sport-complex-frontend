@@ -1,12 +1,13 @@
 import React from 'react';
 import StyledWrapper from './style';
-import SectionFee from '../sectionFee';
+import SectionFee from '../../containers/sectionFee';
+import { H1 } from '../../components/typo';
 
 class SectionStadium extends React.Component {
     render() {
         return (
             <StyledWrapper>
-                <h1>Sport Stadiums</h1>
+                <H1 className='title' msg='sportStadium'/>
                 <SectionFee />
             </StyledWrapper>
         )

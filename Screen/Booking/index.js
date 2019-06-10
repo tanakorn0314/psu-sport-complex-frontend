@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import BookingAction from '../../redux/booking/actions';
 import ModalAction from '../../redux/modal/actions';
@@ -24,6 +25,15 @@ class BookingScreen extends React.Component {
     constructor(props) {
         super(props);
 
+        const sportQuery = props.router.query.sport;
+        if(sportQuery) {
+            const { stadiums } = props.Stadium;
+            const idx = stadiums.findIndex((stadium) => stadium.name === sportQuery);
+            if (idx >= 0)
+                props.selectStadium(idx + 1);
+        }
+
+
         const { myBills: bills } = props.Bill;
         const { profile } = props.Auth;
 
@@ -34,7 +44,6 @@ class BookingScreen extends React.Component {
         }
 
         this.billId = 0;
-
     }
 
     componentDidMount() {
@@ -157,7 +166,10 @@ class BookingScreen extends React.Component {
 
 }
 
+const includeRouter = withRouter(BookingScreen);
+const includeNamespaces = withNamespaces('common')(includeRouter);
+
 export default connect(
     state => state,
     { ...BookingAction, ...ModalAction }
-)(withNamespaces('common')(BookingScreen));
+)(includeNamespaces);
