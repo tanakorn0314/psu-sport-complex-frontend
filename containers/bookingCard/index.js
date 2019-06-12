@@ -10,6 +10,7 @@ import BookingSlot from '../bookingSlot';
 import { Label } from '../../components/typo';
 
 class BookingCard extends React.Component {
+    
     render() {
         const {
             start,

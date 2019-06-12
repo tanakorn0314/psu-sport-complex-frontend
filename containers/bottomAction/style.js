@@ -12,6 +12,7 @@ const StyledWrapper = styled(Row)`
     background-color: #fff;
     padding: 10px 5%;
     min-height: 52px;
+    z-index: 100;
 
     -webkit-box-shadow: 0 -2px 8px ${colors.shadow};
     -webkit-box-shadow: 0 -2px 8px ${colors.shadow};

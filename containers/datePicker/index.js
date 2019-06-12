@@ -13,11 +13,15 @@ const StyledDatePicker = styled(DatePicker)`
 
 class InputDate extends React.Component {
 
+    componentDidMount() {
+        this.props.selectDate(moment());
+    }
+
     render() {
         const locale = i18n.language || 'en';
         return (
-            <StyledDatePicker 
-                style={{width: 200, ...this.props.style}}
+            <StyledDatePicker
+                style={{ width: 200, ...this.props.style }}
                 value={moment(this.props.selectedDate).locale(locale)}
                 onChange={this.handleChange}
                 format='DD MMMM YYYY'
@@ -26,8 +30,10 @@ class InputDate extends React.Component {
     }
 
     handleChange = (date) => {
-        this.props.selectDate(date);
-        this.props.onChange && this.props.onChange(date);
+        if (date) {
+            this.props.selectDate(date);
+            this.props.onChange && this.props.onChange(date);
+        }
     }
 }
 

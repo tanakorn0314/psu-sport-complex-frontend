@@ -13,6 +13,10 @@ const SelectOption = Select.Option;
 
 class SelectDate extends React.Component {
 
+    componentDidMount() {
+        this.props.selectDate(moment());
+    }
+
     render() {
         const locale = i18n.language || 'en';
         const MONTHS = months[locale];
