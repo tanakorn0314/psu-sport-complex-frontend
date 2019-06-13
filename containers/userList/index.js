@@ -40,7 +40,7 @@ class UserList extends React.Component {
       key: 'name',
       ...this.getColumnSearchProps('name')
     }, {
-      title: t('phoneNumberOrPSUPassport'),
+      title: t('psuPassportOrPhoneNumber'),
       dataIndex: 'userId',
       key: 'userId',
       ...this.getColumnSearchProps('userId')

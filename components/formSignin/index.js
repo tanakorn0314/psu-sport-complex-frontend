@@ -18,11 +18,11 @@ class FormSignIn extends React.Component {
         return (
             <StyledForm onSubmit={this.handleSubmit}>
                 <Form.Item
-                    label={t('phoneNumberOrPSUPassport')}
+                    label={t('psuPassportOrPhoneNumber')}
                     className='form-item'
                 >
                     {
-                        getFieldDecorator('signInfo')(<Input placeholder={t('phoneNumberOrPSUPassport')} />)
+                        getFieldDecorator('signInfo')(<Input placeholder={t('psuPassportOrPhoneNumber')} />)
                     }
                 </Form.Item>
                 <Form.Item

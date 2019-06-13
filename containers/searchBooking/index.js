@@ -66,9 +66,9 @@ class SearchForm extends React.Component {
                         </Col>
                         <Col span={16}>
                             <Form.Item
-                                label={<Label msg='phoneNumberOrPSUPassport'/>}
+                                label={<Label msg='psuPassportOrPhoneNumber'/>}
                             >
-                                <Input placeholder={t('phoneNumberOrPSUPassport')} name='userId' style={{width: 300}} onChange={this.handleBlur} />
+                                <Input placeholder={t('psuPassportOrPhoneNumber')} name='userId' style={{width: 300}} onChange={this.handleBlur} />
                             </Form.Item>
                         </Col>
                     </Row>

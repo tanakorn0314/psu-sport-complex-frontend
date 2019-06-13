@@ -30,7 +30,7 @@ class BookingList extends React.Component {
             dataIndex: 'name',
             key: 'name',
         }, {
-            title: t('phoneNumberOrPSUPassport'),
+            title: t('psuPassportOrPhoneNumber'),
             dataIndex: 'userId',
             key: 'userId',
         }, {

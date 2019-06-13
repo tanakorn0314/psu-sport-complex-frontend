@@ -75,7 +75,7 @@
     "passed": "ผ่านแล้ว",
     "password": "รหัสผ่าน",
     "phoneNumber": "เบอร์โทรศัพท์",
-    "phoneNumberOrPSUPassport": "เบอร์โทรศัพท์ หรือ PSU Passport",
+    "psuPassportOrPhoneNumber": "PSU Passport หรือ เบอร์โทรศัพท์",
     "pleaseLogin": "กรุณาลงชื่อเข้าใช้",
     "pleaseInput": "กรุณาระบุ",
     "pleaseInputYour": "กรุณาระบุ",

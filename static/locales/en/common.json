@@ -75,7 +75,7 @@
     "passed": "Passed",
     "password": "Password",
     "phoneNumber": "Phone Number",
-    "phoneNumberOrPSUPassport": "Phone number or PSU Passport",
+    "psuPassportOrPhoneNumber": "PSU Passport or Phone Number",
     "pleaseInput": "Please input ",
     "pleaseInputYour": "Please input your ",
     "pleaseLogin": "Please Login",
