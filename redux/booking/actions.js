@@ -32,14 +32,14 @@ const actions = {
     const { idToken } = getState().Auth;
     const result = await BookingService.book(token, bookManyDTO);
     dispatch({type: actions.CLEAR_SELECT});
-    dispatch(BillAction.fetchMyBills(idToken));
+    dispatch(BillAction.fetchBills());
     return result;
   },
   reserveByAdmin: (token, bookByAdminDTO) => async (dispatch, getState) => {
     const { idToken } = getState().Auth;
     const result = await BookingService.bookByAdmin(token, bookByAdminDTO);
     dispatch({type: actions.CLEAR_SELECT});
-    dispatch(BillAction.fetchMyBills(idToken));
+    dispatch(BillAction.fetchBills());
     return result;
   },
   updateBooking: (bookingId, dto) => async (dispatch, getState) => {

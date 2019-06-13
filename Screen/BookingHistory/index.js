@@ -15,7 +15,7 @@ class BookingHistory extends React.Component {
 
     componentDidMount() {
         const { idToken } = this.props.Auth;
-        this.props.fetchMyBills(idToken);
+        this.props.fetchBill();
         
         this.token = PubSub.subscribe('updateBill', () => {
             this.props.fetchMyBills(idToken);

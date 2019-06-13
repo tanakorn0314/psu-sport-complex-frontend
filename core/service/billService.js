@@ -2,7 +2,7 @@ import axios from 'axios';
 import { billApi } from '../api';
 import Request from '../Request';
 
-const getSlip = async (billId) => {
+const getBills = async () => {
     const url = billApi;
     const req = new Request(url);
     return await req.send();
@@ -41,7 +41,7 @@ const getMyBills = async (accessToken) => {
 
 export default {
     uploadSlip,
-    getSlip,
+    getBills,
     confirm,
     getMyBills
 }
