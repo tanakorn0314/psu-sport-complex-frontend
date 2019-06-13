@@ -10,7 +10,7 @@ import EditBooking from '../../containers/editBooking';
 import ConfirmMember from '../../containers/confirmMember';
 import BlackoutDetail from '../../components/blackoutDetail';
 import Confirm from '../../components/confirm';
-import colors from '../../styles/colors';
+import EditStadium from '../../containers/editStadium';
 
 const actions = {
   SHOW_MODAL: 'SHOW_MODAL',
@@ -99,6 +99,20 @@ const actions = {
 
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
+  showStadiumDetailModal: (dataSource) => (dispatch) => {
+    const action = () => PubSub.publish('confirmEditStadium');
+    const cancel = () => dispatch(actions.hideModal());
+
+    const modal = {
+      title: <H2 msg='editStadium' />,
+      body: renderStadiumDetail(dataSource),
+      footer: renderFooter(action, cancel, 'confirm', 'cancel'),
+      cancel: cancel,
+      toggle: cancel,
+    }
+
+    dispatch({ type: actions.SHOW_MODAL, modal });
+  },
   showConfirmModal: (title, msg, action) => (dispatch) => {
     const cancel = () => dispatch(actions.hideModal());
 
@@ -181,5 +195,6 @@ const renderBookByAdmin = () => (<BookByAdmin />)
 const renderEditBooking = (booking) => (<EditBooking booking={booking} />)
 const renderConfirmMember = (selectedId) => (<ConfirmMember selectedId={selectedId} />)
 const renderBlackoutDetail = (dataSource) => (<BlackoutDetail dataSource={dataSource} />)
+const renderStadiumDetail = (dataSource) => (<EditStadium dataSource={dataSource}/>)
 
 export default actions;

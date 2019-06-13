@@ -46,9 +46,9 @@ class BlackoutList extends React.Component {
                 dataIndex: 'id',
                 render: (id) => (
                     <div id={id}>
-                        <TextLink id={id} style={{ color: colors.main3 }} onClick={this.handleDelete} msg='delete' />
-                        <Divider type='vertical' />
                         <TextLink id={id} style={{ color: colors.main3 }} onClick={this.showDetail} msg='detail' />
+                        <Divider type='vertical' />
+                        <TextLink id={id} style={{ color: colors.main3 }} onClick={this.handleDelete} msg='delete' />
                     </div>
                 )
             }
@@ -105,6 +105,6 @@ class BlackoutList extends React.Component {
 }
 
 export default connect(
-    state => state, 
+    state => state,
     { ...OperationTimeAction, ...ModalAction }
 )(withNamespaces('common')(BlackoutList));

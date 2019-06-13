@@ -156,5 +156,22 @@
     "serviceRate": "Service Rate",
     "baht/hour": "Baht/Hour",
     "contactUs": "Contact Us",
-    "noData": "No Data"
+
+    "noData": "No Data",
+    "createStadium": "Create Stadium",
+    "stadiumName": "Stadium Name",
+    "numCourt": "Number of court",
+    "openAfter": "Open after operation time for",
+    "closeBefore": "Close before opeation time for",
+    "hour": "hour",
+    "minute": "minute",
+    "canBook": "Enable Online Booking",
+    "manageStadium": "Manage Stadium",
+    "createStadiumSucces": "Create Stadium Successful",
+    "deleteStadium": "Delete Stadium",
+    "areYouSureToDeleteStadium": "Are you sure to delete stadium ?",
+    "editStadium": "Edit Stadium",
+    "stadiumDetail": "Stadium Detail",
+    "stadium not found": "Stadium not found"
+
 }

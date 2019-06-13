@@ -156,5 +156,21 @@
     "serviceRate": "อัตราค่าบริการ",
     "baht/hour": "บาท/ชั่วโมง",
     "contactUs": "ติดต่อเรา",
-    "noData": "ไม่พบข้อมูล"
+    "noData": "ไม่พบข้อมูล",
+
+    "createStadium": "เพิ่มสนามกีฬา",
+    "stadiumName": "ชื่อสนาม",
+    "numCourt": "จำนวนสนามย่อย",
+    "openAfter": "เปิดหลังเวลาให้บริการเป็นเวลา",
+    "closeBefore": "ปิดก่อนเวลาให้บริการเป็นเวลา",
+    "hour": "ชั่วโมง",
+    "minute": "นาที",
+    "canBook": "อนุญาตให้จองในระบบ",
+    "manageStadium": "จัดการสนามกีฬา",
+    "createStadiumSucces": "เพิ่มสนามกีฬาสำเร็จ",
+    "deleteStadium": "ลบสนามกีฬา",
+    "areYouSureToDeleteStadium": "คุณแน่ใจจะลบสนามกีฬาหรือไม่ ?",
+    "editStadium": "แก้ไขข้อมูลสนามกีฬา",
+    "stadiumDetail": "รายละเอียดสนามกีฬา",
+    "stadium not found": "ไม่พบสนามกีฬา"
 }

@@ -11,6 +11,21 @@ export default function bookingReducer(state = initState, action) {
                 ...state,
                 stadiums: action.payload
             };
+        case actions.CREATE_STADIUM:
+            return {
+                ...state,
+                stadiums: [...state.stadiums, action.payload]
+            }
+        case actions.UPDATE_STADIUM:
+            return {
+                ...state,
+                stadiums: action.payload
+            }
+        case actions.DELETE_STADIUM:
+            return {
+                ...state,
+                stadiums: action.payload
+            }
         default:
             return state;
     }

@@ -17,7 +17,42 @@ const getById = async (id) => {
     return await req.send();
 }
 
+const createStadium = async (accessToken, dto) => {
+    const url = `${stadiumApi}`;
+
+    const req = new Request(url, 'POST');
+
+    req.setBody(dto);
+    req.setAuth(accessToken);
+    
+    return await req.send();
+}
+
+const updateStadium = async (accessToken, id, dto) => {
+    const url = `${stadiumApi}/${id}`;
+
+    const req = new Request(url, 'PATCH');
+
+    req.setBody(dto);
+    req.setAuth(accessToken);
+    
+    return await req.send();
+}
+
+const deleteStadium = async (accessToken, id) => {
+    const url = `${stadiumApi}/${id}`;
+
+    const req = new Request(url, 'DELETE');
+
+    req.setAuth(accessToken);
+    
+    return await req.send();
+}
+
 export default {
     getAll,
-    getById
+    getById,
+    createStadium,
+    updateStadium,
+    deleteStadium
 }

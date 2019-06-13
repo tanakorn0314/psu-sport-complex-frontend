@@ -30,7 +30,6 @@ const actions = {
         dispatch(actions.refreshData());
     },
     filterStadium: (stadiumId) => (dispatch) => {
-        console.log('test', stadiumId);
         dispatch({ type: actions.FILTER_STADIUM, stadiumId });
         dispatch(actions.refreshData());
     },
@@ -56,12 +55,12 @@ const actions = {
 
         Object.values(bookings).forEach((stadiumBookings) => {
             stadiumBookings.forEach((booking) => {
-                const { startDate, endDate, ownerName, ownerInfo, ownerPosition } = booking;
+                const { ownerName, ownerInfo, ownerPosition, createdAt } = booking;
                 const stadium = stadiums[booking.stadiumId - 1];
 
                 const checkStadiumId = stadiumId === 0 || stadiumId === booking.stadiumId;
-                const inStartRange = moment(start).isSameOrBefore(startDate);
-                const inEndRange = moment(end).isSameOrAfter(endDate);
+                const inStartRange = moment(start).isSameOrBefore(createdAt);
+                const inEndRange = moment(end).isSameOrAfter(createdAt);
                 const startwithPhoneNo = userId.length === 0 || ownerInfo.startsWith(userId);
                 const startWithName = name.length === 0 || ownerName.startsWith(name);
                 const checkStatus = booking.status === 'approved';
