@@ -135,9 +135,7 @@ class ConfirmBooking extends React.Component {
 
         const result = await this.props.confirmTransaction(idToken, billId, dto);
 
-        if (result.error) {
-            PubSub.publish('showTransactionCompleteModal');
-        } 
+        PubSub.publish('showTransactionCompleteModal');
 
     }
 
