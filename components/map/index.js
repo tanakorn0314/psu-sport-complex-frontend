@@ -26,17 +26,17 @@ const StyledWrapper = styled.div`
 class Map extends React.Component {
     render() {
         return (
-            <StyledWrapper class="mapouter">
-                <div class="gmap_canvas">
+            <StyledWrapper className="mapouter">
+                <div className="gmap_canvas">
                     <iframe
                         width="100%"
                         height="100%"
                         id="gmap_canvas"
                         src={`https://maps.google.com/maps?q=psu%20phuket%20sport%20complex&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-                        frameborder="0"
+                        frameBorder="0"
                         scrolling="no"
-                        marginheight="0"
-                        marginwidth="0">
+                        marginWidth="0"
+                        marginHeight="0">
                     </iframe>
                 </div>
             </StyledWrapper>
