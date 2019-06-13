@@ -24,8 +24,6 @@ class BillCard extends React.Component {
         const { t, dataSource } = this.props;
         const { bookingTime, balance, sport } = dataSource;
 
-        console.log(sport);
-
         return (
             <StyledRow gutter={{ sm: 0, md: 16 }} >
                 <Col sm={24} md={8} className='col basic-detail'>
@@ -67,6 +65,7 @@ class BillCard extends React.Component {
     }
 
     renderCourtDetail = (item) => {
+        console.log(item);
         const locale = i18n.language || 'en';
         const { t } = this.props;
         const { startDate, endDate, status } = item;

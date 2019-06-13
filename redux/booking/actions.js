@@ -1,5 +1,6 @@
 import helper from './helper';
 import BillService from '../../core/service/billService';
+import BillAction from '../bill/actions';
 import BookingService from '../../core/service/bookingService';
 
 const actions = {
@@ -28,13 +29,17 @@ const actions = {
     return store;
   },
   reserve: (token, bookManyDTO) => async (dispatch, getState) => {
+    const { idToken } = getState().Auth;
     const result = await BookingService.book(token, bookManyDTO);
     dispatch({type: actions.CLEAR_SELECT});
+    dispatch(BillAction.fetchMyBills(idToken));
     return result;
   },
   reserveByAdmin: (token, bookByAdminDTO) => async (dispatch, getState) => {
+    const { idToken } = getState().Auth;
     const result = await BookingService.bookByAdmin(token, bookByAdminDTO);
     dispatch({type: actions.CLEAR_SELECT});
+    dispatch(BillAction.fetchMyBills(idToken));
     return result;
   },
   updateBooking: (bookingId, dto) => async (dispatch, getState) => {
