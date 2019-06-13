@@ -22,7 +22,8 @@ class SelectStadiumAdmin extends React.Component {
         } = this.props;
         const { stadiums } = Stadium;
         const stadium = stadiums[Admin.stadiumId - 1]
-        const sName = stadium ? stadium.name : 'all'
+        const sName = stadium ? stadium.name : 'all';
+
         return (
             <Select
                 name={name || 'stadium'}

@@ -106,7 +106,7 @@
     "transferTime": "Transfer time",
     "confirmComplete": "Confirm Complete",
     "transactionCompleteDetail": "Validating your payment transaction within 20 minutes.\n After the validation is success, your booking slot will turn red.",
-    "user": "user",
+    "user": "User",
     "userList": "User List",
     "unauthorizedDetail": "Session timeout or logged in by other user, please reload page to continue process",
     "updateScheduleSuccess": "Update schedule success",

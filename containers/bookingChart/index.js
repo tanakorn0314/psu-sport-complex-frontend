@@ -63,7 +63,6 @@ class BookingChart extends React.Component {
                         borderColor,
                         backgroundColor,
                         fill: true,
-
                     }]
                 }}
                 options={{

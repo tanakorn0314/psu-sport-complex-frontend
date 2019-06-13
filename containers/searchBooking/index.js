@@ -30,7 +30,7 @@ class SearchForm extends React.Component {
                             <Form.Item
                                 label={<Label msg='sport'/>}
                             >
-                                <SelectStadium onChange={this.selectStadium} enableAll/>
+                                <SelectStadium enableAll/>
                             </Form.Item>
                         </Col>
                         <Col span={7} >
@@ -95,16 +95,17 @@ class SearchForm extends React.Component {
     }
 
     selectStart = start => {
+        if (!start)
+            return;
         this.props.filterStart(start);
     }
 
     selectEnd = end => {
+        if (!end)
+            return;
         this.props.filterEnd(end)
     }
 
-    selectStadium = async () => {
-        await this.props.refreshData();
-    }
 }
 
 export default connect(
