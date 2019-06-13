@@ -74,8 +74,16 @@ class BookingChart extends React.Component {
                         labels: {
                             fontFamily: fonts.psuStidti
                         }
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
                     }
                 }}
+
             />
         )
     }
@@ -139,6 +147,13 @@ class BookingChart extends React.Component {
                         labels: {
                             fontFamily: fonts.psuStidti
                         }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
                     }
                 }}
             />
