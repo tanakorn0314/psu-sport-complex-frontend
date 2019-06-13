@@ -10,6 +10,7 @@ import EditBooking from '../../containers/editBooking';
 import ConfirmMember from '../../containers/confirmMember';
 import BlackoutDetail from '../../components/blackoutDetail';
 import Confirm from '../../components/confirm';
+import colors from '../../styles/colors';
 
 const actions = {
   SHOW_MODAL: 'SHOW_MODAL',
@@ -111,12 +112,12 @@ const actions = {
 
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
-  showTransactionErrorModal: () => (dispatch) => {
+  showTransactionCompleteModal: () => (dispatch) => {
     const cancel = () => dispatch(actions.hideModal());
 
     const modal = {
-      title: <H2 msg='error' />,
-      body: <Text msg='transactinoNotFoundDetail' />,
+      title: <H2 msg='confirmComplete' />,
+      body: <Text msg='transactionCompleteDetail' />,
       footer: renderOKFooter(cancel, 'ok'),
       cancel: cancel,
       toggle: cancel,

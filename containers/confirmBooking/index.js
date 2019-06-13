@@ -129,7 +129,6 @@ class ConfirmBooking extends React.Component {
     }
 
     confirmBooking = async () => {
-        const { t } = this.props;
         const { idToken } = this.props.Auth;
         const { billId } = this.state;
         const dto = dataHandler.createConfirmBookingDTO(this.state);
@@ -137,16 +136,9 @@ class ConfirmBooking extends React.Component {
         const result = await this.props.confirmTransaction(idToken, billId, dto);
 
         if (result.error) {
-            PubSub.publish('showTransactionErrorModal');
-        } else {
-            notification['success']({
-                title: t('success'),
-                message: t('bookingSuccess'),
-                duration: 3
-            });
+            PubSub.publish('showTransactionCompleteModal');
+        } 
 
-            this.hideModal();
-        }
     }
 
     cancelBooking = async () => {

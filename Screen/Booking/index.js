@@ -26,7 +26,7 @@ class BookingScreen extends React.Component {
         super(props);
 
         const sportQuery = props.router.query.sport;
-        if(sportQuery) {
+        if (sportQuery) {
             const { stadiums } = props.Stadium;
             const idx = stadiums.findIndex((stadium) => stadium.name === sportQuery);
             if (idx >= 0)
@@ -47,8 +47,8 @@ class BookingScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.token1 = PubSub.subscribe('showTransactionErrorModal', () => {
-            this.showTransactionError();
+        this.token1 = PubSub.subscribe('showTransactionCompleteModal', () => {
+            this.showTransactionComplete();
         });
         this.token2 = PubSub.subscribe('bookingApproved', () => {
             this.notifyApproved();
@@ -140,28 +140,26 @@ class BookingScreen extends React.Component {
         this.props.showBookingConfirmModal(dataSource);
     }
 
-    showTransactionError = () => {
-        this.props.showTransactionErrorModal();
+    showTransactionComplete = () => {
+        this.props.showTransactionCompleteModal();
     }
 
     notifyApproved = () => {
-        _.debounce(() => {
-            notification['success']({
-                message: t('success'),
-                description: t('yourBookingIsApproved'),
-                duration: 2
-            });
-        }, 2000);
+        const { t } = this.props;
+        notification['success']({
+            message: t('success'),
+            description: t('yourBookingIsApproved'),
+            duration: 2
+        });
     }
 
     notifyRejected = () => {
-        _.debounce(() => {
-            notification['info']({
-                message: t('fail'),
-                description: t('yourBookingIsRejected'),
-                duration: 2
-            })
-        }, 2000);
+        const { t } = this.props;
+        notification['info']({
+            message: t('fail'),
+            description: t('yourBookingIsRejected'),
+            duration: 2
+        })
     }
 
 }
