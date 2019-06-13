@@ -1,20 +1,34 @@
 import React from 'react';
 import StyleWrapper from './style';
 import { connect } from 'react-redux';
-import BookingActions from '../../redux/booking/actions';
-import ModalActions from '../../redux/modal/actions';
 import { Col } from 'antd';
 import Button from '../../components/button';
 import { countBooking } from './helper';
 import { H2 } from '../../components/typo';
 import { withNamespaces } from '../../i18n';
+import PubSub from 'pubsub-js';
 
 class BottomAction extends React.Component {
+
+    state = {
+        visible: false
+    }
+
+    componentDidMount() {
+        this.token = PubSub.subscribe('setBottomActionVisible', (message, visible) => {
+            this.setState({visible})
+        })
+    }
+
+    componentWillUnmount() {
+        PubSub.unsubscribe(this.token)
+    }
 
     render() {
         const { t } = this.props;
         let { idToken, profile } = this.props.Auth;
-        let { fee, selectedBooking, bottomActionVisible } = this.props.Booking;
+        let { fee, selectedBooking } = this.props.Booking;
+        let { visible } = this.state;
 
         let message = '';
         let btnTitle = 'confirm';
@@ -28,7 +42,7 @@ class BottomAction extends React.Component {
             btnTitle = 'login';
             action = this.props.onAuth ? this.props.onAuth : () => {}
         } else if(count <= 0) {
-            bottomActionVisible = false;
+            visible = false;
         } else if(profile.position === 'admin') {
             message = `${t('count')} : ${count} ${t('slot')}${s}`;
             action = this.props.onBook ? this.props.onBook : () => {}
@@ -39,7 +53,7 @@ class BottomAction extends React.Component {
         }
 
         return (
-            bottomActionVisible && 
+            visible && 
             <StyleWrapper>
                 <Col xs={16} sm={16} md={16} lg={16} xl={16} xxl={16}>
                     <H2 className='tota'>{message}</H2>

@@ -39,7 +39,7 @@ const SlotTitle = styled.div`
     border-bottom: 1px solid #cecece;
     font-weight: bold;
     background-color: ${selectTitleColor};
-    ${props => props.slotState === SLOT_STATES.PASSED && 
+    ${props => props.selected &&
         `border-bottom: 1px solid ${colors.selected};`
     }
 `;

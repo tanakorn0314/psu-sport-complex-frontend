@@ -6,10 +6,19 @@ import {
 import { connect } from 'react-redux';
 import StyledRow from './style';
 import BookingAction from '../../redux/booking/actions';
+import ModalAction from '../../redux/modal/actions';
 import BookingSlot from '../bookingSlot';
 import { Label } from '../../components/typo';
 
 class BookingCard extends React.Component {
+
+    shouldComponentUpdate(nextProps) {
+        const { selectedDate: a1 } = this.props.Booking;
+        const { dataSource: b1 } = this.props;
+        const { selectedDate: a2 } = nextProps.Booking;
+        const { dataSource: b2 } = nextProps;
+        return (a1 !== a2) || (b1 !== b2);
+    }
     
     render() {
         const {
@@ -49,7 +58,13 @@ class BookingCard extends React.Component {
                             }
 
                             return (
-                                <BookingSlot key={num} index={num} dataSource={data} />
+                                <BookingSlot 
+                                    key={num} 
+                                    index={num} 
+                                    dataSource={data}
+                                    onEdit={this.handleEdit}
+                                    onSelect={this.handleSelect}
+                                />
                             )
                         })
                     }
@@ -58,9 +73,20 @@ class BookingCard extends React.Component {
         )
     }
 
+    handleSelect = (data) => {
+        this.props.selectBooking(data);
+    }
+
+    handleEdit = (data) => {
+        const { profile } = this.props.Auth;
+        if ((profile.userId === data.userId) || (profile.position === 'admin')) {
+            this.props.showEditBookingModal(data);
+        } 
+    }
+
 }
 
 export default connect(
     state => state,
-    BookingAction,
+    { ...BookingAction, ...ModalAction},
 )(BookingCard);

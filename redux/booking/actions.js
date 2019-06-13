@@ -9,7 +9,7 @@ const actions = {
   SELECT_DATE: 'SELECT_DATE',
   SET_OWNER: 'SET_OWNER',
   SET_FEE: 'SET_FEE',
-  SET_BOTTOM_ACTION_VISIBLE: 'SET_BOTTOM_ACTION_VISIBLE',
+  CLEAR_SELECT: 'CLEAR_SELECT',
   fetchAllBooking: () => async (dispatch) => {
     const result = await BookingService.getAll();
     if (result && !result.error) {
@@ -29,10 +29,12 @@ const actions = {
   },
   reserve: (token, bookManyDTO) => async (dispatch, getState) => {
     const result = await BookingService.book(token, bookManyDTO);
+    dispatch({type: actions.CLEAR_SELECT});
     return result;
   },
   reserveByAdmin: (token, bookByAdminDTO) => async (dispatch, getState) => {
     const result = await BookingService.bookByAdmin(token, bookByAdminDTO);
+    dispatch({type: actions.CLEAR_SELECT});
     return result;
   },
   updateBooking: (bookingId, dto) => async (dispatch, getState) => {
@@ -84,7 +86,6 @@ const actions = {
     if (result.error)
       return result;
 
-    console.log(result);
     return result;
   },
   selectDate: (date) => async (dispatch, getState) => {
