@@ -155,11 +155,13 @@ class BookingScreen extends React.Component {
 
     notifyRejected = () => {
         const { t } = this.props;
-        notification['info']({
-            message: t('fail'),
-            description: t('yourBookingIsRejected'),
-            duration: 2
-        })
+        _.debounce(() => {
+            notification['info']({
+                message: t('fail'),
+                description: t('yourBookingIsRejected'),
+                duration: 2
+            })
+        }, 1000)
     }
 
 }

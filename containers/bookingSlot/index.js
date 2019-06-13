@@ -34,14 +34,16 @@ class BookingSlot extends React.Component {
 
     renderSlotInfo = (slotState) => {
         if (slotState === SLOT_STATES.APPROVED || slotState === SLOT_STATES.BOOKED)
-            return this.renderBookedSlot();
+            return this.renderBookedSlot(slotState);
 
-        return this.renderUnbookedSlot();
+        return this.renderUnbookedSlot(slotState);
     }
 
     renderBookedSlot = (slotState) => {
         const { bookingData } = this.props.dataSource;
         const label = slotState === SLOT_STATES.APPROVED ? 'booked' : 'isBooking';
+        console.log(slotState);
+        console.log(label);
         return (
             <>
                 <P msg={label} />
