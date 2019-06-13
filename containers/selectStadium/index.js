@@ -22,7 +22,7 @@ class SelectStadium extends React.Component {
         } = this.props;
         const { stadiums } = Stadium;
         const stadium = stadiums[Booking.stadiumId - 1]
-        const sName = stadium ? stadium.name : 'all'
+        const sName = stadium.name;
         return (
             <Select
                 name={name || 'stadium'}
@@ -32,9 +32,10 @@ class SelectStadium extends React.Component {
                 value={t(sName)}
             >
                 {stadiums.map((s, index) => {
-                    return (
-                        <Option key={index} value={s.stadiumId}><Label msg={s.name}/></Option>
-                    )
+                    if (s.canBook)
+                        return (
+                            <Option key={index} value={s.stadiumId}><Label msg={s.name} /></Option>
+                        )
                 })}
             </Select>
         )

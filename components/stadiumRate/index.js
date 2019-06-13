@@ -27,11 +27,15 @@ class StadiumRate extends React.Component {
                         <div className='sport-banner'>
                             <H3 className='title' msg={stadium.name} responsive />
                         </div>
-                        <Link href={`/booking?sport=${stadium.name}`}>
-                            <Button className='btn-book' ghost >
-                                {t('bookNow')}
-                            </Button>
-                        </Link>
+                        {
+                            stadium.canBook && (
+                                <Link href={`/booking?sport=${stadium.name}`}>
+                                    <Button className='btn-book' ghost >
+                                        {t('bookNow')}
+                                    </Button>
+                                </Link>
+                            )
+                        }
                     </div>
                     <div className='right-container'>
                         <RateTable stadium={stadium} />

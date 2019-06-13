@@ -50,12 +50,15 @@ class BookingComponent extends React.Component {
         return this.renderCards(bookingData, operationTime)
     }
 
-    renderCards(bookingData, operationTime) {
+    renderCards(bookingData, opTime) {
         const { stadiumId } = this.props.Booking;
         const { stadiums } = this.props.Stadium;
 
-        const stadium = stadiums[stadiumId - 1]
+        const stadium = stadiums[stadiumId - 1];
+
+        const operationTime = dataHandler.trimOperationTime(opTime, stadium);
         const len = operationTime.length;
+        
         const cards = [];
 
         for (let i = 1; i < len; i++) {

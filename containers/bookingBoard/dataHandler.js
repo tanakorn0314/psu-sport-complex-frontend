@@ -54,9 +54,32 @@ function findBlackout(blackoutSeries, selectedDate) {
     return blackoutSeries.find((b) => moment(selectedDate).isBetween(moment(b.start), moment(b.end)));
 }
 
+function trimOperationTime(operationTime, stadium) {
+    const { openAfter, closeBefore } = stadium;
+
+    const openSlot = calculateSlot(openAfter);
+    const closeSlot = calculateSlot(closeBefore);
+
+    const len = operationTime.length;
+
+    const result = operationTime.slice(openSlot, len - closeSlot);
+
+    return result;
+}
+
+function calculateSlot(timeStr) {
+    const [hr, min] = timeStr.split(':');
+
+    const hrVal = hr * 2;
+    const hrMin = min >= 30 ? 1 : 0;
+
+    return hrVal + hrMin;
+}
+
 
 export default {
     seperateDataByStartTime,
     generateTimeIndex,
-    findBlackout
+    findBlackout,
+    trimOperationTime
 }
