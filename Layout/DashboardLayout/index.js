@@ -66,6 +66,10 @@ class DashboardLayout extends React.Component {
                                         <Icon type='border' />
                                         <TextMenuItem msg='stadium' />
                                     </Menu.Item>
+                                    <Menu.Item key="postNews" onClick={this.navigate}>
+                                        <Icon type='form' />
+                                        <TextMenuItem msg='news' />
+                                    </Menu.Item>
                                 </Menu>
                             </Sider>
                             <Content>

@@ -10,6 +10,12 @@ const bannerTitle = styled.h1`
     font-weight: 500;
 `
 
+const newsBannerTitle = styled.h1`
+    font-size: ${props => props.responsive ? 'calc(1.4em + 1vw)' : '1.6em'};
+    font-family: ${fonts.psuStidti};
+    font-weight: 400;
+`
+
 const pageTitle = styled.h1`
     font-size: ${props => props.responsive ? 'calc(1.8em + 1vw)' : '2em'};
     font-family: ${fonts.psuStidti};
@@ -105,6 +111,7 @@ const tbody = styled.span`
     font-family: ${fonts.psuStidti};
 `
 
+export const NewsBannerTitle = withText(newsBannerTitle);
 export const BannerTitle = withText(bannerTitle);
 export const PageTitle = withText(pageTitle);
 export const H1 = withText(h1);

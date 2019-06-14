@@ -8,6 +8,7 @@ import OperationTime from './operationTime/reducer';
 import Stadium from './stadium/reducer';
 import Screen from './screen/reducer';
 import Users from './users/reducer'
+import News from './news/reducer';
 
 export default combineReducers({
     Admin,
@@ -19,4 +20,5 @@ export default combineReducers({
     Screen,
     Stadium,
     Users,
+    News
 })
