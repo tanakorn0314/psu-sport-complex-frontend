@@ -1,7 +1,7 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import NewsService from '../../core/service/newsService';
-import { apiKey } from './config';
+import { tinyMceApiKey as apiKey } from '../../config/secret';
 
 const imageUploadHandler = async (blobInfo, success, failure) => {
     var formData;
