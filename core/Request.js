@@ -23,6 +23,13 @@ export default class Request {
         this.auth = 'bearer ' + token
     }
 
+    setPaginator = (start, count) => {
+        const hasParams = this.url.includes('?');
+        const sym = hasParams ? '&' : '?';
+        this.url = `${this.url}${sym}offset=${start}&limit=${count}`;
+        console.log(this.url);
+    }
+
     createHeaders = () => {
         const { auth, body } = this;
         const headers = {};

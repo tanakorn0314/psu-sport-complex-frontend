@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'db_chuanpim_psu_bd';
+    src: url('/static/fonts/db_chuanpim_psu_bd.ttf');
+    src: url('/static/fonts/db_chuanpim_psu_it.ttf');
+    src: url('/static/fonts/db_chuanpim_psu_regular.ttf');
+}
+
+@font-face {
+    font-family: 'psu-stidti';
+    src: url('/static/fonts/psu-stidti-bold.ttf');
+    src: url('/static/fonts/psu-stidti-bolditalic.ttf');
+    src: url('/static/fonts/psu-stidti-italic.ttf');
+    src: url('/static/fonts/psu-stidti-light.ttf');
+    src: url('/static/fonts/psu-stidti-bolditalic.ttf');
+    src: url('/static/fonts/psu-stidti-lightitalic.ttf');
+    src: url('/static/fonts/psu-stidti-regular.ttf');
+}
+
+p, a, li {
+    font-family: 'db_chuanpim_psu_bd', Roboto, Sans-serrif;
+    font-size: 16px;
+    color: #003C71;
+}
+
+h1, h2, h3 {
+    font-family: 'psu-stidti', Roboto, Sans-serrif;
+    color: #003C71;
+}
