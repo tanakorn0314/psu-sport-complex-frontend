@@ -25,15 +25,6 @@ class BookingScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        const sportQuery = props.router.query.sport;
-        if (sportQuery) {
-            const { stadiums } = props.Stadium;
-            const idx = stadiums.findIndex((stadium) => stadium.name === sportQuery);
-            if (idx >= 0)
-                props.selectStadium(idx + 1);
-        }
-
-
         const { myBills: bills } = props.Bill;
         const { profile } = props.Auth;
 

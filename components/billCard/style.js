@@ -23,6 +23,21 @@ export const StyledRow = styled(Row)`
             }
         }
     }
+    .fee-detail {
+        display: flex;
+        .fee {
+            flex: 2;
+        }
+        .action {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            @media (max-width: 575px) {
+                align-items: flex-end;
+            }
+        }
+    }
     .btn-container {
         width: 100%;
         display: flex;

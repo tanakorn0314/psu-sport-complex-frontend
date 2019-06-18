@@ -14,13 +14,15 @@ const SelectOption = Select.Option;
 class SelectDate extends React.Component {
 
     componentDidMount() {
-        this.props.selectDate(moment());
+        const { selectedDate } = this.props.Booking;
+        this.props.selectDate(moment(selectedDate));
     }
 
     render() {
+        const { selectedDate } = this.props.Booking;
         const locale = i18n.language || 'en';
         const MONTHS = months[locale];
-        const defaultDate = moment(this.props.Booking.selectedDate);
+        const defaultDate = moment(selectedDate);
 
         const day = defaultDate ? defaultDate.get('date') : 1;
         const month = defaultDate ? defaultDate.get('month') : 0;
@@ -30,7 +32,7 @@ class SelectDate extends React.Component {
         return (
             <StyledWarpper style={this.props.style}>
                 <Select
-                    defaultValue={day}
+                    value={day}
                     onChange={this.changeDay}
                 >
                     {_.range(1, 31).map((day) => (
@@ -38,7 +40,7 @@ class SelectDate extends React.Component {
                     ))}
                 </Select>
                 <Select
-                    defaultValue={month}
+                    value={month}
                     onChange={this.changeMonth}
                     className='select-month'
                     style={{width: '100%'}}
@@ -48,7 +50,7 @@ class SelectDate extends React.Component {
                     ))}
                 </Select>
                 <Select
-                    defaultValue={year}
+                    value={year}
                     onChange={this.changeYear}
                 >
                     {_.range(1900, parseInt(thisYear) + 1).map((year) => (

@@ -8,19 +8,24 @@ import fonts from '../../styles/fonts';
 import { i18n, withNamespaces } from '../../i18n';
 
 const StyledDatePicker = styled(DatePicker)`
-    font-family: ${fonts.psuStidti}
+    font-family: ${fonts.psuStidti};
+    .dropdown {
+        color: red
+    }
 `
 
 class InputDate extends React.Component {
 
     componentDidMount() {
-        this.props.selectDate(moment());
+        const { selectedDate } = this.props;
+        this.props.selectDate(moment(selectedDate));
     }
 
     render() {
         const locale = i18n.language || 'en';
         return (
             <StyledDatePicker
+                dropdownClassName='dropdown'
                 style={{ width: 200, ...this.props.style }}
                 value={moment(this.props.selectedDate).locale(locale)}
                 onChange={this.handleChange}

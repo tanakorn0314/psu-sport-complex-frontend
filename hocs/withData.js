@@ -9,22 +9,38 @@ import BillAction from '../redux/bill/actions';
 import OperationTimeAction from '../redux/operationTime/actions';
 import { url } from '../config';
 import io from 'socket.io-client'
+import moment from 'moment';
 
 export default ComposedComponent => {
     class withData extends React.Component {
         static async getInitialProps(ctx) {
             const { store, query } = ctx;
             const pageProps = ComposedComponent.getInitialProps ? await ComposedComponent.getInitialProps(ctx) : {};
-            
-            const token = pageProps.token;
 
-            const selectedStadium = store.getState().Booking.stadiumId;
+            const token = pageProps.token;
+            const sportQuery = query.sport;
+            const dateQuery = query.date;
 
             await store.dispatch(StadiumAction.fetchStadium());
             await store.dispatch(OperationTimeAction.getOperationTime());
             await store.dispatch(OperationTimeAction.getBlackout());
 
-            await store.dispatch(BookingAction.selectStadium(selectedStadium));
+            if (sportQuery) {
+                const { stadiums } = store.getState().Stadium;
+                const idx = stadiums.findIndex((stadium) => stadium.name === sportQuery);
+                if (idx >= 0)
+                    await store.dispatch(BookingAction.selectStadium(idx + 1));
+            } else {
+                const { stadiumId } = store.getState().Booking;
+                await store.dispatch(BookingAction.selectStadium(stadiumId));
+            }
+
+            if (dateQuery) {
+                let date = moment(dateQuery, 'DD-MM-YYYY');
+                if (!date.isValid())
+                    date = moment();
+                await store.dispatch(BookingAction.selectDate(date))
+            }
 
             if (token && token !== 'undefined') {
                 await store.dispatch(BillAction.fetchBills());
@@ -52,11 +68,11 @@ export default ComposedComponent => {
             });
 
             this.socket.on('bookingApproved', async (bill) => {
-                if (bill.userId === this.props.Auth.profile.userId) 
+                if (bill.userId === this.props.Auth.profile.userId)
                     PubSub.publish('bookingApproved');
             });
             this.socket.on('bookingRejected', async (bill) => {
-                if (bill.userId === this.props.Auth.profile.userId) 
+                if (bill.userId === this.props.Auth.profile.userId)
                     PubSub.publish('bookingRejected');
             });
 
@@ -75,5 +91,5 @@ export default ComposedComponent => {
             )
         }
     }
-    return connect(state => state, {...AdminAction, ...BookingAction})(withData);
+    return connect(state => state, { ...AdminAction, ...BookingAction })(withData);
 }

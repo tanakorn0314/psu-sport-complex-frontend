@@ -1,5 +1,6 @@
 import React from 'react';
 import PubSub from 'pubsub-js';
+import { Router } from '../../i18n';
 import { H2, Text, TextButton } from '../../components/typo';
 import Button from '../../components/button';
 
@@ -127,12 +128,16 @@ const actions = {
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
   showTransactionCompleteModal: () => (dispatch) => {
+    const action = async () => {
+      Router.push('/booking_history');
+      dispatch(actions.hideModal());
+    }
     const cancel = () => dispatch(actions.hideModal());
 
     const modal = {
       title: <H2 msg='confirmComplete' />,
-      body: <Text msg='transactionCompleteDetail' />,
-      footer: renderOKFooter(cancel, 'ok'),
+      body: renderTransactionComplete(),
+      footer: renderFooter(action, cancel, 'ok', 'close'),
       cancel: cancel,
       toggle: cancel,
     }
@@ -195,6 +200,13 @@ const renderBookByAdmin = () => (<BookByAdmin />)
 const renderEditBooking = (booking) => (<EditBooking booking={booking} />)
 const renderConfirmMember = (selectedId) => (<ConfirmMember selectedId={selectedId} />)
 const renderBlackoutDetail = (dataSource) => (<BlackoutDetail dataSource={dataSource} />)
-const renderStadiumDetail = (dataSource) => (<EditStadium dataSource={dataSource}/>)
+const renderStadiumDetail = (dataSource) => (<EditStadium dataSource={dataSource} />)
+const renderTransactionComplete = () => (
+  <>
+    <Text msg='transactionCompleteDetail' />
+    <Text style={{ color: 'red' }} msg='pleaseContact' />
+    <Text msg='goToBookingHistory' />
+  </>
+)
 
 export default actions;

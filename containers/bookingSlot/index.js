@@ -1,8 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import { connect } from 'react-redux';
-import BookingAction from '../../redux/booking/actions';
-import ModalAction from '../../redux/modal/actions';
 import { SlotTitle, Slot, SlotInfo } from './style';
 import { Label, P } from '../../components/typo';
 import { withNamespaces } from '../../i18n';
