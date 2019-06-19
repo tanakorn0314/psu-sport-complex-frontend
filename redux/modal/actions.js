@@ -1,7 +1,7 @@
 import React from 'react';
 import PubSub from 'pubsub-js';
-import { Router } from '../../i18n';
-import { H2, Text, TextButton } from '../../components/typo';
+import { Router, Trans, Link } from '../../i18n';
+import { H2, Text, TextButton, Normal } from '../../components/typo';
 import Button from '../../components/button';
 
 import AuthTabs from '../../containers/authTabs';
@@ -12,6 +12,8 @@ import ConfirmMember from '../../containers/confirmMember';
 import BlackoutDetail from '../../components/blackoutDetail';
 import Confirm from '../../components/confirm';
 import EditStadium from '../../containers/editStadium';
+import TransactionComplete from '../../components/transactionComplete';
+import fonts from '../../styles/fonts';
 
 const actions = {
   SHOW_MODAL: 'SHOW_MODAL',
@@ -201,12 +203,6 @@ const renderEditBooking = (booking) => (<EditBooking booking={booking} />)
 const renderConfirmMember = (selectedId) => (<ConfirmMember selectedId={selectedId} />)
 const renderBlackoutDetail = (dataSource) => (<BlackoutDetail dataSource={dataSource} />)
 const renderStadiumDetail = (dataSource) => (<EditStadium dataSource={dataSource} />)
-const renderTransactionComplete = () => (
-  <>
-    <Text msg='transactionCompleteDetail' />
-    <Text style={{ color: 'red' }} msg='pleaseContact' />
-    <Text msg='goToBookingHistory' />
-  </>
-)
+const renderTransactionComplete = () => (<TransactionComplete/>)
 
 export default actions;

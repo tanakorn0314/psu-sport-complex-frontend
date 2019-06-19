@@ -111,6 +111,10 @@ const tbody = styled.span`
     font-family: ${fonts.psuStidti};
 `
 
+const normal = styled.span`
+    font-family: ${fonts.psuStidti};
+`
+
 export const NewsBannerTitle = withText(newsBannerTitle);
 export const BannerTitle = withText(bannerTitle);
 export const PageTitle = withText(pageTitle);
@@ -127,3 +131,4 @@ export const Text = withText(text);
 export const TextLink = withText(link);
 export const TextTHead = withText(thead);
 export const TextTBody = withText(tbody);
+export const Normal = withText(normal);

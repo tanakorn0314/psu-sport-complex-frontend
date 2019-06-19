@@ -26,6 +26,7 @@
     "bye": "Good bye",
     "cancel": "Cancel",
     "changeScheduleTo": "Change schedule to",
+    "close": "Close",
     "confirm": "Confirm",
     "confirmBooking": "Confirm Booking",
     "confirmPassword": "Confirm Password",
@@ -172,6 +173,13 @@
     "areYouSureToDeleteStadium": "Are you sure to delete stadium ?",
     "editStadium": "Edit Stadium",
     "stadiumDetail": "Stadium Detail",
-    "stadium not found": "Stadium not found"
+    "stadium not found": "Stadium not found",
 
+    "view": "View",
+    "do you want to check your booking history": "Do you want to check your booking history ?",
+    "transactionComplete": "Validating your payment transaction within 20 minutes.",
+    "after validation is success": "After the validation is success, your booking slot will turn red.",
+    "<0>pleaseContact <1>fanpage</1> <3>phoneNumber</3></0>": 
+    "<0>If there are any problems, please contact <1>Fanpage</1> or Tel. <3>0864573098</3>.</0>"
+    
 }
