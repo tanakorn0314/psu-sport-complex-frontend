@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import withText from '../../hocs/withText';
 import fonts from '../../styles/fonts';
 import colors from '../../styles/colors';
+import { Typography } from 'antd';
 
 const bannerTitle = styled.h1`
     font-size: 3vw;

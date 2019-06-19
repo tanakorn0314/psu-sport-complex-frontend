@@ -10,7 +10,7 @@ import PubSub from 'pubsub-js';
 import { H2, Text, Label } from '../../components/typo';
 import { withNamespaces } from '../../i18n';
 import dataHandler from './dataHandler';
-import { notification } from 'antd';
+import { notification, Typography } from 'antd';
 
 class ConfirmBooking extends React.Component {
 
@@ -69,13 +69,16 @@ class ConfirmBooking extends React.Component {
         const { dataSource, t } = this.props;
         const { expiresAt, fee } = dataSource;
 
+        const accountNoDash = t('scbAccount') ? t('scbAccount').split('-').join('') : ''
+
         return (
             <StyledWrapper>
-                <H2 msg='pleasePayTo' style={{ marginTop: 10 }}/>
-                <Text msg='scbAccount'/>
+                <H2 msg='pleasePayTo' style={{ marginTop: 10 }} />
+                <Typography.Text copyable={{ text: accountNoDash }} >{t('scbAccount')}</Typography.Text>
+                <Text msg='scbAccountName' />
                 <H2>{t('serviceFee')} : {fee} {t('baht')}</H2>
                 <CountDown expiresAt={expiresAt} onTimeout={this.cancelBooking} />
-                <div style={{ marginBottom: 5 }}><Label msg='accountNumber'/></div>
+                <div style={{ marginBottom: 5 }}><Label msg='accountNumber' /></div>
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='xxxxxxxxxx'
@@ -83,7 +86,7 @@ class ConfirmBooking extends React.Component {
                     value={account}
                     onChange={this.handleChange}
                 />
-                <div style={{ marginBottom: 5 }}><Label msg='amount'/></div>
+                <div style={{ marginBottom: 5 }}><Label msg='amount' /></div>
                 <Input
                     style={{ maxWidth: 300 }}
                     placeholder='Amount'
@@ -92,7 +95,7 @@ class ConfirmBooking extends React.Component {
                     onChange={this.handleChange}
                     defaultValue={fee}
                 />
-                <div style={{ marginBottom: 5 }}><Label msg='transferTime'/></div>
+                <div style={{ marginBottom: 5 }}><Label msg='transferTime' /></div>
                 <InputDateTime
                     minute={minute}
                     hour={hour}
@@ -101,20 +104,19 @@ class ConfirmBooking extends React.Component {
                     year={year}
                     onChange={this.handleChangeTime}
                 />
-                <Text msg='confirmWarning' className='warning'/>
+                <Text msg='confirmWarning' className='warning' />
             </StyledWrapper>
         )
     }
 
     handleChange = e => {
         const { name, value } = e.target;
-        console.log(name, value);
         switch (name) {
             case 'account':
-                this.setState({account: value})
+                this.setState({ account: value })
                 break;
             case 'deposit':
-                this.setState({deposit: parseInt(value)})
+                this.setState({ deposit: parseInt(value) })
                 break;
             default: break;
         }

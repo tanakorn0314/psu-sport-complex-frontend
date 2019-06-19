@@ -45,6 +45,11 @@ class UserList extends React.Component {
       key: 'userId',
       ...this.getColumnSearchProps('userId')
     }, {
+      title: t('email'),
+      dataIndex: 'email',
+      key: 'email',
+      ...this.getColumnSearchProps('email')
+    }, {
       title: t('position'),
       dataIndex: 'position',
       key: 'position',
@@ -56,7 +61,7 @@ class UserList extends React.Component {
       render: data => {
         const { id, position, end } = data;
         if (position === 'member')
-          return <Text style={{color: colors.main3}}>{moment(end).locale(locale).format('DD MMM YYYY HH:mm')}</Text>
+          return <Text style={{ color: colors.main3 }}>{moment(end).locale(locale).format('DD MMM YYYY HH:mm')}</Text>
         if (position === 'generalPublic')
           return (<Button id={id} onClick={this.handleSelectUser}><TextButton msg='toMember' /></Button>)
         return "-";
@@ -68,13 +73,14 @@ class UserList extends React.Component {
       key: index,
       name: user && `${user.fname} ${user.lname}`,
       userId: user && user.psuPassport && user.psuPassport.length > 0 ? user.psuPassport : user.phoneNumber,
+      email: user.email,
       position: user && t(user.position),
       expires: user && { id: user.userId, position: user.position, end: user.memberEnd },
     }))
 
     return (
       <Card style={this.props.style}>
-        <H2 msg='userList' style={{marginBottom: 5}}/>
+        <H2 msg='userList' style={{ marginBottom: 5 }} />
         <Table
           bordered
           columns={column}
