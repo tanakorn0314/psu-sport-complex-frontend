@@ -1,10 +1,11 @@
 import React from 'react';
 import StyledWrapper, { EditableText } from './style';
 import { PageTitle, H3, Label } from '../../components/typo';
-import { Card, Button, Spin } from 'antd';
+import { Button, notification } from 'antd';
 import { withNamespaces, i18n, Router } from '../../i18n';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import UserService from '../../core/service/userService';
 
 const Row = (props) => {
     const { title, children } = props;
@@ -22,11 +23,23 @@ const Row = (props) => {
 
 class Account extends React.Component {
 
+    constructor(props) {
+        super(props);
+        const { profile } = props.Auth;
+        this.state = {
+            fname: profile.fname || '',
+            lname: profile.lname || '',
+            email: profile.email || '',
+            position: profile.position || ''
+        }
+    }
+
     render() {
         const { t } = this.props;
         const { profile } = this.props.Auth;
 
-        const { fname, lname, phoneNumber, psuPassport, email, position } = profile;
+        const { phoneNumber, psuPassport } = profile;
+        const { fname, lname, email, position } = this.state;
 
         const inPSU = psuPassport.length > 0;
         const infoLabel = inPSU ? 'PSU Passport' : 'phoneNumber';
@@ -37,24 +50,28 @@ class Account extends React.Component {
                 <div className='title'><PageTitle msg='account' /></div>
                 <table style={{ width: '100%' }}>
                     <tbody>
-                        <Row title={t(infoLabel)} onClick={() => {Router.replace('/booking')}}>
+                        <Row title={t(infoLabel)} onClick={() => { Router.replace('/booking') }}>
                             <Label>{info}</Label>
                         </Row>
                         <Row title={t('email')}>
-                            <EditableText editable>{email}</EditableText>
+                            <EditableText editable={{ onChange: (val) => this.handleChange('email', val) }}>
+                                {email}
+                            </EditableText>
                         </Row>
                         <Row title={t('firstname')}>
-                            <EditableText editable>{fname}</EditableText>
+                            <EditableText editable={{ onChange: (val) => this.handleChange('fname', val) }}>
+                                {fname}
+                            </EditableText>
                         </Row>
                         <Row title={t('lastname')}>
-                            <EditableText editable>{lname}</EditableText>
+                            <EditableText editable={{ onChange: (val) => this.handleChange('lname', val) }}>
+                                {lname}
+                            </EditableText>
                         </Row>
                         <Row title={t('type')}>
                             <Label>{position}</Label>
                         </Row>
-                        <Row title={t('memberExpires')}>
-                            {this.renderExpiresMember()}
-                        </Row>
+                        {this.renderExpiresMember()}
                     </tbody>
                 </table>
             </StyledWrapper>
@@ -65,16 +82,44 @@ class Account extends React.Component {
         const { t } = this.props;
         const locale = i18n.language || 'en';
         const { profile } = this.props.Auth;
+        const { position } = this.state;
 
-        const position = profile.position || '';
-
-        if (position === 'generalPublic')
-            return <Button>{t('upgrade to member')}</Button>
         if (position === 'member') {
             const endText = moment(profile.memberEnd).locale(locale).format('DD MMM YYYY HH:mm');
-            return <Label>{endText}</Label>
+            return (
+                <Row title={t('memberExpires')}>
+                    <Label>{endText}</Label>
+                </Row>
+            )
         }
-        return <Label>-</Label>
+        return null
+    }
+
+    handleChange = (key, value) => {
+        this.setState({ [key]: value }, async () => {
+            const { t } = this.props;
+            const { idToken, profile } = this.props.Auth;
+            const dto = {
+                userId: profile.userId,
+                ...this.state
+            }
+            const result = await UserService.updateUser(idToken, dto);
+            if (result) {
+                if (result.error) {
+                    notification['error']({
+                        duration: 2,
+                        message: t('error'),
+                        description: t(result.error)
+                    })
+                } else {
+                    notification['success']({
+                        duration: 2,
+                        message: t('success'),
+                        description: t('update user success')
+                    })
+                }
+            }
+        });
     }
 }
 

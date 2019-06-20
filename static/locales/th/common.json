@@ -188,5 +188,7 @@
     "startTime": "เริ่มต้น",
     "endTime": "เสร็จสิ้น",
     "court doesn't exist": "ไม่มีสนามที่เลือก",
-    "stadium doesn't exist": "ไม่มีกีฬาที่เลือก"
+    "stadium doesn't exist": "ไม่มีกีฬาที่เลือก",
+    "account": "บัญชี",
+    "upgrade to member": "อัพเกรดเป็น member"
 }

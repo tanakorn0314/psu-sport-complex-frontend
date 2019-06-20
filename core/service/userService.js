@@ -27,8 +27,19 @@ const toMember = async (accessToken, userId, body) => {
     return await req.send();
 }
 
+const updateUser = async (accessToken, dto) => {
+    const url = `${userApi}`
+
+    const req = new Request(url, 'PATCH');
+    req.setBody(dto);
+    req.setAuth(accessToken);
+
+    return await req.send();
+}
+
 export default {
     getAll,
     getUserByResetToken,
-    toMember
+    toMember,
+    updateUser
 }

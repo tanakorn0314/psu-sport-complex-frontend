@@ -4,6 +4,7 @@ import 'isomorphic-unfetch';
 import redirect from '../helpers/redirect';
 import jwtDecode from 'jwt-decode';
 import BookingAction from '../redux/booking/actions';
+import AuthAction from '../redux/auth/actions';
 import { connect } from 'react-redux';
 
 export default ComposedComponent => {
@@ -14,6 +15,7 @@ export default ComposedComponent => {
             const { token } = pageProps;
 
             await store.dispatch(BookingAction.fetchAllBooking());
+            await store.dispatch(AuthAction.setAuthGuard(true));
 
             if (!token || jwtDecode(token).position !== 'admin') {
                 redirect(ctx, '/');
@@ -30,5 +32,5 @@ export default ComposedComponent => {
             )
         }
     }
-    return connect(state => state, BookingAction)(withDashBoard);
+    return connect(state => state, BookingAction, AuthAction)(withDashBoard);
 }
