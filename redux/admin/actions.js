@@ -56,7 +56,7 @@ const actions = {
         Object.values(bookings).forEach((stadiumBookings) => {
             stadiumBookings.forEach((booking) => {
                 const { ownerName, ownerInfo, ownerPosition, createdAt } = booking;
-                const stadium = stadiums[booking.stadiumId - 1];
+                const stadium = stadiums.find(stadium => stadium.stadiumId === booking.stadiumId);
 
                 const checkStadiumId = stadiumId === 0 || stadiumId === booking.stadiumId;
                 const inStartRange = moment(start).isSameOrBefore(createdAt);
@@ -86,9 +86,10 @@ function createCSV(bookings, stadiums) {
     csvData.push(['No', 'Name', 'PhoneNo / PSUPassport', 'Stadium', 'Play Date', 'time', 'Fee']);
 
     bookings.forEach((booking, index) => {
-        const { ownerName, ownerInfo, startDate, endDate, stadiumId, courtId, fee } = booking;
-        const stadium = stadiums[stadiumId - 1];
+        let { ownerInfo, startDate, endDate, stadiumId, courtId, fee } = booking;
+        const stadium = stadiums.find(s => s.stadiumId === stadiumId);
 
+        const ownerName = booking.ownerName || ''; 
         const userId = ownerInfo;
         const playDate = moment(startDate).parseZone().format('MMMM DD, YYYY');
         const startTime = moment(startDate).parseZone().format('HH:mm');

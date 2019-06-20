@@ -21,7 +21,7 @@ class SelectStadiumAdmin extends React.Component {
             t
         } = this.props;
         const { stadiums } = Stadium;
-        const stadium = stadiums[Admin.stadiumId - 1]
+        const stadium = stadiums.find(s => s.stadiumId === Admin.stadiumId)
         const sName = stadium ? stadium.name : 'all';
 
         return (
@@ -32,10 +32,10 @@ class SelectStadiumAdmin extends React.Component {
                 placeholder={placeholder || 'Select stadium'}
                 value={t(sName)}
             >
-                <Option key={0} value={0}><Label msg='all'/></Option>
+                <Option key={0} value={0}><Label msg='all' /></Option>
                 {stadiums.map((s, index) => {
                     return (
-                        <Option key={index} value={s.stadiumId}><Label msg={s.name}/></Option>
+                        <Option key={index} value={s.stadiumId}><Label msg={s.name} /></Option>
                     )
                 })}
             </Select>

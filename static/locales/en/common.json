@@ -181,6 +181,13 @@
     "transactionComplete": "Validating your payment transaction within 20 minutes.",
     "after validation is success": "After the validation is success, your booking slot will turn red.",
     "<0>pleaseContact <1>fanpage</1> <3>phoneNumber</3></0>": 
-    "<0>If there are any problems, please contact <1>Fanpage</1> or Tel. <3>0864573098</3>.</0>"
-    
+    "<0>If there are any problems, please contact <1>Fanpage</1> or Tel. <3>0864573098</3>.</0>",
+    "news": "News",
+    "summary": "Summary",
+
+    "book": "Book",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "court doesn't exist": "Court doesn't exist",
+    "stadium doesn't exist": "Stadium doesn't exist"
 }

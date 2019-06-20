@@ -1,160 +1,58 @@
 import React from 'react';
-import { DateSelctContainer, TimeSelectContainer } from './style';
-import Select, { SelectOption } from '../select';
-import _ from 'lodash';
+import DatePicker from '../datePicker';
+import SelectTime from '../selectTime';
 import moment from 'moment';
-import { months } from '../../common/text';
 import { i18n, withNamespaces } from '../../i18n';
 
 class InputDateTime extends React.Component {
-
-    constructor(props) {
-        super(props);
-        const {
-            minute,
-            hour,
-            date,
-            month,
-            year
-        } = props;
-
-        this.state = {
-            minute,
-            hour,
-            date,
-            month,
-            year
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.refreshCurrent) {
-            this.changeMinute(moment().minute());
-            this.changeHour(moment().hour());
-            this.changeDate(moment().date());
-            this.changeMonth(moment().month());
-            this.changeYear(moment().year());
-        } else {
-            this.changeMinute(nextProps.minute);
-            this.changeHour(nextProps.hour);
-            this.changeDate(nextProps.date);
-            this.changeMonth(nextProps.month);
-            this.changeYear(nextProps.year);
-        }
-    }
-
     render() {
-        const {
-            minute,
-            hour,
-            date,
-            month,
-            year
-        } = this.state;
         const locale = i18n.language || 'en';
-        const MONTHS = months[locale];
+        const value = this.props.value || moment();
+
+        this.date = value.date();
+        this.month = value.month();
+        this.year = value.year();
+        this.hour = value.hour();
+        this.minute = value.minute();
 
         return (
-            <div style={this.props.style}>
-                <DateSelctContainer style={this.props.dateContainerStyle}>
-                    <Select
-                        value={date}
-                        defaultValue={date}
-                        onChange={this.changeDate}
-                        className='select-day'
-                    >
-                        {_.range(1, 31).map((day) => (
-                            <SelectOption key={day} value={day}>{day}</SelectOption>
-                        ))}
-                    </Select>
-                    <Select
-                        value={month}
-                        defaultValue={month}
-                        onChange={this.changeMonth}
-                        className='select-month'
-                    >
-                        {MONTHS.map((m, index) => (
-                            <SelectOption key={m} value={index} >{m}</SelectOption>
-                        ))}
-                    </Select>
-                    <Select
-                        value={year}
-                        defaultValue={year}
-                        onChange={this.changeYear}
-                        className='select-year'
-                    >
-                        {_.range(1900, parseInt(moment().year()) + 1).map((y) => (
-                            <SelectOption key={y} value={y} >{y}</SelectOption>
-                        ))}
-                    </Select>
-                </DateSelctContainer>
-                <TimeSelectContainer style={this.props.timeContainerStyle}>
-                    <Select
-                        value={hour}
-                        defaultValue={hour}
-                        onChange={this.changeHour}
-                        className='select-hour'
-                    >
-                        {_.range(0, 24).map((h) => (
-                            <SelectOption key={h} value={h}>{h.toString().padStart(2, '0')}</SelectOption>
-                        ))}
-                    </Select>
-                    <h2>:</h2>
-                    <Select
-                        value={minute}
-                        defaultValue={minute}
-                        onChange={this.changeMinute}
-                        className='select-minute'
-                    >
-                        {_.range(0, 60).map((m) => (
-                            <SelectOption key={m} value={m}>{m.toString().padStart(2, '0')}</SelectOption>
-                        ))}
-                    </Select>
-                </TimeSelectContainer>
+            <div>
+                <DatePicker 
+                    style={{marginRight: 10}}
+                    value={value.locale(locale)}
+                    onChange={this.handleChangeDate}
+                    format='DD MMMM YYYY'
+                />
+                <SelectTime 
+                    value={value}
+                    onChange={this.handleChangeTime}
+                />
             </div>
         )
     }
 
-    changeMinute = (value) => {
-        const { minute } = this.state;
-        if (minute === value)  return ;
+    handleChangeDate = (date) => {
+        this.date = date.date();
+        this.month = date.month();
+        this.year = date.year();
 
-        this.setState({ minute: value });
-        this.props.onChange && this.props.onChange('minute', value);
+        this.handleChange();
     }
 
-    changeHour = (value) => {
-        const { hour } = this.state;
-        if (hour === value)  return ;
+    handleChangeTime = (time) => {
+        this.hour = time.hour;
+        this.minute = time.minute;
 
-        this.setState({ hour: value })
-        this.props.onChange && this.props.onChange('hour', value);
+        this.handleChange();
     }
 
-    changeDate = (value) => {
-        const { date } = this.state;
-        if (date === value)  return ;
+    handleChange = () => {
+        const { date, month, year, hour, minute } = this;
 
-        this.setState({ date: value })
-        this.props.onChange && this.props.onChange('date', value);
+        const m = moment().date(date).month(month).year(year).hour(hour).minute(minute).second(0).millisecond(0);
+
+        this.props.onChange && this.props.onChange(m);
     }
-
-    changeMonth = (value) => {
-        const { month } = this.state;
-        if (month === value)  return ;
-        
-        this.setState({ month: value })
-        this.props.onChange && this.props.onChange('month', value);
-    }
-
-    changeYear = (value) => {
-        const { year } = this.state;
-        if (year === value)  return ;
-
-        this.setState({ year: value })
-        this.props.onChange && this.props.onChange('year', value);
-    }
-
 }
 
 export default withNamespaces('common')(InputDateTime);

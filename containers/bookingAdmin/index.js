@@ -1,87 +1,93 @@
 import React from 'react';
+import { Card, notification } from 'antd';
 import { connect } from 'react-redux';
-import PubSub from 'pubsub-js';
 import BookingAction from '../../redux/booking/actions';
-import StyledWrapper from './style';
-import Input from '../../components/input';
-import { Label, H2 } from '../../components/typo';
-import SelectPosition from '../selectPosition';
-import dataHandler from './dataHandler';
-import { notification } from 'antd';
+import { H2 } from '../../components/typo';
 import { withNamespaces } from '../../i18n';
+import _ from 'lodash';
+import Button from '../../components/button';
+import BookingAdminForm from '../bookingAdminForm';
+import moment from 'moment';
+import positions from '../../common/text/position'
 
 class BookingAdmin extends React.Component {
 
-    componentDidMount() {
-        this.token1 = PubSub.subscribe('bookByAdmin', () => { this.bookByAdmin() })
-        this.token2 = PubSub.subscribe('edit')
-    }
+    constructor(props) {
+        super(props);
 
-    componentWillUnmount() {
-        PubSub.unsubscribe(this.token1);
+        this.state = {
+            stadiumId: 1,
+            courtId: 1,
+            startTime: moment().minute(0),
+            endTime: moment().add(1, 'hour').minute(0),
+            ownerName: '',
+            ownerInfo: '',
+            ownerPosition: positions[0]
+        }
     }
 
     render() {
-        const { fee } = this.props.Booking;
         const { t } = this.props;
+
         return (
-            <StyledWrapper>
-                <div style={{ marginBottom: 5, marginTop: 5 }}><Label msg='ownerName'/></div>
-                <Input
-                    style={{ maxWidth: 300 }}
-                    placeholder={`${t('firstname')} ${t('lastname')}`}
-                    name='name'
+            <Card style={this.props.style}>
+                <H2 msg='booking' />
+                <BookingAdminForm
+                    {...this.state}
                     onChange={this.handleChange}
+                    responsive
                 />
-                <div style={{ marginBottom: 5 }}><Label msg='ownerInformation'/></div>
-                <Input
-                    style={{ maxWidth: 300 }}
-                    placeholder='xxxxxxxxxxx'
-                    name='info'
-                    onChange={this.handleChange}
-                />
-                <div style={{ marginBottom: 5 }}><Label msg='ownerType'/></div>
-                <SelectPosition style={{ marginBottom: 5} }/>
-                <H2>{t('serviceFee')} : {fee} {t('baht')}</H2>
-            </StyledWrapper>
+                <Button type='primary' onClick={this.bookByAdmin}>{t('book')}</Button>
+            </Card>
         )
-    }
-
-    handleChange = e => {
-        const { owner } = this.props.Booking;
-        const { name, value } = e.target;
-
-        owner[name] = value;
-
-        this.props.setOwner(owner);
     }
 
     bookByAdmin = async () => {
         const { t } = this.props;
-        const { bookingList, stadiumId, selectedDate, owner } = this.props.Booking;
         const { idToken, profile } = this.props.Auth;
+        const { stadiumId, courtId, startTime, endTime, ownerName, ownerInfo, ownerPosition } = this.state;
 
-        const bookAdminDTO = dataHandler.toBookingDTO(bookingList, profile.userId, owner, stadiumId, selectedDate);
+        const bookByAdminDTO = [{
+            title: '',
+            description: '',
+            userId: profile.userId,
+            ownerName,
+            ownerInfo,
+            ownerPosition,
+            stadiumId,
+            courtId: courtId,
+            startDate: moment(startTime).format(),
+            endDate: moment(endTime).format()
+        }]
 
-        const result = await this.props.reserveByAdmin(idToken, bookAdminDTO);
+        const result = await this.props.reserveByAdmin(idToken, bookByAdminDTO);
 
-        if (result && !result.error) {
-            notification['success']({
-                title: t('success'),
-                message: t('bookingSuccess'),
-                duration: 3
-            });
+        if (result) {
+            if (result.error) {
+                notification['error']({
+                    title: t('error'),
+                    message: t(result.error),
+                    duration: 3
+                });
+            } else {
+                notification['success']({
+                    title: t('success'),
+                    message: t('bookingSuccess'),
+                    duration: 3
+                });
+            }
 
-            this.hideModal();
-        } 
+        }
 
-        PubSub.publish('done');
     }
 
-    hideModal = () => {
-        PubSub.publish('hideModal');
+    handleChange = (key, value) => {
+        this.setState({ [key]: value });
     }
 
 }
 
-export default connect(state => state, BookingAction)(withNamespaces('common')(BookingAdmin));
+export default connect(
+    state => state,
+    BookingAction
+)(withNamespaces('common')(BookingAdmin))

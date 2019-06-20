@@ -43,7 +43,7 @@ class BookingSlot extends React.Component {
             <>
                 <P msg={label} />
                 <P msg='by' />
-                {bookingData && <P msg={bookingData.ownerName} />}
+                {bookingData && <P msg={bookingData.ownerName} noTranslate/>}
             </>
         )
     }

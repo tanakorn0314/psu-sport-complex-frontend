@@ -12,6 +12,9 @@ export default ComposedComponent => {
             if (Array.isArray(propsText))
                 propsText = propsText.join('');
 
+            if (!propsText)
+                propsText = '';
+
             let display;
             if (noTranslate || propsText.includes(' '))
                 display = propsText;

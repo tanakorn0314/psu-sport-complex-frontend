@@ -6,7 +6,7 @@ import Button from '../../components/button';
 
 import AuthTabs from '../../containers/authTabs';
 import ConfirmBooking from '../../containers/confirmBooking';
-import BookByAdmin from '../../containers/bookingAdmin';
+import BookByAdmin from '../../containers/bookingAdminMD';
 import EditBooking from '../../containers/editBooking';
 import ConfirmMember from '../../containers/confirmMember';
 import BlackoutDetail from '../../components/blackoutDetail';

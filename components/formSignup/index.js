@@ -5,7 +5,7 @@ import {
  } from 'antd';
 import Button from '../button';
 import { Form } from 'antd';
-import InputDate from '../inputDate';
+import SelectDate from '../selectDate';
 import StyledForm from './style';
 import { Label } from '../typo';
 import { withNamespaces } from '../../i18n';
@@ -84,7 +84,7 @@ class SignUpForm extends React.Component {
                     required
                     message={<Label>{t('pleaseInputYour')} {t('dateOfBirth')}</Label>}
                     getFieldDecorator={getFieldDecorator}
-                    component={<InputDate />}
+                    component={<SelectDate />}
                 />
                 <Form.Item
                     label={<Label msg='email'/>}

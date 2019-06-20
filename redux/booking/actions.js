@@ -72,7 +72,7 @@ const actions = {
     const { stadiumId, selectedBooking: prevBookings, owner } = getState().Booking;
     const { stadiums } = getState().Stadium;
 
-    const stadium = stadiums[stadiumId - 1];
+    const stadium = stadiums.find(s => s.stadiumId === stadiumId);
     const currentBookings = helper.handleSelect(prevBookings, data);
     const bookingList = helper.manageBookingList(currentBookings);
     const fee = helper.calculateBookingsFee(owner.position, bookingList, stadium);
@@ -106,7 +106,7 @@ const actions = {
     const { stadiumId, bookingList, owner: o } = getState().Booking;
     const { stadiums } = getState().Stadium;
 
-    const stadium = stadiums[stadiumId - 1];
+    const stadium = stadiums.find(s => s.stadiumId === stadiumId);
 
     const fee = helper.calculateBookingsFee(position, bookingList, stadium);
     const owner = { ...o, position };

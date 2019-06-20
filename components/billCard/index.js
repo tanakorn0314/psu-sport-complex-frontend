@@ -109,7 +109,7 @@ class BillCard extends React.Component {
     navigateBooking = item => {
         const { stadiums } = this.props.Stadium;
         const date = moment(item.startDate).format('DD-MM-YYYY');
-        const sport = stadiums[item.stadiumId - 1].name;
+        const sport = stadiums.find(s => s.stadiumId === item.stadiumId).name;
 
         const params = `?sport=${sport}&date=${date}`;
 

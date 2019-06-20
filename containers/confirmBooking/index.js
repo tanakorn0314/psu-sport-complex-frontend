@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledWrapper from './style';
 import CountDown from '../../components/countDown';
-import InputDateTime from '../../components/inputDateTime';
+import SelectDateTime from '../../components/selectDateTime';
 import Input from '../../components/input';
 import { connect } from 'react-redux';
 import BookingAction from '../../redux/booking/actions';
@@ -96,7 +96,7 @@ class ConfirmBooking extends React.Component {
                     defaultValue={fee}
                 />
                 <div style={{ marginBottom: 5 }}><Label msg='transferTime' /></div>
-                <InputDateTime
+                <SelectDateTime
                     minute={minute}
                     hour={hour}
                     date={date}

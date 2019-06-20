@@ -21,7 +21,7 @@ class SelectStadium extends React.Component {
             t
         } = this.props;
         const { stadiums } = Stadium;
-        const stadium = stadiums[Booking.stadiumId - 1]
+        const stadium = stadiums.find(s => s.stadiumId === Booking.stadiumId)
         const sName = stadium.name;
         return (
             <Select

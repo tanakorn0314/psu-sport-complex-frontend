@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import fonts from '../../styles/fonts';
 
 const StyledWrapper = styled.div`
     display: flex;

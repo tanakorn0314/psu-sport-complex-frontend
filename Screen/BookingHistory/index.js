@@ -63,7 +63,7 @@ class BookingHistory extends React.Component {
                             bookingTime: moment(bill.createdAt),
                             bookings: bill.bookings,
                             balance: bill.fee,
-                            sport: stadiums[bill.bookings[0].stadiumId - 1].name
+                            sport: stadiums.find(s => s.stadiumId === bill.bookings[0].stadiumId).name
                         }
 
                         return (

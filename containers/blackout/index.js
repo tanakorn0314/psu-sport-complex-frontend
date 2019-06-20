@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Row, Col, Card } from 'antd';
 import OperatioTimeAction from '../../redux/operationTime/actions';
-import InputDateTime from '../../components/inputDateTime';
+import SelectDateTime from '../../components/selectDateTime';
 import Button from '../../components/button';
 import Input from '../../components/input';
 import TextArea from '../../components/textArea';
@@ -47,7 +47,7 @@ class Blackout extends React.Component {
                     <H2 msg='addBlackout' />
                     <Col sm={24} md={24} lg={24} xl={12}>
                         <Label htmlFor='startDate' msg='startDate' />
-                        <InputDateTime
+                        <SelectDateTime
                             id='startDate'
                             style={{ display: 'flex' }}
                             dateContainerStyle={{ display: 'flex', flex: 1, marginRight: 10 }}
@@ -59,7 +59,7 @@ class Blackout extends React.Component {
                             onChange={this.handleStartChange}
                         />
                         <Label htmlFor='endDate' msg='endDate' />
-                        <InputDateTime
+                        <SelectDateTime
                             id='endDate'
                             style={{ display: 'flex' }}
                             dateContainerStyle={{ display: 'flex', flex: 1, marginRight: 10 }}

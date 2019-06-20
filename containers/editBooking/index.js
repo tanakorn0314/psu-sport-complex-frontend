@@ -58,7 +58,6 @@ class EditBookingTime extends React.Component {
         const { stadiumId, courtId } = this.props.booking;
         const { startTime, endTime, date } = this.state;
 
-        const stadiumName = `${stadiums[stadiumId].name} Court ${courtId}`;
         const currentDateStr = `${startTime.locale(locale).format('DD MMMM YYYY HH:mm')} - ${endTime.format('HH:mm')}`;
 
         return (

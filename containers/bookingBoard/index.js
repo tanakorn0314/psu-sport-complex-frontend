@@ -54,7 +54,7 @@ class BookingComponent extends React.Component {
         const { stadiumId } = this.props.Booking;
         const { stadiums } = this.props.Stadium;
 
-        const stadium = stadiums[stadiumId - 1];
+        const stadium = stadiums.find(s => s.stadiumId === stadiumId);
 
         const operationTime = dataHandler.trimOperationTime(opTime, stadium);
         const len = operationTime.length;

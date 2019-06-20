@@ -52,7 +52,11 @@ class DashboardLayout extends React.Component {
                                 >
                                     <Menu.Item key="booking" onClick={this.navigate}>
                                         <Icon type='read' />
-                                        <TextMenuItem msg='bookingSummary' />
+                                        <TextMenuItem msg='booking' />
+                                    </Menu.Item>
+                                    <Menu.Item key="summary" onClick={this.navigate}>
+                                        <Icon type='area-chart' />
+                                        <TextMenuItem msg='summary' />
                                     </Menu.Item>
                                     <Menu.Item key="user" onClick={this.navigate}>
                                         <Icon type='user' />

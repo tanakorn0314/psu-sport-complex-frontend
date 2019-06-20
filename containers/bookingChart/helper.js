@@ -2,13 +2,12 @@ import _ from 'lodash';
 import moment from 'moment';
 
 const getSportIncome = (displayBookings, stadiums) => {
-    const incomes = [];
-    for (let idx in stadiums)
-        incomes[idx] = 0;
+    const incomes = stadiums.map(() => 0);
 
     displayBookings.forEach((booking) => {
         const { stadiumId } = booking;
-        incomes[stadiumId - 1] += booking.fee;
+        const idx = stadiums.findIndex(s => s.stadiumId === stadiumId)
+        incomes[idx] += booking.fee;
     });
 
     return incomes;

@@ -54,7 +54,7 @@ class BookingList extends React.Component {
         const data = displayBookings.map((booking, index) => {
                 const { stadiums } = this.props.Stadium;
                 const { ownerName, ownerInfo, stadiumId, courtId, startDate, endDate } = booking;
-                const stadium = stadiums[stadiumId - 1];
+                const stadium = stadiums.find(s => s.stadiumId === stadiumId);
                 const userId = ownerInfo;
 
                 const mStart = moment(startDate);

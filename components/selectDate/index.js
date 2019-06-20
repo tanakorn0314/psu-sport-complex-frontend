@@ -3,13 +3,13 @@ import StyledWarpper from './style';
 import { Select } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
-import { months } from '../../common/text/';
+import { months } from '../../common/text';
 import { Label } from '../typo';
 import { withNamespaces, i18n } from '../../i18n';
 
 const SelectOption = Select.Option;
 
-class InputDate extends React.Component {
+class SelectDate extends React.Component {
 
     constructor(props) {
         super(props);
@@ -102,4 +102,4 @@ class InputDate extends React.Component {
     }
 }
 
-export default withNamespaces('common')(InputDate);
+export default withNamespaces('common')(SelectDate);
