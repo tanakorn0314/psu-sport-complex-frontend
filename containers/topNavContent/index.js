@@ -134,6 +134,7 @@ class TopNavContent extends React.Component {
 
     renderAccountMenuItems = () => [
         <MenuItem key='booking_history' name='booking_history'><Link href='/booking_history'><TextMenuItem msg='bookingHistory' /></Link></MenuItem>,
+        <MenuItem key='account' name='account'><Link href='/account'><TextMenuItem msg='account' /></Link></MenuItem>,
         <MenuItem key='logout' name='logout' noHighlight><TextMenuItem msg='logout' onClick={this.handleLogout} /></MenuItem>
     ]
 

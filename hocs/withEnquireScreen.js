@@ -30,7 +30,10 @@ export default ComposedComponent => {
         }
 
         componentWillUnmount() {
-            enquire.unregister(`screen and (max-width:575px)`)
+            enquire.unregister(`screen and (max-width:575px)`);
+
+            window.removeEventListener('scroll', () => { });
+
         }
 
         render() {

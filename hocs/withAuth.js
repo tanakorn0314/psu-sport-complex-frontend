@@ -31,6 +31,8 @@ export default ComposedComponent => {
                 }
             }
 
+            store.dispatch(AuthAction.setAuthGuard(false));
+
             return pageProps;
         }
 

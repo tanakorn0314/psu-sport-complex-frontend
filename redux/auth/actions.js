@@ -2,10 +2,12 @@ import auth from './helper';
 import { setToken, removeToken, setExpires, removeExpires } from '../../helpers/token';
 import authService from '../../core/service/authService';
 import BookingAction from '../booking/actions';
+import { Router } from '../../i18n';
 
 const actions = {
   LOGOUT: 'LOGOUT',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+  SET_AUTH_GUARD: 'SET_AUTH_GUARD',
   login: (userInfo) => async (dispatch) => {
     const result = await auth.login(userInfo);
     if (result && !result.error) {
@@ -29,8 +31,10 @@ const actions = {
     return result;
   },
   logout: () => async (dispatch, getState) => {
-    const { idToken } = getState().Auth;
+    const { idToken, authGuard } = getState().Auth;
     const result = await authService.signout(idToken);
+    if (authGuard)
+      await Router.replace('/booking');
     if (result && !result.error) {
       dispatch({ type: actions.LOGOUT });
       removeToken();
@@ -51,6 +55,9 @@ const actions = {
       return { error: 'Password required' };
     const result = await authService.resetPassword(token, password);
     return result;
+  },
+  setAuthGuard: (authGuard) => (dispatch) => {
+    dispatch({ type: actions.SET_AUTH_GUARD, authGuard });
   }
 };
 export default actions;

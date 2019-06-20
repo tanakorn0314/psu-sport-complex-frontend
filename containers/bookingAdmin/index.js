@@ -37,7 +37,7 @@ class BookingAdmin extends React.Component {
                     onChange={this.handleChange}
                     responsive
                 />
-                <Button type='primary' onClick={this.bookByAdmin}>{t('book')}</Button>
+                <Button type='primary' onClick={this.bookByAdmin} msg='book'/>
             </Card>
         )
     }
