@@ -43,13 +43,15 @@ export class Menu extends React.Component {
         const { mode } = this.props;
         const { selectedKey } = this.state;
         const selected = child.props.name === selectedKey;
-        return <MenuItem {...child.props} key={idx} mode={mode} onClick={this.handleSelect} selected={selected} />
+        const callback = child.props.onClick;
+        return <MenuItem {...child.props} key={idx} mode={mode} onClick={(name) => {this.handleSelect(name, callback)}} selected={selected} />
     }
 
-    handleSelect = (name) => {
+    handleSelect = (name, callback) => {
         this.setState({ selectedKey: name });
 
         this.props.onChange && this.props.onChange(name);
+        callback && callback();
     }
 
 }

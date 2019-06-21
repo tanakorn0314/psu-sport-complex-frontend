@@ -6,7 +6,6 @@ import StyleLayout, {
 } from './style';
 import TopNavContent from '../../containers/topNavContent';
 import { P } from '../../components/typo';
-import SelectLanguage from '../../containers/selectLanguage';
 
 class NavLayout extends React.Component {
 
@@ -22,9 +21,6 @@ class NavLayout extends React.Component {
                 {!this.props.noFooter && 
                     <Footer>
                         <P msg='footer' light={true}/>
-                        <div className='option-bar'>
-                            <SelectLanguage/>
-                        </div>
                     </Footer>
                 }
             </StyleLayout>

@@ -14,6 +14,8 @@ import {
     Icon
 } from 'antd';
 import Button from '../../components/button';
+import ChangeLanguage from '../../components/changeLanguage';
+import { i18n } from '../../i18n';
 
 class TopNavContent extends React.Component {
 
@@ -79,10 +81,11 @@ class TopNavContent extends React.Component {
 
         return (
             <Menu selectedKey={this.state.current} mode={menuMode}>
+                {!isMobile && <MenuItem onClick={this.switchLang}><ChangeLanguage changeByParent/></MenuItem>}
                 {profile && profile.position === 'admin' &&
-                    <MenuItem name='dashboard'><Link href='/dashboard/booking'><TextMenuItem msg='admin'/></Link></MenuItem>},
-                    <MenuItem name='booking'><Link href='/booking'><TextMenuItem msg='booking'/></Link></MenuItem>,
-                    {this.renderAccountMenu()}
+                    <MenuItem name='dashboard'><Link href='/dashboard/booking'><TextMenuItem msg='admin' /></Link></MenuItem>}
+                <MenuItem name='booking'><Link href='/booking'><TextMenuItem msg='booking' /></Link></MenuItem>
+                {this.renderAccountMenu()}
             </Menu>
         )
     }
@@ -135,6 +138,7 @@ class TopNavContent extends React.Component {
     renderAccountMenuItems = () => [
         <MenuItem key='booking_history' name='booking_history'><Link href='/booking_history'><TextMenuItem msg='bookingHistory' /></Link></MenuItem>,
         <MenuItem key='account' name='account'><Link href='/account'><TextMenuItem msg='account' /></Link></MenuItem>,
+        this.props.Screen.isMobile && <MenuItem key='changeLanguage' onClick={this.switchLang}><ChangeLanguage changeByParent/></MenuItem>,
         <MenuItem key='logout' name='logout' noHighlight><TextMenuItem msg='logout' onClick={this.handleLogout} /></MenuItem>
     ]
 
@@ -158,6 +162,12 @@ class TopNavContent extends React.Component {
         this.props.logout();
     }
 
+    switchLang = () => {
+        const locale = i18n.language;
+        const nextLanguage = locale === 'en' ? 'th' : 'en';
+        i18n.changeLanguage(nextLanguage);
+        this.setState({ showMenu: false });
+    }
 }
 
 export default connect(
