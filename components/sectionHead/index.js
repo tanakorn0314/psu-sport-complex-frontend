@@ -1,25 +1,32 @@
 import React from 'react';
-import Banner1 from './banner1';
-import Banner2 from './banner2';
-import Banner3 from './banner3';
-import { Carousel } from 'antd';
-
-const contents = [
-    <Banner1 key={0}/>,
-    <Banner2 key={1}/>,
-    <Banner3 key={2}/>
-]
+import { withNamespaces } from '../../i18n';
+import BookingBanner from '../bookingBanner';
+import imgTop from '../../static/image/stadium/complex-topview.jpg';
+import {
+  BannerContainer,
+  BannerContent,
+  Img,
+  ContentBox,
+  Title
+} from './style';
 
 class SectionHead extends React.Component {
 
   render() {
+    const { t } = this.props;
     return (
-        <Carousel autoplay>
-          {contents}
-        </Carousel>
+      <BannerContainer>
+        <Img src={imgTop} />
+        <BannerContent>
+          <ContentBox>
+            <Title>Sport Complex PSU Phuket</Title>
+            <BookingBanner/>
+          </ContentBox>
+        </BannerContent>
+      </BannerContainer>
     )
   }
 
 }
 
-export default SectionHead;
+export default withNamespaces('common')(SectionHead);

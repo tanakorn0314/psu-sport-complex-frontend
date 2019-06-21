@@ -2,26 +2,33 @@ import React from 'react';
 import { Label } from '../typo';
 import Select, { SelectOption } from '../select';
 import { withNamespaces } from '../../i18n';
+import { connect } from 'react-redux';
 
 class SelectStadium extends React.Component {
     render() {
-        const { t } = this.props;
+        let { t, onlyBookEnable, hideLabel, stadiums } = this.props;
         const defaultValue = this.props.defaultValue || 1;
-        const stadiums = this.props.stadiums || [];
+
+        if (onlyBookEnable)
+            stadiums = stadiums.filter(s => s.canBook)
 
         return (
             <div style={this.props.style} className={this.props.className}>
-                <div style={{ marginBottom: 3 }}>
-                    <Label htmlFor='sport' msg='sport' />
-                </div>
+                {
+                    !hideLabel && (
+                        <div style={{ marginBottom: 3 }}>
+                            <Label htmlFor='sport' msg='sport' />
+                        </div>
+                    )
+                }
                 <Select id='sport'
-                    style={{width: '100%', marginRight: 20}}
+                    style={{ width: '100%', marginRight: 20 }}
                     defaultValue={defaultValue}
                     onChange={this.handleChange}
                 >
                     {
                         stadiums.map((stadium, idx) => (
-                            <SelectOption key={idx} value={idx}>{t(stadium.name)}</SelectOption>
+                            <SelectOption key={idx} value={stadium.stadiumId}>{t(stadium.name)}</SelectOption>
                         ))
                     }
                 </Select>
@@ -34,4 +41,4 @@ class SelectStadium extends React.Component {
     }
 }
 
-export default withNamespaces('common')(SelectStadium);
+export default connect(state => state.Stadium)(withNamespaces('common')(SelectStadium));

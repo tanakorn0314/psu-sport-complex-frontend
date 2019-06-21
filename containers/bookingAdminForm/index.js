@@ -22,15 +22,16 @@ class BookingAdminForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            stadiumIndex: 0
+            stadiumId: 1
         }
     }
 
     render() {
         let { t, responsive, Stadium, startTime, endTime, courtId } = this.props;
+        const { stadiumId } = this.state;
 
         const { stadiums } = Stadium;
-        const selectedStadium = stadiums[this.state.stadiumIndex];
+        const selectedStadium = stadiums.find(s => s.stadiumId === stadiumId)
 
         const lg = responsive ? 12 : 24;
 
@@ -88,16 +89,16 @@ class BookingAdminForm extends React.Component {
         )
     }
 
-    handleSelectStadium = (stadiumIndex) => {
+    handleSelectStadium = (stadiumId) => {
         const { courtId } = this.props;
         const { stadiums } = this.props.Stadium;
-        const selectStadium = stadiums[stadiumIndex];
+        const selectedStadium = stadiums.find(s => s.stadiumId === stadiumId)
 
-        this.setState({ stadiumIndex });
-        this.handleChange('stadiumId', selectStadium.stadiumId);
+        this.setState({ stadiumId });
+        this.handleChange('stadiumId', stadiumId);
 
-        if (selectStadium.numCourt <= courtId)
-            this.handleChange('courtId', selectStadium.numCourt);
+        if (selectedStadium.numCourt <= courtId)
+            this.handleChange('courtId', selectedStadium.numCourt);
     }
 
     handleChange = (key, value) => {

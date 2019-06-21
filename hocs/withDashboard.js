@@ -32,5 +32,5 @@ export default ComposedComponent => {
             )
         }
     }
-    return connect(state => state, BookingAction, AuthAction)(withDashBoard);
+    return connect(state => state, { ...BookingAction, ...AuthAction })(withDashBoard);
 }
