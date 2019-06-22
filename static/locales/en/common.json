@@ -191,5 +191,7 @@
     "court doesn't exist": "Court doesn't exist",
     "stadium doesn't exist": "Stadium doesn't exist",
     "account": "Account",
-    "upgrade to member": "Upgrade to member"
+    "upgrade to member": "Upgrade to member",
+    "noStadium": "No Stadium",
+    "update user success": "Your account is updated"
 }

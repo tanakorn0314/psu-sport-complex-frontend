@@ -22,7 +22,7 @@ class SelectStadium extends React.Component {
         } = this.props;
         const { stadiums } = Stadium;
         const stadium = stadiums.find(s => s.stadiumId === Booking.stadiumId)
-        const sName = stadium.name;
+        const sName = stadium ? stadium.name : t('noStadium');
         return (
             <Select
                 name={name || 'stadium'}

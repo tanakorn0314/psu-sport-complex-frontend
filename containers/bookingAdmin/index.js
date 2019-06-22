@@ -48,8 +48,6 @@ class BookingAdmin extends React.Component {
         const { stadiumId, courtId, startTime, endTime, ownerName, ownerInfo, ownerPosition } = this.state;
 
         const bookByAdminDTO = [{
-            title: '',
-            description: '',
             userId: profile.userId,
             ownerName,
             ownerInfo,

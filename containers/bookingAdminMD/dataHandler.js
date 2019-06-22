@@ -8,8 +8,6 @@ function toBookingDTO(bookingList, userId, owner, stadiumId, date) {
         const endDate = convertDate(date, end);
 
         const bookingInfo = {
-            title: '',
-            description: '',
             userId,
             ownerName: owner.name,
             ownerInfo: owner.info,

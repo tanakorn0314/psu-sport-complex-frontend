@@ -190,5 +190,7 @@
     "court doesn't exist": "ไม่มีสนามที่เลือก",
     "stadium doesn't exist": "ไม่มีกีฬาที่เลือก",
     "account": "บัญชี",
-    "upgrade to member": "อัพเกรดเป็น member"
+    "upgrade to member": "อัพเกรดเป็น member",
+    "noStadium": "ไม่พบสนาม",
+    "update user success": "แก้ไขข้อมูลบัญชีสำเร็จ"
 }

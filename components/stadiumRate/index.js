@@ -6,10 +6,10 @@ import { H3 } from '../typo';
 import { withNamespaces, Link } from '../../i18n';
 
 import tennis from '../../static/image/stadium/tennis.jpg';
-import tableTennis from '../../static/image/stadium/fitness.jpg';
-import volleyball from '../../static/image/stadium/fitness.jpg';
-import badminton from '../../static/image/stadium/fitness.jpg';
-import basketball from '../../static/image/stadium/fitness.jpg';
+import tableTennis from '../../static/image/stadium/pingpong.jpg';
+import volleyball from '../../static/image/stadium/basketball.jpg';
+import badminton from '../../static/image/stadium/badminton.jpg';
+import basketball from '../../static/image/stadium/basketball.jpg';
 import football from '../../static/image/stadium/football.jpg';
 import swimming from '../../static/image/stadium/swimming.jpg';
 import fitness from '../../static/image/stadium/fitness.jpg';

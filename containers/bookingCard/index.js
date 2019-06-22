@@ -80,7 +80,7 @@ class BookingCard extends React.Component {
 
     handleEdit = (data) => {
         const { profile } = this.props.Auth;
-        if ((profile.userId === data.userId) || (profile.position === 'admin')) {
+        if (profile.position === 'admin') {
             const { bills } = this.props.Bill;
             const bill = bills.find((b) => b.billId === data.billId);
             const booking = bill.bookings.find((b) => b.bookingId === data.bookingId);

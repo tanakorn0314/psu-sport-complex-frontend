@@ -11,4 +11,4 @@ export default styled(Select)`
     }
 `
 
-export const SelectOption = Select.Option;
+export const SelectOption = Select.Option

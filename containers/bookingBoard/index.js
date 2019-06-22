@@ -9,12 +9,28 @@ import { H2 } from '../../components/typo';
 import { withNamespaces } from '../../i18n';
 import BookingAction from '../../redux/booking/actions';
 
-class BookingComponent extends React.Component {
+class BookingBoard extends React.Component {
 
     render() {
         const { t } = this.props;
-        const { stadiumBooking, selectedDate } = this.props.Booking;
+        const { stadiumId, stadiumBooking, selectedDate } = this.props.Booking;
         const { operationTimes, blackoutSeries } = this.props.OperationTime;
+        const { stadiums } = this.props.Stadium;
+
+        const stadium = stadiums.find(s => s.stadiumId === stadiumId);
+
+        if (!stadium) {
+            return <Card style={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '50vh',
+                borderRadius: 5
+            }}>
+                <H2>{t('noStadium')}</H2>
+            </Card>
+        }
 
         const operationTime = dataHandler.generateTimeIndex(selectedDate, operationTimes);
         if (!operationTime) {
@@ -47,15 +63,10 @@ class BookingComponent extends React.Component {
         }
 
         const bookingData = dataHandler.seperateDataByStartTime(stadiumBooking, selectedDate);
-        return this.renderCards(bookingData, operationTime)
+        return this.renderCards(bookingData, operationTime, stadium)
     }
 
-    renderCards(bookingData, opTime) {
-        const { stadiumId } = this.props.Booking;
-        const { stadiums } = this.props.Stadium;
-
-        const stadium = stadiums.find(s => s.stadiumId === stadiumId);
-
+    renderCards(bookingData, opTime, stadium) {
         const operationTime = dataHandler.trimOperationTime(opTime, stadium);
         const len = operationTime.length;
         
@@ -75,4 +86,4 @@ class BookingComponent extends React.Component {
     }
 }
 
-export default connect(state => state, BookingAction)(withNamespaces('common')(BookingComponent));
+export default connect(state => state, BookingAction)(withNamespaces('common')(BookingBoard));

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Row, List } from 'antd';
+import { Row, List, Icon } from 'antd';
+import colors from '../../styles/colors';
 
 export const StyledRow = styled(Row)`
     padding-right: 12px;
@@ -7,20 +8,16 @@ export const StyledRow = styled(Row)`
         height: 100%;
     }
     .basic-detail {
-        border-right: solid 1px #cecece;
         h4 {
             margin: 0;
         }
-        &:last-child {
-            border-right: none;
-        }
-        @media (max-width: 575px) {
-            border-right: none;
-            border-top: solid 1px #cecece;
-            padding-bottom: 3px;
+        border-top: solid 1px #cecece;
+        padding-bottom: 3px;
             &:first-child {
                 border-top: none;
             }
+        @media(min-width: 768px) {
+            border: none;
         }
     }
     .fee-detail {
@@ -54,4 +51,12 @@ export const StyledList = styled(List)`
     ul.ant-list-items {
         padding-left: 0;
     }
+`
+
+export const ViewButton = styled(Icon)`
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: ${colors.main1};
+    font-size: 16px;
 `

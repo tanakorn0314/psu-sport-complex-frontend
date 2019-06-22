@@ -28,7 +28,7 @@ class SelectStadium extends React.Component {
                 >
                     {
                         stadiums.map((stadium, idx) => (
-                            <SelectOption key={idx} value={stadium.stadiumId}>{t(stadium.name)}</SelectOption>
+                            <SelectOption key={idx} value={stadium.stadiumId}><Label msg={stadium.name}/></SelectOption>
                         ))
                     }
                 </Select>
