@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { BannerTitle } from '../typo';
 
 export const Img = styled.img`
-    width: 100vw;
+    width: 100%;
     height: calc(100vw * 0.4);
 `
 
