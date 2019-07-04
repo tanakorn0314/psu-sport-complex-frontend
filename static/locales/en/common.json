@@ -202,5 +202,6 @@
     "paymentSlip": "Payment Slip",
     "approve": "Approve",
     "approveSuccess": "Approve bill successful",
-    "billingList": "Billing List"
+    "billingList": "Billing List",
+    "uploadYourPaymentSlip": "Please upload your payment slip"
 }

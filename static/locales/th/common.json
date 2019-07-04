@@ -201,5 +201,6 @@
     "paymentSlip": "ใบเสร็จการชำระเงิน",
     "approve": "อนุมัติ",
     "approveSuccess": "อนุมัติการชำระสำเร็จ",
-    "billingList": "รายการชำระเงิน"
+    "billingList": "รายการชำระเงิน",
+    "uploadYourPaymentSlip": "กรุณาอัพโหลดสลิปการชำระเงิน"
 }
