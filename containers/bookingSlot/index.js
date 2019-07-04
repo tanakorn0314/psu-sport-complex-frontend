@@ -43,7 +43,7 @@ class BookingSlot extends React.Component {
             <>
                 <P msg={label} />
                 <P msg='by' />
-                {bookingData && <P msg={bookingData.ownerName} noTranslate/>}
+                {bookingData && <P msg={bookingData.ownerName} noTranslate />}
             </>
         )
     }
@@ -63,7 +63,7 @@ class BookingSlot extends React.Component {
             selected
         } = props.dataSource;
 
-        const isApproved = bookingData && bookingData.status === 'approved';
+        const isApproved = bookingData && (bookingData.status === 'approved' || bookingData.status === 'paid');
         if (isApproved) return SLOT_STATES.APPROVED;
 
         const isBooked = !!bookingData;

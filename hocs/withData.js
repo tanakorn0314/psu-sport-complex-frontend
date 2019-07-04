@@ -66,9 +66,9 @@ export default ComposedComponent => {
                 await this.props.callbackDelete(bookings);
                 this.props.callbackAdmin();
             });
-            this.socket.on('bookingApproved', async (bill) => {
+            this.socket.on('bookingConfirmed', async (bill) => {
                 if (bill.userId === this.props.Auth.profile.userId)
-                    PubSub.publish('bookingApproved');
+                    PubSub.publish('bookingConfirmed');
             });
             this.socket.on('bookingRejected', async (bill) => {
                 if (bill.userId === this.props.Auth.profile.userId)
@@ -81,7 +81,7 @@ export default ComposedComponent => {
             this.socket.off('createBookings');
             this.socket.off('updateBookings');
             this.socket.off('deleteBookings');
-            this.socket.off('bookingApproved');
+            this.socket.off('bookingConfirmed');
             this.socket.off('bookingRejected');
             this.socket.close();
         }

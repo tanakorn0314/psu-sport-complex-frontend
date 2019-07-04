@@ -1,10 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 
 export default class Request {
-    url;
-    method;
-    body;
-    auth;
 
     constructor(url, method = 'GET') {
         this.url = url;
@@ -23,6 +19,10 @@ export default class Request {
         this.auth = 'bearer ' + token
     }
 
+    setContentType = (contentType) => {
+        this.contentType = contentType;
+    }
+
     setPaginator = (start, count) => {
         const hasParams = this.url.includes('?');
         const sym = hasParams ? '&' : '?';
@@ -31,13 +31,13 @@ export default class Request {
     }
 
     createHeaders = () => {
-        const { auth, body } = this;
+        const { auth, body, contentType } = this;
         const headers = {};
 
         if (auth)
             headers['Authorization'] = auth;
         if (body)
-            headers['Content-type'] = 'application/json';
+            headers['Content-type'] = contentType ? contentType : 'application/json';
 
         if (Object.values(headers).length <= 0)
             return false;

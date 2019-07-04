@@ -4,27 +4,25 @@ import CountDown from '../../components/countDown';
 import SelectDateTime from '../../components/selectDateTime';
 import Input from '../../components/input';
 import { connect } from 'react-redux';
+import BillAction from '../../redux/bill/actions';
 import BookingAction from '../../redux/booking/actions';
 import moment from 'moment';
 import PubSub from 'pubsub-js';
 import { H2, Text, Label } from '../../components/typo';
 import { withNamespaces } from '../../i18n';
-import dataHandler from './dataHandler';
-import { notification, Typography } from 'antd';
+import { notification, Typography, Divider } from 'antd';
+import UploadImage from '../../components/uploadImage';
+import { newsApi } from '../../core/api';
+
+const uploadApi = `${newsApi}/upload`;
 
 class ConfirmBooking extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            account: '',
             billId: props.dataSource.billId,
-            deposit: props.dataSource.fee,
-            minute: moment().minute(),
-            hour: moment().hour(),
-            date: moment().date(),
-            month: moment().month(),
-            year: moment().year(),
+            slipUrl: ''
         }
     }
 
@@ -65,7 +63,6 @@ class ConfirmBooking extends React.Component {
     }
 
     render() {
-        const { minute, hour, date, month, year, account, deposit } = this.state;
         const { dataSource, t } = this.props;
         const { expiresAt, fee } = dataSource;
 
@@ -76,54 +73,17 @@ class ConfirmBooking extends React.Component {
                 <H2 msg='pleasePayTo' style={{ marginTop: 10 }} />
                 <Typography.Text copyable={{ text: accountNoDash }} >{t('scbAccount')}</Typography.Text>
                 <Text msg='scbAccountName' />
-                <H2>{t('serviceFee')} : {fee} {t('baht')}</H2>
                 <CountDown expiresAt={expiresAt} onTimeout={this.cancelBooking} />
-                <div style={{ marginBottom: 5 }}><Label msg='accountNumber' /></div>
-                <Input
-                    style={{ maxWidth: 300 }}
-                    placeholder='xxxxxxxxxx'
-                    name='account'
-                    value={account}
-                    onChange={this.handleChange}
-                />
-                <div style={{ marginBottom: 5 }}><Label msg='amount' /></div>
-                <Input
-                    style={{ maxWidth: 300 }}
-                    placeholder='Amount'
-                    name='deposit'
-                    value={deposit}
-                    onChange={this.handleChange}
-                    defaultValue={fee}
-                />
-                <div style={{ marginBottom: 5 }}><Label msg='transferTime' /></div>
-                <SelectDateTime
-                    minute={minute}
-                    hour={hour}
-                    date={date}
-                    month={month}
-                    year={year}
-                    onChange={this.handleChangeTime}
-                />
-                <Text msg='confirmWarning' className='warning' />
+                <H2>{t('serviceFee')} : {fee} {t('baht')}</H2>
+                <Divider style={{ marginTop: 12, marginBottom: 12 }} />
+                <H2 msg='uploadYourPaymentSlip' style={{ marginBottom: 10 }} />
+                <UploadImage action={uploadApi} onChange={this.handleChangeImage} />
             </StyledWrapper>
         )
     }
 
-    handleChange = e => {
-        const { name, value } = e.target;
-        switch (name) {
-            case 'account':
-                this.setState({ account: value })
-                break;
-            case 'deposit':
-                this.setState({ deposit: parseInt(value) })
-                break;
-            default: break;
-        }
-    }
-
-    handleChangeTime = (type, value) => {
-        this.setState({ [type]: value });
+    handleChangeImage = (slipUrl) => {
+        this.setState({ slipUrl })
     }
 
     hideModal = () => {
@@ -131,14 +91,23 @@ class ConfirmBooking extends React.Component {
     }
 
     confirmBooking = async () => {
+        const { t } = this.props;
         const { idToken } = this.props.Auth;
-        const { billId } = this.state;
-        const dto = dataHandler.createConfirmBookingDTO(this.state);
+        const { billId, slipUrl } = this.state;
 
-        const result = await this.props.confirmTransaction(idToken, billId, dto);
+        const result = await this.props.confirm(idToken, billId, { slipUrl });
 
-        PubSub.publish('showTransactionCompleteModal');
-
+        if (result) {
+            if (result.error) {
+                notification['error']({
+                    duration: 2,
+                    message: t('error'),
+                    description: t(result.error)
+                })
+            } else {
+                PubSub.publish('hideModal')
+            }
+        }
     }
 
     cancelBooking = async () => {
@@ -152,4 +121,4 @@ class ConfirmBooking extends React.Component {
     }
 }
 
-export default connect(state => state, BookingAction)(withNamespaces('common')(ConfirmBooking));
+export default connect(state => state, { ...BookingAction, ...BillAction })(withNamespaces('common')(ConfirmBooking));

@@ -86,13 +86,6 @@ const actions = {
 
     return currentBookings;
   },
-  confirmTransaction: (accessToken, billId, transactionInfo) => async (dispatch, getState) => {
-    const result = await BillService.confirm(accessToken, billId, transactionInfo);
-    if (result.error)
-      return result;
-
-    return result;
-  },
   selectDate: (date) => async (dispatch, getState) => {
     dispatch({ type: actions.SELECT_DATE, selectedDate: date });
   },

@@ -95,18 +95,6 @@ const deleteByBillId = async (accessToken, billId) => {
     return await req.send();
 }
 
-const uploadSlip = async (accessToken, formData, bookingId) => {
-    const url = `${bookingApi}/upload_slip/${bookingId}`;
-    const config = {
-        headers: {
-            'Authorization': 'bearer ' + accessToken,
-            'content-type': 'multipart/form-data'
-        }
-    }
-    const response = await axios.post(url, formData, config);
-    return response;
-}
-
 export default {
     getAll,
     getById,
@@ -116,7 +104,6 @@ export default {
     book,
     bookByAdmin,
     updateBooking,
-    uploadSlip,
     deleteBooking,
     deleteByBillId
 }

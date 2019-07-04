@@ -8,25 +8,14 @@ const getBills = async () => {
     return await req.send();
 }
 
-const uploadSlip = async (accessToken, formData, billId) => {
-    const url = `${billApi}/upload_slip/${billId}`;
-    const config = {
-        headers: {
-            'Authorization': 'bearer ' + accessToken,
-        }
-    }
-    const response = await axios.post(url, formData, config);
-    return response;
-}
-
-const confirm = async (accessToken, billId, transactionInfo) => {
+const confirm = async (accessToken, billId, data) => {
     const url = `${billApi}/confirm/${billId}`;
 
-    const req = new Request(url);
-    req.setMethod('PATCH');
+    const req = new Request(url, 'PATCH');
+
     req.setAuth(accessToken);
-    req.setBody(transactionInfo);
-    
+    req.setBody(data);
+
     return await req.send();
 }
 
@@ -40,7 +29,6 @@ const getMyBills = async (accessToken) => {
 }
 
 export default {
-    uploadSlip,
     getBills,
     confirm,
     getMyBills

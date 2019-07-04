@@ -30,7 +30,7 @@ class BookingScreen extends React.Component {
 
         if (bills && bills.length > 0) {
             this.lastBill = bills[0];
-            if (!bills[0].confirmDate && profile.position !== 'admin')
+            if (bills[0].expiresAt && profile.position !== 'admin')
                 this.shouldRestoreConfirm = true;
         }
 
@@ -41,7 +41,7 @@ class BookingScreen extends React.Component {
         this.token1 = PubSub.subscribe('showTransactionCompleteModal', () => {
             this.showTransactionComplete();
         });
-        this.token2 = PubSub.subscribe('bookingApproved', () => {
+        this.token2 = PubSub.subscribe('bookingConfirmed', () => {
             this.notifyApproved();
         });
         this.token3 = PubSub.subscribe('bookingRejected', () => {

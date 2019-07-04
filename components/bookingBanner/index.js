@@ -15,13 +15,20 @@ class BookingBanner extends React.Component {
         super(props);
         this.state = {
             stadiumId: 1,
-            date: moment()
+            date: moment(),
+            isLoading: true
         }
     }
 
+    componentDidMount() {
+        this.setState({
+            isLoading: false
+        })
+    }
+
     render() {
-        const { date } = this.state;
-        const { isMobile, isLoading } = this.props.Screen;
+        const { date, isLoading } = this.state;
+        const { isMobile } = this.props.Screen;
         const locale = i18n.language || 'en';
         if (isMobile)
             return <div />
