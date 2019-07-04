@@ -12,6 +12,7 @@ import ConfirmMember from '../../containers/confirmMember';
 import BlackoutDetail from '../../components/blackoutDetail';
 import Confirm from '../../components/confirm';
 import EditStadium from '../../containers/editStadium';
+import ManageBillMD from '../../containers/manageBillMD';
 import TransactionComplete from '../../components/transactionComplete';
 import fonts from '../../styles/fonts';
 
@@ -129,6 +130,20 @@ const actions = {
 
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
+  showManageBillModal: (bill) => (dispatch) => {
+    const action = () => PubSub.publish('approveBill')
+    const cancel = () => dispatch(actions.hideModal());
+
+    const modal = {
+      title: <H2 msg='manageBill' />,
+      body: renderManageBill(bill),
+      footer: renderFooter(action, cancel, 'approve', 'cancel'),
+      cancel: cancel,
+      toggle: cancel,
+    }
+
+    dispatch({ type: actions.SHOW_MODAL, modal });
+  },
   showTransactionCompleteModal: () => (dispatch) => {
     const action = async () => {
       Router.push('/booking_history');
@@ -203,6 +218,7 @@ const renderEditBooking = (booking) => (<EditBooking booking={booking} />)
 const renderConfirmMember = (selectedId) => (<ConfirmMember selectedId={selectedId} />)
 const renderBlackoutDetail = (dataSource) => (<BlackoutDetail dataSource={dataSource} />)
 const renderStadiumDetail = (dataSource) => (<EditStadium dataSource={dataSource} />)
-const renderTransactionComplete = () => (<TransactionComplete/>)
+const renderTransactionComplete = () => (<TransactionComplete />)
+const renderManageBill = (bill) => (<ManageBillMD bill={bill} />)
 
 export default actions;

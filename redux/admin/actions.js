@@ -63,7 +63,7 @@ const actions = {
                 const inEndRange = moment(end).isSameOrAfter(createdAt);
                 const startwithPhoneNo = userId.length === 0 || ownerInfo.startsWith(userId);
                 const startWithName = name.length === 0 || ownerName.startsWith(name);
-                const checkStatus = booking.status === 'approved';
+                const checkStatus = booking.status === 'approved' || booking.status === 'paid';
 
                 if (checkStadiumId && inStartRange && inEndRange && startwithPhoneNo && startWithName && checkStatus) {
                     filteredBooking.push(booking);

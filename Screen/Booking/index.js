@@ -42,7 +42,7 @@ class BookingScreen extends React.Component {
             this.showTransactionComplete();
         });
         this.token2 = PubSub.subscribe('bookingConfirmed', () => {
-            this.notifyApproved();
+            this.notifyConfirmed();
         });
         this.token3 = PubSub.subscribe('bookingRejected', () => {
             this.notifyRejected();
@@ -135,11 +135,11 @@ class BookingScreen extends React.Component {
         this.props.showTransactionCompleteModal();
     }
 
-    notifyApproved = () => {
+    notifyConfirmed = () => {
         const { t } = this.props;
         notification['success']({
             message: t('success'),
-            description: t('yourBookingIsApproved'),
+            description: t('bookingSuccess'),
             duration: 2
         });
     }

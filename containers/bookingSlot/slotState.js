@@ -1,5 +1,3 @@
-
-
 export const SLOT_STATES = {
     PASSED: 'PASSED',
     BOOKED: 'BOOKED',

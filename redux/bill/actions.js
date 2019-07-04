@@ -17,8 +17,14 @@ const actions = {
     dispatch({ type: actions.FETCH_BILL_SUCCESS, bills: result, myBills });
     return result;
   },
-  confirm: (accessToken, billId, formData) => async () => {
-    const result = await BillService.confirm(accessToken, billId, formData);
+  confirm: (billId, data) => async (dispatch, getState) => {
+    const accessToken = getState().Auth.idToken;
+    const result = await BillService.confirm(accessToken, billId, data);
+    return result;
+  },
+  approve: (billId) => async (dispatch, getState) => {
+    const accessToken = getState().Auth.idToken;
+    const result = await BillService.approve(accessToken, billId);
     return result;
   },
 };

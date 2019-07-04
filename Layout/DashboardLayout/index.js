@@ -50,8 +50,12 @@ class DashboardLayout extends React.Component {
                                     selectedKeys={[this.state.current]}
                                     style={{ height: '100%' }}
                                 >
+                                    <Menu.Item key="bill" onClick={this.navigate}>
+                                        <Icon type='file-done' />
+                                        <TextMenuItem msg='bill' />
+                                    </Menu.Item>
                                     <Menu.Item key="booking" onClick={this.navigate}>
-                                        <Icon type='read' />
+                                        <Icon type='book' />
                                         <TextMenuItem msg='booking' />
                                     </Menu.Item>
                                     <Menu.Item key="summary" onClick={this.navigate}>

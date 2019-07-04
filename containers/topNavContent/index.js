@@ -83,7 +83,7 @@ class TopNavContent extends React.Component {
             <Menu selectedKey={this.state.current} mode={menuMode}>
                 {!isMobile && <MenuItem onClick={this.switchLang}><ChangeLanguage changeByParent/></MenuItem>}
                 {profile && profile.position === 'admin' &&
-                    <MenuItem name='dashboard'><Link href='/dashboard/booking'><TextMenuItem msg='admin' /></Link></MenuItem>}
+                    <MenuItem name='dashboard'><Link href='/dashboard/bill'><TextMenuItem msg='admin' /></Link></MenuItem>}
                 <MenuItem name='booking'><Link href='/booking'><TextMenuItem msg='booking' /></Link></MenuItem>
                 {this.renderAccountMenu()}
             </Menu>

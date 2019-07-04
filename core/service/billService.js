@@ -19,6 +19,16 @@ const confirm = async (accessToken, billId, data) => {
     return await req.send();
 }
 
+const approve = async (accessToken, billId) => {
+    const url = `${billApi}/approve/${billId}`;
+
+    const req = new Request(url, 'PATCH');
+
+    req.setAuth(accessToken);
+
+    return await req.send();
+}
+
 const getMyBills = async (accessToken) => {
     const url = `${billApi}/my`;
 
@@ -28,8 +38,14 @@ const getMyBills = async (accessToken) => {
     return await req.send();
 }
 
+const getImageUrl = (filename) => {
+    return `${billApi}/image/${filename}`;
+}
+
 export default {
     getBills,
     confirm,
-    getMyBills
+    approve,
+    getMyBills,
+    getImageUrl
 }

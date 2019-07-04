@@ -92,10 +92,9 @@ class ConfirmBooking extends React.Component {
 
     confirmBooking = async () => {
         const { t } = this.props;
-        const { idToken } = this.props.Auth;
         const { billId, slipUrl } = this.state;
 
-        const result = await this.props.confirm(idToken, billId, { slipUrl });
+        const result = await this.props.confirm(billId, { slipUrl });
 
         if (result) {
             if (result.error) {

@@ -192,5 +192,14 @@
     "account": "บัญชี",
     "upgrade to member": "อัพเกรดเป็น member",
     "noStadium": "ไม่พบสนาม",
-    "update user success": "แก้ไขข้อมูลบัญชีสำเร็จ"
+    "update user success": "แก้ไขข้อมูลบัญชีสำเร็จ",
+
+    "bill": "บิล",
+    "bookingDate": "วันที่จอง",
+    "manage": "จัดการ",
+    "manageBill": "จัดการบิล",
+    "paymentSlip": "ใบเสร็จการชำระเงิน",
+    "approve": "อนุมัติ",
+    "approveSuccess": "อนุมัติการชำระสำเร็จ",
+    "billingList": "รายการชำระเงิน"
 }

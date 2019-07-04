@@ -193,5 +193,14 @@
     "account": "Account",
     "upgrade to member": "Upgrade to member",
     "noStadium": "No Stadium",
-    "update user success": "Your account is updated"
+    "update user success": "Your account is updated",
+
+    "bill": "Bill",
+    "bookingDate": "Booking Date",
+    "manage": "manage",
+    "manageBill": "Manage Bill",
+    "paymentSlip": "Payment Slip",
+    "approve": "Approve",
+    "approveSuccess": "Approve bill successful",
+    "billingList": "Billing List"
 }
