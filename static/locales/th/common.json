@@ -202,5 +202,13 @@
     "approve": "อนุมัติ",
     "approveSuccess": "อนุมัติการชำระสำเร็จ",
     "billingList": "รายการชำระเงิน",
-    "uploadYourPaymentSlip": "กรุณาอัพโหลดสลิปการชำระเงิน"
+    "uploadYourPaymentSlip": "กรุณาอัพโหลดสลิปการชำระเงิน",
+
+    "createPost": "เพิ่มข่าวสาร",
+    "postTitle": "หัวข้อข่าว",
+    "coverImage": "ภาพหน้าปก",
+    "post": "ลงข่าว",
+    "postList": "ลิสต์ข่าว",
+    "deleteNews": "ลบข่าว",
+    "areYouSureToDeleteNews": "คุณแน่ใจจะลบข่าวหรือไม่ ?"
 }

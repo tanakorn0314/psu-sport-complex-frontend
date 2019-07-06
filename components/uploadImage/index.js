@@ -25,7 +25,6 @@ class UploadImage extends React.Component {
                     imageUrl,
                     loading: false,
                 });
-                this.props.onChange
             });
         }
     };
@@ -51,26 +50,38 @@ class UploadImage extends React.Component {
         }
     }
 
-        render() {
-            const uploadButton = (
-                <div>
-                    <Icon type={this.state.loading ? 'loading' : 'plus'} />
-                    <div className="ant-upload-text">Upload</div>
-                </div>
-            );
-            const { imageUrl } = this.state;
-            return (
-                <Upload
-                    name="file"
-                    listType="picture-card"
-                    showUploadList={false}
-                    onChange={this.handleChange}
-                    customRequest={this.handleRequest}
-                >
-                    {imageUrl ? <img src={imageUrl} alt="avatar" width='200px' /> : uploadButton}
-                </Upload>
-            );
+    componentWillReceiveProps(nextProps) {
+        const { imageUrl } = nextProps;
+
+        if (imageUrl) {
+            const url = `/news/image/${imageUrl}`;
+            console.log(url)
+            this.setState({ imageUrl: url })
         }
     }
 
-    export default UploadImage;
+    render() {
+        const { loading, imageUrl } = this.state;
+
+        const uploadButton = (
+            <div>
+                <Icon type={loading ? 'loading' : 'plus'} />
+                <div className="ant-upload-text">Upload</div>
+            </div>
+        );
+
+        return (
+            <Upload
+                name="file"
+                listType="picture-card"
+                showUploadList={false}
+                onChange={this.handleChange}
+                customRequest={this.handleRequest}
+            >
+                {imageUrl ? <img src={imageUrl} alt="avatar" width='200px' /> : uploadButton}
+            </Upload>
+        );
+    }
+}
+
+export default UploadImage;

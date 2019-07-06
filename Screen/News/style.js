@@ -26,15 +26,63 @@ const StyledWrapper = styled.div`
         .showtime {
             padding: 20px 0;
         }
+
         .content {
             padding: 0 10px;
-            width: 100%
+            width: 100%;
+
             p {
                 font-family: ${fonts.dbChuanPim};
                 color: ${colors.main2};
                 font-size: 20px;
             }
+
+            h1 {
+                font-family: ${fonts.psuStidti};
+                color: ${colors.main2};
+                font-size: 32px;
+            }
+
+            h2 {
+                font-family: ${fonts.psuStidti};
+                color: ${colors.main2};
+                font-size: 28px;
+            }
+
+            h3 {
+                font-family: ${fonts.psuStidti};
+                color: ${colors.main2};
+                font-size: 24px;
+            }
+
+            img {
+                width: 100%;
+            }
+        
+            .image {
+                clear: both;
+                max-width: 100%;
+            }
+        
+            .image-style-side {
+                max-width: 50%;
+                float: right;
+            }
+        
+            figcaption {
+                text-align: center;
+                background-color: #f7f7f7;
+                padding: .6em;
+                font-size: .75em;
+            }
+
+            @media (max-width: 575px) {
+                .image-style-side {
+                    width: 100%;
+                }
+            }
         }
+
     }
 
     @media (max-width: 575px) {
@@ -43,6 +91,7 @@ const StyledWrapper = styled.div`
         .content-container {
             padding: 0;
         }
+
     }
 `
 

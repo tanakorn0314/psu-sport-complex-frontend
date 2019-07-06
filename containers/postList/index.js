@@ -28,7 +28,7 @@ class PostList extends React.Component {
                 align: 'center'
             },
             {
-                title: t('title'),
+                title: t('postTitle'),
                 dataIndex: 'title',
                 key: 'title',
                 width: 400,
@@ -93,25 +93,9 @@ class PostList extends React.Component {
     }
 
     edit = (data) => {
-        console.log(data.content);
-        this.copyToClipboard(data.content);
         this.props.onEdit && this.props.onEdit(data);
     }
 
-    copyToClipboard = (message) => {
-        const div = document.createElement('div');
-        div.innerHTML = message;
-        document.body.appendChild(div);
-        div.focus();
-        document.execCommand('copy');
-        div.remove()
-        // const textField = document.createElement('textarea')
-        // textField.innerHTML = message
-        // document.body.appendChild(textField)
-        // textField.select()
-        // document.execCommand('copy')
-        // textField.remove()
-    }
 }
 
 export default connect(

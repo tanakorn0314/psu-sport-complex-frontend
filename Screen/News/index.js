@@ -6,22 +6,28 @@ import { Divider } from 'antd';
 
 class NewsScreen extends React.Component {
     render() {
-        const { title, createdAt, content, featuredImageUrl } = this.props.news;
+        const { title, createdAt, content, featureImageUrl } = this.props.news;
 
-        const url = '/static/image/operation_time.jpg';
+        const url = `news/image/${featureImageUrl}`;
         return (
             <StyledWrapper>
                 <div className='banner'>
-                    <img className='image' src={url} />
+                    <img className='image' src={url} onError={this.addDefaultImage} />
                     <NewsBannerTitle className='title'>{title}</NewsBannerTitle>
                 </div>
                 <div className='content-container'>
-                    <Showtime className='showtime' />
+                    <Showtime className='showtime' date={createdAt} />
                     <div className='content' dangerouslySetInnerHTML={{ __html: content }} />
                 </div>
                 <Divider type='horizontal' />
             </StyledWrapper>
         )
+    }
+
+    addDefaultImage = (e) => {
+        e.target.src = `/static/image/noimage.png`;
+
+        return false;
     }
 }
 

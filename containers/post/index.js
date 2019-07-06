@@ -6,20 +6,21 @@ import { H2, Label } from '../../components/typo';
 import { withNamespaces } from '../../i18n';
 import _ from 'lodash';
 import Button from '../../components/button';
-import Editor from '../../components/editor';
 import Input from '../../components/input';
+import UploadImage from '../../components/uploadImage';
+import { newsApi } from '../../core/api';
+import dynamic from 'next/dynamic';
+import StyledWrapper from './style';
+
+const uploadUrl = `${newsApi}/upload`;
+const Editor = dynamic(() => import('../../components/CKEditor'), {
+    ssr: false
+})
 
 class Post extends React.Component {
 
-    state = {
-        title: '',
-        featuredImageUrl: '',
-        content: ''
-    }
-
     render() {
-        const { t } = this.props;
-        const { title, featuredImageUrl, content } = this.state;
+        const { t, title, featureImageUrl, content } = this.props;
 
         return (
             <Card style={this.props.style} ref={this.props.ref}>
@@ -33,24 +34,30 @@ class Post extends React.Component {
                     onChange={(e) => { this.handleChange('title', e.target.value) }}
                 />
                 <div style={{ marginBottom: 5, marginTop: 5 }}>
-                    <Label htmlFor='featured_image' msg='featuredImage' />
+                    <Label htmlFor='coverImage' msg='coverImage' />
                 </div>
-                <Input id='featured_image' placeholder={t('featuredImage')}
-                    value={featuredImageUrl}
-                    style={{ maxWidth: 300 }}
-                    onChange={(e) => { this.handleChange('featuredImageUrl', e.target.value) }}
+                <UploadImage
+                    imageUrl={featureImageUrl}
+                    action={uploadUrl}
+                    onChange={(url) => { this.handleChange('featuredImageUrl', url) }}
                 />
-                <div style={{ marginBottom: 5, marginTop: 5 }}>
-                    <Editor value={content} onChange={(content) => { this.handleChange('content', content) }} />
-                </div>
+                <StyledWrapper>
+                    <Editor
+                        data={content}
+                        onChange={(event, editor) => {
+                            const data = editor.getData();
+                            this.handleChange('content', data)
+                        }}
+                        uploadUrl={uploadUrl}
+                    />
+                </StyledWrapper>
                 <Button type='primary' onClick={this.handleSubmit}>{t('post')}</Button>
             </Card>
         )
     }
 
     handleChange = (key, value) => {
-        console.log(value);
-        this.setState({ [key]: value });
+        this.props.onChange && this.props.onChange(key, value);
     }
 
     handleSubmit = async () => {

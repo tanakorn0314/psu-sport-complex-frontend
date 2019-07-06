@@ -203,5 +203,13 @@
     "approve": "Approve",
     "approveSuccess": "Approve bill successful",
     "billingList": "Billing List",
-    "uploadYourPaymentSlip": "Please upload your payment slip"
+    "uploadYourPaymentSlip": "Please upload your payment slip",
+
+    "createPost": "Create Post",
+    "postTitle": "Post Title",
+    "coverImage": "Cover Image",
+    "post": "Post",
+    "postList": "Post List",
+    "deleteNews": "Delete News",
+    "areYouSureToDeleteNews": "Are you sure to delete news ?"
 }
