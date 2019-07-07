@@ -212,5 +212,10 @@
     "postList": "Post List",
     "deleteNews": "Delete News",
     "areYouSureToDeleteNews": "Are you sure to delete news ?",
-    "postNewsSuccess": "Post news success"
+    "postNewsSuccess": "Post news success",
+    "nextPost": "Previous Post",
+    "prevPost": "Next Post",
+
+    "Sport Complex Today": "Sport Complex Today",
+    "The lastest news from sport complex": "The lastest news from sport complex"
 }

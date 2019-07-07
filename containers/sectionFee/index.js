@@ -12,12 +12,17 @@ class SectionFee extends React.Component {
         super(props);
         this.state = {
             selectedIndex: 0,
+            isLoading: true
         }
     }
 
+    componentDidMount() {
+        this.setState({isLoading: false})
+    }
+
     render() {
-        const { selectedIndex } = this.state;
-        const { isMobile, isLoading } = this.props.Screen;
+        const { selectedIndex, isLoading } = this.state;
+        const { isMobile } = this.props.Screen;
         const stadiums = this.props.Stadium.stadiums || [];
         const mode = isMobile ? 'horizontal' : 'vertical';
         const displayCount = isMobile ? 4 : 6;

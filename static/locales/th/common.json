@@ -211,5 +211,10 @@
     "postList": "ลิสต์ข่าว",
     "deleteNews": "ลบข่าว",
     "areYouSureToDeleteNews": "คุณแน่ใจจะลบข่าวหรือไม่ ?",
-    "postNewsSuccess": "เพิ่มข่าวสำเร็จ"
+    "postNewsSuccess": "เพิ่มข่าวสำเร็จ",
+    "nextPost": "ข่าวถัดไป",
+    "prevPost": "ข่าวก่อนหน้า",
+
+    "Sport Complex Today": "Sport Complex Today",
+    "The lastest news from sport complex": "ข่าวล่าสุดจาก Sport Complex"
 }

@@ -16,14 +16,19 @@ class SectionNews extends React.Component {
         super(props);
         this.state = {
             current: 1,
+            isLoading: true
         }
 
         this.data = props.newsList
     }
 
+    componentDidMount() {
+        this.setState({ isLoading: false })
+    }
+
     render() {
         const { t } = this.props;
-        const { current } = this.state;
+        const { current, isLoading } = this.state;
         const dataList = this.data;
         const len = dataList ? dataList.length : 0;
 
@@ -34,22 +39,27 @@ class SectionNews extends React.Component {
 
         return (
             <StyledWrapper>
-                <H1>{t('Sport Complex Today')}</H1>
-                <H3>{t('The lastest news from sport complex')}</H3>
-                <Row gutter={8}>
-                    {
-                        display.map((data, index) => (
-                            <Col key={index} xs={24} sm={24} md={8}>
-                                <PostBox
-                                    newsId={data.newsId}
-                                    img={data.featuredImageUrl}
-                                    title={data.title}
-                                    content={data.content}
-                                />
-                            </Col>
-                        ))
-                    }
-                </Row>
+                <H1 style={{marginBottom: 3}}>{t('Sport Complex Today')}</H1>
+                <H3 style={{marginBottom: 5}}>{t('The lastest news from sport complex')}</H3>
+                {
+                    !isLoading && (
+                        <Row gutter={8}>
+                            {
+                                display.map((data, index) => (
+                                    <Col key={index} xs={24} sm={24} md={8}>
+                                        <PostBox
+                                            newsId={data.newsId}
+                                            img={data.featuredImageUrl}
+                                            title={data.title}
+                                            content={data.content}
+                                        />
+                                    </Col>
+                                ))
+                            }
+                        </Row>
+                    )
+                }
+
                 <div className='paginateContainer'>
                     <Pagination size='small' total={len} pageSize={PAGE_SIZE} onChange={this.handleChangePage} />
                 </div>
@@ -67,11 +77,11 @@ class SectionNews extends React.Component {
         if (currentIdx >= len)
             this.props.fetchNewsFeed();
 
-        this.setState({current});
+        this.setState({ current });
     }
 }
 
 export default connect(
     state => state.News,
     NewsAction
-    )(withNamespaces('common')(SectionNews));
+)(withNamespaces('common')(SectionNews));

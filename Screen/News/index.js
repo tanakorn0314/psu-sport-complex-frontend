@@ -2,6 +2,7 @@ import React from 'react';
 import StyledWrapper from './style';
 import { NewsBannerTitle } from '../../components/typo';
 import Showtime from '../../components/showtime';
+import NewsNavigate from '../../components/newsNavigate';
 import { Divider } from 'antd';
 
 class NewsScreen extends React.Component {
@@ -19,7 +20,7 @@ class NewsScreen extends React.Component {
                     <Showtime className='showtime' date={createdAt} />
                     <div className='content' dangerouslySetInnerHTML={{ __html: content }} />
                 </div>
-                <Divider type='horizontal' />
+                <NewsNavigate currentPost={this.props.news}/>
             </StyledWrapper>
         )
     }

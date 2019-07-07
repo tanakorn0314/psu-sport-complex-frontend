@@ -4,5 +4,6 @@ import withNavLayout from './withNavLayout';
 import withAuth from './withAuth';
 import withTransalate from './withTransalate';
 import withNews from './withNews';
+import withData from './withData';
 
-export default compose(withNavLayout, withEnquireScreen, withTransalate, withAuth, withNews);
+export default compose(withNavLayout, withEnquireScreen, withTransalate, withAuth, withNews, withData);
