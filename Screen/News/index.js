@@ -6,9 +6,9 @@ import { Divider } from 'antd';
 
 class NewsScreen extends React.Component {
     render() {
-        const { title, createdAt, content, featureImageUrl } = this.props.news;
+        const { title, createdAt, content, featuredImageUrl } = this.props.news;
 
-        const url = `news/image/${featureImageUrl}`;
+        const url = `news/image/${featuredImageUrl}`;
         return (
             <StyledWrapper>
                 <div className='banner'>

@@ -6,6 +6,7 @@ import AdminAction from '../redux/admin/actions';
 import BookingAction from '../redux/booking/actions';
 import StadiumAction from '../redux/stadium/actions';
 import BillAction from '../redux/bill/actions';
+import NewsAction from '../redux/news/actions';
 import OperationTimeAction from '../redux/operationTime/actions';
 import { url } from '../config';
 import io from 'socket.io-client'
@@ -24,6 +25,7 @@ export default ComposedComponent => {
             await store.dispatch(StadiumAction.fetchStadium());
             await store.dispatch(OperationTimeAction.getOperationTime());
             await store.dispatch(OperationTimeAction.getBlackout());
+            await store.dispatch(NewsAction.fetchNewsFeed());
 
             if (sportQuery) {
                 const { stadiums } = store.getState().Stadium;
@@ -92,5 +94,8 @@ export default ComposedComponent => {
             )
         }
     }
-    return connect(state => state, { ...AdminAction, ...BookingAction })(withData);
+    return connect(
+        state => state, 
+        { ...AdminAction, ...BookingAction, ...NewsAction })
+        (withData);
 }

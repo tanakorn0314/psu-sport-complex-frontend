@@ -67,6 +67,13 @@ const StyledWrapper = styled.div`
             .image-style-side {
                 max-width: 50%;
                 float: right;
+                padding: 0 10px;
+
+                @media (max-width: 575px) {
+                    float: none;
+                    max-width: 100%;
+                    padding: 0;
+                }
             }
         
             figcaption {
@@ -74,12 +81,6 @@ const StyledWrapper = styled.div`
                 background-color: #f7f7f7;
                 padding: .6em;
                 font-size: .75em;
-            }
-
-            @media (max-width: 575px) {
-                .image-style-side {
-                    width: 100%;
-                }
             }
         }
 

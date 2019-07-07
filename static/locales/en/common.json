@@ -211,5 +211,6 @@
     "post": "Post",
     "postList": "Post List",
     "deleteNews": "Delete News",
-    "areYouSureToDeleteNews": "Are you sure to delete news ?"
+    "areYouSureToDeleteNews": "Are you sure to delete news ?",
+    "postNewsSuccess": "Post news success"
 }

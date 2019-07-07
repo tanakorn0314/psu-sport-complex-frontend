@@ -1,17 +1,12 @@
 import React from 'react';
 import StyledWrapper from './style';
-import PostBox from '../postBox';
-import img from '../../static/image/stadium/fitness.jpg';
+import PostBox from '../../components/postBox';
 import { Row, Col, Pagination } from 'antd';
 import _ from 'lodash';
-
-const title = `
-    ม.อ.ประชุมหารือวางแผน MOU กับ บริษัท MIRAPRO Co., Ltd. “เน้นได้ฝึกงานจริงกับ
-`;
-
-const content = `
-    มหาวิทยาลัยสงขลานครินทร์ นำโดยผู้ช่วยศาสตราจารย์ ดร. นิวัติ แก้วประดับ อธิการบดีมหาวิทยาลัยสงขลานครินทร์ รอง
-`;
+import { withNamespaces } from '../../i18n';
+import { connect } from 'react-redux';
+import NewsAction from '../../redux/news/actions';
+import { H1, H3 } from '../../components/typo';
 
 const PAGE_SIZE = 3;
 
@@ -20,33 +15,34 @@ class SectionNews extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            current: 1
+            current: 1,
         }
 
-        this.data = _.range(0, 57).map((num) => ({img, title: `${num} ${title}`, content}));
-
+        this.data = props.newsList
     }
 
     render() {
+        const { t } = this.props;
         const { current } = this.state;
         const dataList = this.data;
-        const len = dataList.length;
+        const len = dataList ? dataList.length : 0;
 
         const start = (current - 1) * PAGE_SIZE;
         const end = start + PAGE_SIZE;
 
-        const display = dataList.slice(start, end);
+        const display = dataList ? dataList.slice(start, end) : [];
 
         return (
             <StyledWrapper>
-                <h1>Sport Complex Today</h1>
-                <h3>The lastest news from sport complex</h3>
+                <H1>{t('Sport Complex Today')}</H1>
+                <H3>{t('The lastest news from sport complex')}</H3>
                 <Row gutter={8}>
                     {
                         display.map((data, index) => (
                             <Col key={index} xs={24} sm={24} md={8}>
                                 <PostBox
-                                    img={data.img}
+                                    newsId={data.newsId}
+                                    img={data.featuredImageUrl}
                                     title={data.title}
                                     content={data.content}
                                 />
@@ -69,10 +65,13 @@ class SectionNews extends React.Component {
 
         //reach end
         if (currentIdx >= len)
-            console.log('end');
+            this.props.fetchNewsFeed();
 
         this.setState({current});
     }
 }
 
-export default SectionNews;
+export default connect(
+    state => state.News,
+    NewsAction
+    )(withNamespaces('common')(SectionNews));

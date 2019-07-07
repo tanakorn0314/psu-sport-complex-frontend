@@ -210,5 +210,6 @@
     "post": "ลงข่าว",
     "postList": "ลิสต์ข่าว",
     "deleteNews": "ลบข่าว",
-    "areYouSureToDeleteNews": "คุณแน่ใจจะลบข่าวหรือไม่ ?"
+    "areYouSureToDeleteNews": "คุณแน่ใจจะลบข่าวหรือไม่ ?",
+    "postNewsSuccess": "เพิ่มข่าวสำเร็จ"
 }

@@ -16,8 +16,8 @@ const actions = {
     const { newsList } = getState().News;
     const result = await NewsService.fetchNewsFeed(newsList.length);
     if (result && !result.error) {
-      const lastInStore = newsList.pop();
-      const lastResult = result.pop();
+      const lastInStore = newsList[0];
+      const lastResult = result[0];
       if (lastInStore !== lastResult)
         dispatch({ type: actions.FETCH_NEWS_SUCCESS, payload: result });
     }

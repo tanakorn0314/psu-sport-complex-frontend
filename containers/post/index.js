@@ -20,7 +20,7 @@ const Editor = dynamic(() => import('../../components/CKEditor'), {
 class Post extends React.Component {
 
     render() {
-        const { t, title, featureImageUrl, content } = this.props;
+        const { t, title, featuredImageUrl, content } = this.props;
 
         return (
             <Card style={this.props.style} ref={this.props.ref}>
@@ -37,7 +37,7 @@ class Post extends React.Component {
                     <Label htmlFor='coverImage' msg='coverImage' />
                 </div>
                 <UploadImage
-                    imageUrl={featureImageUrl}
+                    imageUrl={featuredImageUrl}
                     action={uploadUrl}
                     onChange={(url) => { this.handleChange('featuredImageUrl', url) }}
                 />
@@ -61,8 +61,12 @@ class Post extends React.Component {
     }
 
     handleSubmit = async () => {
-        const { t } = this.props;
-        const dto = this.state;
+        const { t, title, featuredImageUrl, content } = this.props;
+        const dto = {
+            title,
+            featuredImageUrl,
+            content
+        }
         const result = await this.props.postNews(dto);
 
         if (result.error) {

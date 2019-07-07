@@ -1,7 +1,6 @@
 import React from 'react';
 import Post from '../../../containers/post';
 import PostList from '../../../containers/postList';
-import { Anchor } from 'antd';
 
 class PostNews extends React.Component {
 
@@ -9,16 +8,19 @@ class PostNews extends React.Component {
         super(props);
         this.state = {
             title: '',
-            featureImageUrl: null,
+            featuredImageUrl: null,
             content: ''
         }
     }
 
     render() {
+        const { title, featuredImageUrl, content } = this.state;
         return (
             <div id='post' style={{ padding: 20 }} ref={ref => this.postRef = ref}>
                 <Post
-                    {...this.state}
+                    title={title}
+                    featuredImageUrl={featuredImageUrl}
+                    content={content}
                     style={{ marginBottom: 20 }}
                     onChange={this.handleChange}
                 />
@@ -32,8 +34,8 @@ class PostNews extends React.Component {
     }
 
     handleEdit = (data) => {
-        const { title, featureImageUrl, content } = data;
-        this.setState({title, featureImageUrl, content})
+        const { title, featuredImageUrl, content } = data;
+        this.setState({title, featuredImageUrl, content})
     }
 }
 
