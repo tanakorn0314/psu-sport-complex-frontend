@@ -13,7 +13,7 @@ import dynamic from 'next/dynamic';
 import StyledWrapper from './style';
 
 const uploadUrl = `${newsApi}/upload`;
-const Editor = dynamic(() => import('../../components/CKEditor'), {
+const Editor = dynamic(() => import('../../components/ckEditor'), {
     ssr: false
 })
 
