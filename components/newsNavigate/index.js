@@ -5,8 +5,6 @@ import { H3, H4 } from '../typo';
 import { connect } from 'react-redux';
 import { Link, withNamespaces } from '../../i18n';
 
-const { Paragraph } = Typography;
-
 class NewsNavigate extends React.Component {
     render() {
         const { t, currentPost, newsList } = this.props;
@@ -21,13 +19,13 @@ class NewsNavigate extends React.Component {
                     {
                         prevPost && (
                             <Link href={`/news?newsId=${prevPost.newsId}`}>
-                                <div className='nav-container'>
+                                <a className='nav-container'>
                                     <div className='nav-title'>
                                         <Icon type='arrow-left' style={{ marginRight: 3 }} />
                                         <H3 msg='prevPost' className='link'/>
                                     </div>
                                     <H4 className='content'>{prevPost.title}</H4>
-                                </div>
+                                </a>
                             </Link>
                         )
                     }
@@ -36,13 +34,13 @@ class NewsNavigate extends React.Component {
                     {
                         nextPost && (
                             <Link href={`/news?newsId=${nextPost.newsId}`}>
-                                <div className='nav-container'>
+                                <a className='nav-container'>
                                     <div className='nav-title nav-title-right'>
                                         <H3 msg='nextPost' className='link'/>
                                         <Icon type='arrow-right' style={{ marginLeft: 3 }} />
                                     </div>
                                     <H4 className='content content-right'>{nextPost.title}</H4>
-                                </div>
+                                </a>
                             </Link>
                         )
                     }

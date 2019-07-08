@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ScreenAction from '../redux/screen/actions';
 import enquire from 'enquire-js';
 import ScreenLoader from '../components/screenLoader';
+import { Router } from '../i18n';
 
 export default ComposedComponent => {
     class withEnquireScreen extends React.Component {
@@ -14,7 +15,9 @@ export default ComposedComponent => {
 
         constructor(props) {
             super(props);
-            this.props.startLoad();
+            Router.events.on('routeChangeStart', () => this.props.startLoad())
+            Router.events.on('routeChangeComplete', () => this.props.endLoad())
+            Router.events.on('routeChangeError', () => this.props.endLoad())
         }
 
         componentDidMount() {
@@ -26,14 +29,12 @@ export default ComposedComponent => {
                     this.props.setMobileScreen(false);
                 }
             })
-            this.props.endLoad();
+
+            this.props.endLoad()
         }
 
         componentWillUnmount() {
             enquire.unregister(`screen and (max-width:575px)`);
-
-            window.removeEventListener('scroll', () => { });
-
         }
 
         render() {

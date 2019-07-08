@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from '../../containers/link';
+import { Link } from '../../i18n';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import AuthAction from '../../redux/auth/actions';
@@ -7,7 +7,7 @@ import ModalAction from '../../redux/modal/actions';
 import logo from '../../static/image/psu_brand.png';
 import { Menu, MenuItem } from '../../components/menu';
 import { TextMenuItem, TextButton } from '../../components/typo';
-import { StyledPopover as Popover } from './style';
+import { StyledPopover as Popover, A } from './style';
 import {
     Row,
     Col,
@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import Button from '../../components/button';
 import ChangeLanguage from '../../components/changeLanguage';
-import { i18n } from '../../i18n';
+import { i18n, withNamespaces } from '../../i18n';
 
 class TopNavContent extends React.Component {
 
@@ -73,18 +73,37 @@ class TopNavContent extends React.Component {
     }
 
     renderMenuItems = () => {
-
+        const { t } = this.props;
         const { isMobile } = this.props.Screen;
         const { profile } = this.props.Auth;
 
         const menuMode = isMobile ? 'inline' : 'horizontal';
 
+        // const switchLangButton = <MenuItem onClick={this.switchLang}><ChangeLanguage changeByParent /></MenuItem>
+        // const dashboardButton = <Link href='/dashboard'><MenuItem name='dashboard'>{t('admin')}</MenuItem></Link>
+        // const bookingButton = <MenuItem name='booking'><Link href='/booking'><A>{('booking')}</A></Link></MenuItem>
+
+        const switchLangButton = <MenuItem onClick={this.switchLang}><ChangeLanguage changeByParent /></MenuItem>
+        const dashboardButton = (
+            <MenuItem name='dashboard'>
+                <Link href='/dashboard/bill'>
+                    <A>{t('admin')}</A>
+                </Link>
+            </MenuItem>
+        )
+        const bookingButton = (
+            <MenuItem name='booking'>
+                <Link href='/booking'>
+                    <A>{t('booking')}</A>
+                </Link>
+            </MenuItem>
+        )
+
         return (
             <Menu selectedKey={this.state.current} mode={menuMode}>
-                {!isMobile && <MenuItem onClick={this.switchLang}><ChangeLanguage changeByParent/></MenuItem>}
-                {profile && profile.position === 'admin' &&
-                    <MenuItem name='dashboard'><Link href='/dashboard/bill'><TextMenuItem msg='admin' /></Link></MenuItem>}
-                <MenuItem name='booking'><Link href='/booking'><TextMenuItem msg='booking' /></Link></MenuItem>
+                {!isMobile && switchLangButton}
+                {profile && profile.position === 'admin' && dashboardButton}
+                {bookingButton}
                 {this.renderAccountMenu()}
             </Menu>
         )
@@ -95,12 +114,13 @@ class TopNavContent extends React.Component {
         const { isMobile } = this.props.Screen;
         const { profile } = this.props.Auth;
 
+        const loginText = <TextMenuItem msg='login' onClick={this.handleClick} />
+        const loginButton = <Button onClick={this.handleClick}><TextButton msg='login' /></Button>
+
         if (!profile)
             return (
                 <MenuItem name='login' noHighlight>
-                    {isMobile ? <TextMenuItem msg='login' onClick={this.handleClick} /> :
-                        <Button onClick={this.handleClick}><TextButton msg='login' /></Button>
-                    }
+                    {isMobile ? loginText : loginButton}
                 </MenuItem>
             );
         else if (isMobile)
@@ -135,12 +155,15 @@ class TopNavContent extends React.Component {
             )
     }
 
-    renderAccountMenuItems = () => [
-        <MenuItem key='booking_history' name='booking_history'><Link href='/booking_history'><TextMenuItem msg='bookingHistory' /></Link></MenuItem>,
-        <MenuItem key='account' name='account'><Link href='/account'><TextMenuItem msg='account' /></Link></MenuItem>,
-        this.props.Screen.isMobile && <MenuItem key='changeLanguage' onClick={this.switchLang}><ChangeLanguage changeByParent/></MenuItem>,
-        <MenuItem key='logout' name='logout' noHighlight><TextMenuItem msg='logout' onClick={this.handleLogout} /></MenuItem>
-    ]
+    renderAccountMenuItems = () => {
+        const { t } = this.props;
+        return [
+            <MenuItem key='booking_history' name='booking_history'><Link href='/booking_history'><A>{t('bookingHistory')}</A></Link></MenuItem>,
+            <MenuItem key='account' name='account'><Link href='/account'><A>{t('account')}</A></Link></MenuItem>,
+            this.props.Screen.isMobile && <MenuItem key='changeLanguage' onClick={this.switchLang}><ChangeLanguage changeByParent /></MenuItem>,
+            <MenuItem key='logout' name='logout' noHighlight><TextMenuItem msg='logout' onClick={this.handleLogout} /></MenuItem>
+        ]
+    }
 
 
     toggleShowMenu = () => {
@@ -170,7 +193,9 @@ class TopNavContent extends React.Component {
     }
 }
 
+const Translated = withNamespaces('common')(TopNavContent)
+
 export default connect(
     state => state,
     { ...AuthAction, ...ModalAction },
-)(withRouter(TopNavContent));
+)(withRouter(Translated));

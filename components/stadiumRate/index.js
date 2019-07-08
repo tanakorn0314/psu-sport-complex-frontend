@@ -30,9 +30,11 @@ class StadiumRate extends React.Component {
                         {
                             stadium.canBook && (
                                 <Link href={`/booking?sport=${stadium.name}`}>
-                                    <Button className='btn-book' ghost >
-                                        {t('bookNow')}
-                                    </Button>
+                                    <a>
+                                        <Button className='btn-book' ghost >
+                                            {t('bookNow')}
+                                        </Button>
+                                    </a>
                                 </Link>
                             )
                         }

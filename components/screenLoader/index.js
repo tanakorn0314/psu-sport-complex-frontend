@@ -19,24 +19,26 @@ class ScreenLoader extends React.Component {
                 zIndex: 300,
                 right: 20,
                 top: this.state.top
-            }}/>
+            }} />
         )
     }
 
+    setLoadingPosition = () => {
+        if (window.pageYOffset > 72) {
+            this.setState({ top: 16 })
+        }
+        else {
+            const top = 72 - window.pageYOffset;
+            this.setState({ top })
+        }
+    }
+
     componentDidMount() {
-        window.addEventListener('scroll', (e) => {
-            if (window.pageYOffset > 72) {
-                this.setState({top: 16})
-            }
-            else {
-                const top = 72 - window.pageYOffset;
-                this.setState({top})
-            }
-        })
+        window.addEventListener('scroll', this.setLoadingPosition, true)
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', () => {});
+        window.removeEventListener('scroll', this.setLoadingPosition, true);
     }
 }
 

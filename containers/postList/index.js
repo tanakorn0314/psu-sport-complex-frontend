@@ -8,7 +8,7 @@ import { H2, TextLink } from '../../components/typo';
 import colors from '../../styles/colors';
 import { withNamespaces, i18n } from '../../i18n';
 import moment from 'moment';
-import Link from 'next/link';
+import { Link } from '../../i18n';
 
 class PostList extends React.Component {
 
