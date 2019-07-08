@@ -3,7 +3,6 @@ import StyledWrapper from './style';
 import { NewsBannerTitle } from '../../components/typo';
 import Showtime from '../../components/showtime';
 import NewsNavigate from '../../components/newsNavigate';
-import { Divider } from 'antd';
 
 class NewsScreen extends React.Component {
     render() {

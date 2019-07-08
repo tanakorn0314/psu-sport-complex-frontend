@@ -6,6 +6,7 @@ import SectionStadium from '../../components/sectionStadium';
 import SectionHead from '../../components/sectionHead';
 import SectionFee from '../../containers/sectionFee';
 import SectionContact from '../../components/sectionContact';
+import SectionParallex from '../../components/sectionParallex';
 
 class Home extends React.Component {
 
@@ -14,8 +15,9 @@ class Home extends React.Component {
       <StyleWrapper>
         <SectionHead/>
         <SectionNews/>
+        {/* <SectionParallex/> */}
         <SectionFee/>
-        <SectionContact/>
+        {/* <SectionContact/> */}
       </StyleWrapper>
     )
   }

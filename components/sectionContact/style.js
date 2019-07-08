@@ -4,9 +4,9 @@ const StyledWrapper = styled.div`
     background-color: #fff;
     padding: 10px 5%;
 
-    .content {
+    .stack {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
     }
 `;
 

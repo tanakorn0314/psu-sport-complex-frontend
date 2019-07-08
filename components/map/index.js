@@ -4,23 +4,12 @@ import styled from 'styled-components';
 const StyledWrapper = styled.div`
     position: relative;
     text-align:right;
-    width:70vw;
-    height: 350px;
+
     .gmap_canvas {
         overflow: hidden;
         background:none!important;
-        width:70vw;
-        height: 350px;
     }
-
-    @media (max-width: 575px) {
-        width:95vw;
-        height: 300px;
-        .mapouter {
-            width:95vw;
-            height: 300px;
-        }
-    }
+    
 `
 
 class Map extends React.Component {

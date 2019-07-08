@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`  
-    padding: 0 5%;
+    padding: 10px 5%;
     background-color: white;
     .title {
         padding: 10px 0;
