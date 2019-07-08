@@ -55,9 +55,7 @@ class PostList extends React.Component {
                 align: 'center',
                 render: (id, data) => (
                     <div id={id}>
-                        <Link href='#post'>
-                            <TextLink id={id} style={{ color: colors.main3 }} onClick={() => this.edit(newsList[data.no - 1])} msg='edit' />
-                        </Link>
+                        <TextLink id={id} style={{ color: colors.main3 }} onClick={() => this.edit(newsList[data.no - 1])} msg='edit' />
                         <Divider type='vertical' />
                         <TextLink id={id} style={{ color: colors.main3 }} onClick={this.handleDelete} msg='delete' />
                     </div>
