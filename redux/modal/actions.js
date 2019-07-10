@@ -8,13 +8,12 @@ import AuthTabs from '../../containers/authTabs';
 import ConfirmBooking from '../../containers/confirmBooking';
 import BookByAdmin from '../../containers/bookingAdminMD';
 import EditBooking from '../../containers/editBooking';
-import ConfirmMember from '../../containers/confirmMember';
 import BlackoutDetail from '../../components/blackoutDetail';
 import Confirm from '../../components/confirm';
 import EditStadium from '../../containers/editStadium';
 import ManageBillMD from '../../containers/manageBillMD';
 import TransactionComplete from '../../components/transactionComplete';
-import fonts from '../../styles/fonts';
+import ManageUser from '../../containers/manageUser';
 
 const actions = {
   SHOW_MODAL: 'SHOW_MODAL',
@@ -75,14 +74,13 @@ const actions = {
 
     dispatch({ type: actions.SHOW_MODAL, modal });
   },
-  showConfirmMemberModal: (selectedId) => (dispatch) => {
-    const action = () => { PubSub.publish('confirmMember') };
+  showManageUserModal: (user) => (dispatch) => {
     const cancel = () => dispatch(actions.hideModal());
 
     const modal = {
-      title: <H2 msg='confirmMember' />,
-      body: renderConfirmMember(selectedId),
-      footer: renderFooter(action, cancel, 'confirm', 'cancel'),
+      title: <H2 msg='manageUser' />,
+      body: renderManageUser(user),
+      footer: null,
       cancel: cancel,
       toggle: cancel,
     }
@@ -210,12 +208,21 @@ const renderOKFooter = (action, actionText) => {
   )
 }
 
+const renderCloseFooter = (action, actionText) => {
+  PubSub.publish('done');
+  return (
+    <div>
+      <Button key={0} type="secondary" onClick={action} ><TextButton msg={actionText} /></Button>
+    </div>
+  )
+}
+
 const renderAuth = () => (<AuthTabs />);
 const renderConfirm = (msg) => (<Confirm msg={msg} />)
 const renderConfirmBooking = (dataSource) => (<ConfirmBooking dataSource={dataSource} />)
 const renderBookByAdmin = () => (<BookByAdmin />)
 const renderEditBooking = (booking) => (<EditBooking booking={booking} />)
-const renderConfirmMember = (selectedId) => (<ConfirmMember selectedId={selectedId} />)
+const renderManageUser = (user) => (<ManageUser user={user} />)
 const renderBlackoutDetail = (dataSource) => (<BlackoutDetail dataSource={dataSource} />)
 const renderStadiumDetail = (dataSource) => (<EditStadium dataSource={dataSource} />)
 const renderTransactionComplete = () => (<TransactionComplete />)

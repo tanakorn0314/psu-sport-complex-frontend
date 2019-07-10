@@ -8,14 +8,13 @@ import { withNamespaces, i18n } from '../../i18n';
 import UserAction from '../../redux/users/actions';
 import DatePicker from '../../components/datePicker';
 import Input from '../../components/input';
-import { H4 } from '../../components/typo';
+import { H4, H3, Text } from '../../components/typo';
+import Button from '../../components/button';
 
-class ConfirmMember extends React.Component {
+class ManageMember extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.selectedId = props.selectedId;
 
         this.state = {
             startDate: moment(),
@@ -25,8 +24,6 @@ class ConfirmMember extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.selectedId = nextProps.selectedId;
-
         this.setState({
             startDate: moment(),
             endDate: moment().add('month', 1),
@@ -34,20 +31,19 @@ class ConfirmMember extends React.Component {
         })
     }
 
-    componentDidMount() {
-        this.token1 = PubSub.subscribe('confirmMember', () => {
-            this.confirmMember();
-            PubSub.publish('done')
-        })
-    }
-
-    componentWillUnmount() {
-        PubSub.unsubscribe(this.token1);
-    }
-
     render() {
         const locale = i18n.language || 'en';
         const { startDate, endDate, amount } = this.state;
+        const { user, t } = this.props;
+
+        if (user.position === 'member')
+            return (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <H3 style={{ marginRight: 5 }}>{t('memberExpires')} : </H3>
+                    <Text >{moment(user.memberEnd).locale(locale).format('DD MMMM YYYY HH:mm')}</Text>
+                </div>
+            )
+
         return (
             <div>
                 <Row gutter={12} style={{ marginBottom: 5 }}>
@@ -72,11 +68,12 @@ class ConfirmMember extends React.Component {
                 </Row>
                 <H4 msg='amount' />
                 <Input
-                    style={{ width: '100%' }}
+                    style={{ width: '100%', marginBottom: 10 }}
                     name='amount'
                     value={amount}
                     defaultValue={this.state.amount}
                     onChange={this.handleChange} />
+                <Button type='primary' msg='confirm' onClick={this.confirmMember}/>
             </div>
         )
     }
@@ -99,7 +96,7 @@ class ConfirmMember extends React.Component {
     }
 
     confirmMember = async () => {
-        const { t } = this.props;
+        const { t, user } = this.props;
         const {
             startDate,
             endDate,
@@ -112,7 +109,7 @@ class ConfirmMember extends React.Component {
             amount
         }
 
-        const result = await this.props.toMember(this.selectedId, data);
+        const result = await this.props.toMember(user.userId, data);
 
         if (result.error) {
             notification['error']({
@@ -131,4 +128,5 @@ class ConfirmMember extends React.Component {
     }
 }
 
-export default connect(state => state, UserAction)(withNamespaces('common')(ConfirmMember));
+export default connect(state => state, UserAction)(withNamespaces('common')(ManageMember));
+

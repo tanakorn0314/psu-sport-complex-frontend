@@ -219,5 +219,11 @@
     "Sport Complex Today": "Sport Complex Today",
     "The lastest news from sport complex": "The lastest news from sport complex",
 
-    "read more": "Read more"
+    "read more": "Read more",
+    "manageUser": "Manage User",
+    "secret password": "Secret Password",
+    "upgrade to admin": "Upgrade to admin",
+    "secret invalid": "Invalid secret",
+    "cancel admin": "Cancel admin",
+    "updateUserSuccess": "Update user successfuly"
 }

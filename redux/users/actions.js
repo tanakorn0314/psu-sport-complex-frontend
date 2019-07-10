@@ -12,6 +12,12 @@ const actions = {
         const result = await UserService.toMember(idToken, userId, data);
         await dispatch(actions.fetchAllUsers());
         return result;
+    },
+    toggleAdmin: (userId, data) => async (dispatch, getState) => {
+        const { idToken } = getState().Auth;
+        const result = await UserService.toggleAdmin(idToken, userId, data);
+        await dispatch(actions.fetchAllUsers());
+        return result;
     }
 }
 

@@ -27,6 +27,16 @@ const toMember = async (accessToken, userId, body) => {
     return await req.send();
 }
 
+const toggleAdmin = async (accessToken, userId, body) => {
+    const url = `${userApi}/toggle_admin/${userId}`;
+        
+    const req = new Request(url, 'PATCH');
+    req.setBody(body);
+    req.setAuth(accessToken);
+    
+    return await req.send();
+}
+
 const updateUser = async (accessToken, dto) => {
     const url = `${userApi}`
 
@@ -41,5 +51,6 @@ export default {
     getAll,
     getUserByResetToken,
     toMember,
-    updateUser
+    updateUser,
+    toggleAdmin
 }

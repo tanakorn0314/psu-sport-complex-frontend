@@ -55,17 +55,10 @@ class UserList extends React.Component {
       key: 'position',
       ...this.getColumnSearchProps('position')
     }, {
-      title: t('memberExpires'),
-      dataIndex: 'expires',
-      key: 'expires',
-      render: data => {
-        const { id, position, end } = data;
-        if (position === 'member')
-          return <Text style={{ color: colors.main3 }}>{moment(end).locale(locale).format('DD MMM YYYY HH:mm')}</Text>
-        if (position === 'generalPublic')
-          return (<Button id={id} onClick={this.handleSelectUser}><TextButton msg='toMember' /></Button>)
-        return "-";
-      }
+      title: t('action'),
+      dataIndex: 'no',
+      key: 'action',
+      render: no => <a style={{ color: colors.main3 }} onClick={() => { this.handleSelectUser(users[no - 1]) }}>{t('manage')}</a>
     }];
 
     const data = users.map((user, index) => ({
@@ -149,9 +142,9 @@ class UserList extends React.Component {
     this.setState({ searchText: '' });
   }
 
-  handleSelectUser = e => {
-    const { id } = e.target;
-    this.props.showConfirmMemberModal(id);
+  handleSelectUser = user => {
+    console.log(user)
+    this.props.showManageUserModal(user);
   }
 
 }

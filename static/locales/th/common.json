@@ -218,5 +218,11 @@
     "Sport Complex Today": "Sport Complex Today",
     "The lastest news from sport complex": "ข่าวล่าสุดจาก Sport Complex",
 
-    "read more": "อ่านเพิ่มเติม"
+    "read more": "อ่านเพิ่มเติม",
+    "manageUser": "จัดการผู้ใช้",
+    "secret password": "รหัสลับ",
+    "upgrade to admin": "เปลี่ยนเป็นเจ้าหน้าที่",
+    "secret invalid": "รหัสลับไม่ถูกต้อง",
+    "cancel admin": "ยกเลิกการเป็นเจ้าหน้าที่",
+    "updateUserSuccess": "แก้ไขข้อมูลผู้ใช้สำเร็จ"
 }
