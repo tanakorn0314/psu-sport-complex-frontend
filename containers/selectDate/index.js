@@ -15,7 +15,11 @@ class SelectDate extends React.Component {
 
     componentDidMount() {
         const { selectedDate } = this.props.Booking;
-        this.props.selectDate(moment(selectedDate));
+
+        if (selectedDate)
+            this.props.selectDate(moment(selectedDate));
+        else
+            this.props.selectDate(moment())
     }
 
     render() {
