@@ -79,10 +79,6 @@ class TopNavContent extends React.Component {
 
         const menuMode = isMobile ? 'inline' : 'horizontal';
 
-        // const switchLangButton = <MenuItem onClick={this.switchLang}><ChangeLanguage changeByParent /></MenuItem>
-        // const dashboardButton = <Link href='/dashboard'><MenuItem name='dashboard'>{t('admin')}</MenuItem></Link>
-        // const bookingButton = <MenuItem name='booking'><Link href='/booking'><A>{('booking')}</A></Link></MenuItem>
-
         const switchLangButton = <MenuItem onClick={this.switchLang}><ChangeLanguage changeByParent /></MenuItem>
         const dashboardButton = (
             <MenuItem name='dashboard'>
@@ -104,6 +100,7 @@ class TopNavContent extends React.Component {
                 {!isMobile && switchLangButton}
                 {profile && profile.position === 'admin' && dashboardButton}
                 {bookingButton}
+                {!profile && isMobile && switchLangButton}
                 {this.renderAccountMenu()}
             </Menu>
         )
@@ -156,11 +153,11 @@ class TopNavContent extends React.Component {
     }
 
     renderAccountMenuItems = () => {
-        const { t } = this.props;
+        const { t, Screen } = this.props;
         return [
             <MenuItem key='booking_history' name='booking_history'><Link href='/booking_history'><A>{t('bookingHistory')}</A></Link></MenuItem>,
             <MenuItem key='account' name='account'><Link href='/account'><A>{t('account')}</A></Link></MenuItem>,
-            this.props.Screen.isMobile && <MenuItem key='changeLanguage' onClick={this.switchLang}><ChangeLanguage changeByParent /></MenuItem>,
+            Screen.isMobile && <MenuItem key='changeLang' onClick={this.switchLang}><ChangeLanguage changeByParent /></MenuItem>,
             <MenuItem key='logout' name='logout' noHighlight><TextMenuItem msg='logout' onClick={this.handleLogout} /></MenuItem>
         ]
     }

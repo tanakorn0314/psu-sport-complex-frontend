@@ -30,12 +30,19 @@ class PostNews extends React.Component {
     }
 
     handleChange = (key, value) => {
-        this.setState({ [key]: value })
+        if (key === 'clear')
+            this.setState({
+                title: '',
+                featuredImageUrl: null,
+                content: ''
+            })
+        else
+            this.setState({ [key]: value })
     }
 
     handleEdit = (data) => {
         const { title, featuredImageUrl, content } = data;
-        this.setState({title, featuredImageUrl, content})
+        this.setState({ title, featuredImageUrl, content })
     }
 }
 

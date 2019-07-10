@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PubSub from 'pubsub-js';
 import BillAction from '../../redux/bill/actions';
-import StyledWrapper, { CourtDetailRow, StyledList} from './style';
+import StyledWrapper, { CourtDetailRow, StyledList, StyledListItem } from './style';
 import { H3, Text, H4 } from '../../components/typo';
 import { notification, List } from 'antd';
 import { withNamespaces, i18n } from '../../i18n';
@@ -75,13 +75,13 @@ class ManageBill extends React.Component {
         const { startDate, endDate } = item;
 
         return (
-            <List.Item className='list-item'>
+            <StyledListItem>
                 <CourtDetailRow>
                     <Text>
                         {`${moment(startDate).locale(locale).format('DD MMMM YYYY HH:mm')} - ${moment(endDate).format('HH:mm')}`}
                     </Text>
                 </CourtDetailRow>
-            </List.Item>
+            </StyledListItem>
         )
     }
 

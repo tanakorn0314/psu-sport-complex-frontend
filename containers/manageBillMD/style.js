@@ -12,13 +12,15 @@ export const CourtDetailRow = styled.div`
     justify-content: space-between;
 `
 export const StyledList = styled(List)`
+   
     ul.ant-list-items {
         padding-left: 0;
     }
 
-    .list-item {
-        padding: 0
-    }
+`
+
+export const StyledListItem = styled(List.Item)`
+    padding: 0;
 `
 
 export default StyledWrapper;

@@ -75,6 +75,8 @@ class Post extends React.Component {
                 description: t(result.error),
                 duration: 2
             })
+
+            this.handleChange('clear')
         } else {
             notification['success']({
                 message: t('success'),
