@@ -40,7 +40,7 @@ const ownerFromToken = (token) => {
 const responseToUser = (response) => {
     if (response && response.accessToken) {
         return {
-            profile: jwtDecode(response.accessToken),
+            user: jwtDecode(response.accessToken),
             accessToken: response.accessToken,
             expiresAt: response.expiresAt
         }

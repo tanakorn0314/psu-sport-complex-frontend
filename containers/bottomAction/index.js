@@ -26,7 +26,7 @@ class BottomAction extends React.Component {
 
     render() {
         const { t } = this.props;
-        let { idToken, profile } = this.props.Auth;
+        let { idToken, user } = this.props.Auth;
         let { fee, selectedBooking } = this.props.Booking;
         let { visible } = this.state;
 
@@ -43,7 +43,7 @@ class BottomAction extends React.Component {
             action = this.props.onAuth ? this.props.onAuth : () => {}
         } else if(count <= 0) {
             visible = false;
-        } else if(profile.position === 'admin') {
+        } else if(user.position === 'admin') {
             message = `${t('count')} : ${count} ${t('slot')}${s}`;
             action = this.props.onBook ? this.props.onBook : () => {}
         }

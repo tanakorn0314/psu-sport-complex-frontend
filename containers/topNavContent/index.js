@@ -75,7 +75,7 @@ class TopNavContent extends React.Component {
     renderMenuItems = () => {
         const { t } = this.props;
         const { isMobile } = this.props.Screen;
-        const { profile } = this.props.Auth;
+        const { user } = this.props.Auth;
 
         const menuMode = isMobile ? 'inline' : 'horizontal';
 
@@ -98,9 +98,9 @@ class TopNavContent extends React.Component {
         return (
             <Menu selectedKey={this.state.current} mode={menuMode}>
                 {!isMobile && switchLangButton}
-                {profile && profile.position === 'admin' && dashboardButton}
+                {user && user.position === 'admin' && dashboardButton}
                 {bookingButton}
-                {!profile && isMobile && switchLangButton}
+                {!user && isMobile && switchLangButton}
                 {this.renderAccountMenu()}
             </Menu>
         )
@@ -109,12 +109,12 @@ class TopNavContent extends React.Component {
     renderAccountMenu = () => {
         const { showMenu } = this.state;
         const { isMobile } = this.props.Screen;
-        const { profile } = this.props.Auth;
+        const { user } = this.props.Auth;
 
         const loginText = <TextMenuItem msg='login' onClick={this.handleClick} />
         const loginButton = <Button onClick={this.handleClick}><TextButton msg='login' /></Button>
 
-        if (!profile)
+        if (!user)
             return (
                 <MenuItem name='login' noHighlight>
                     {isMobile ? loginText : loginButton}
@@ -145,7 +145,7 @@ class TopNavContent extends React.Component {
                             onClick={this.toggleShowMenu}
                         >
                             <Icon type='user' style={{ marginRight: 3 }} />
-                            <div><TextMenuItem msg={profile.fname} noTranslate /></div>
+                            <div><TextMenuItem msg={user.fname} noTranslate /></div>
                         </div>
                     </Popover>
                 </MenuItem>

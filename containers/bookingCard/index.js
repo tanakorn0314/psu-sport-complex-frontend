@@ -74,13 +74,13 @@ class BookingCard extends React.Component {
     }
 
     handleSelect = (data) => {
-        const { profile } = this.props.Auth;
-        profile && this.props.selectBooking(data);
+        const { user } = this.props.Auth;
+        user && this.props.selectBooking(data);
     }
 
     handleEdit = (data) => {
-        const { profile } = this.props.Auth;
-        if (profile.position === 'admin') {
+        const { user } = this.props.Auth;
+        if (user.position === 'admin') {
             const { bills } = this.props.Bill;
             const bill = bills.find((b) => b.billId === data.billId);
             const booking = bill.bookings.find((b) => b.bookingId === data.bookingId);

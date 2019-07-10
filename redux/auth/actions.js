@@ -12,7 +12,7 @@ const actions = {
     const result = await auth.login(userInfo);
     if (result && !result.error) {
       const owner = auth.ownerFromToken(result.accessToken);
-      dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, profile: result.profile });
+      dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, user: result.user });
       dispatch(BookingAction.setOwner(owner));
       setToken(result.accessToken);
       setExpires(result.expiresAt);
@@ -23,7 +23,7 @@ const actions = {
     const result = await auth.loginJWT(token);
     if (result && !result.error) {
       const owner = auth.ownerFromToken(result.accessToken);
-      dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, profile: result.profile });
+      dispatch({ type: actions.LOGIN_SUCCESS, token: result.accessToken, user: result.user });
       dispatch(BookingAction.setOwner(owner));
       setToken(result.accessToken);
       setExpires(result.expiresAt);

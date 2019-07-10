@@ -44,11 +44,11 @@ class BookingAdmin extends React.Component {
 
     bookByAdmin = async () => {
         const { t } = this.props;
-        const { idToken, profile } = this.props.Auth;
+        const { idToken, user } = this.props.Auth;
         const { stadiumId, courtId, startTime, endTime, ownerName, ownerInfo, ownerPosition } = this.state;
 
         const bookByAdminDTO = [{
-            userId: profile.userId,
+            userId: user.userId,
             ownerName,
             ownerInfo,
             ownerPosition,

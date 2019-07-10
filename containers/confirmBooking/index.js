@@ -111,9 +111,9 @@ class ConfirmBooking extends React.Component {
 
     cancelBooking = async () => {
         const { billId } = this.state;
-        const { idToken, profile } = this.props.Auth;
+        const { idToken, user } = this.props.Auth;
 
-        if (profile.position !== 'admin') {
+        if (user.position !== 'admin') {
             await this.props.removeByBillId(idToken, billId);
         }
         this.hideModal();

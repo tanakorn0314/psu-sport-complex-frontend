@@ -26,11 +26,11 @@ class BookingScreen extends React.Component {
         super(props);
 
         const { myBills: bills } = props.Bill;
-        const { profile } = props.Auth;
+        const { user } = props.Auth;
 
         if (bills && bills.length > 0) {
             this.lastBill = bills[0];
-            if (bills[0].expiresAt && profile.position !== 'admin')
+            if (bills[0].expiresAt && user.position !== 'admin')
                 this.shouldRestoreConfirm = true;
         }
 
@@ -89,8 +89,8 @@ class BookingScreen extends React.Component {
     }
 
     handleBook = () => {
-        const { profile } = this.props.Auth;
-        if (profile.position === 'admin') {
+        const { user } = this.props.Auth;
+        if (user.position === 'admin') {
             this.bookByAdmin();
         } else {
             this.bookByUser();
@@ -103,9 +103,9 @@ class BookingScreen extends React.Component {
 
     bookByUser = async () => {
         const { bookingList, stadiumId, owner, fee, selectedDate } = this.props.Booking;
-        const { idToken, profile } = this.props.Auth;
+        const { idToken, user } = this.props.Auth;
 
-        const bookManyDTO = dataHandler.toBookingDTO(bookingList, profile.userId, owner, stadiumId, selectedDate);
+        const bookManyDTO = dataHandler.toBookingDTO(bookingList, user.userId, owner, stadiumId, selectedDate);
 
         const result = await this.props.reserve(idToken, bookManyDTO);
 

@@ -2,7 +2,7 @@ import actions from "./actions";
 
 const initState = {
 	idToken: null,
-	profile: null,
+	user: null,
 	authGuard: false
 };
 
@@ -12,7 +12,7 @@ export default function authReducer(state = initState, action) {
 			return {
 				...state,
 				idToken: action.token,
-				profile: action.profile
+				user: action.user
 			};
 		case actions.SET_AUTH_GUARD:
 			return {

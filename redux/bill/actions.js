@@ -11,8 +11,8 @@ const actions = {
   },
   fetchBills: () => async (dispatch, getState) => {
     const result = await BillService.getBills();
-    const { profile } = getState().Auth;
-    const myBills = helper.extranctMyBills(profile.userId, result)
+    const { user } = getState().Auth;
+    const myBills = helper.extranctMyBills(user.userId, result)
 
     dispatch({ type: actions.FETCH_BILL_SUCCESS, bills: result, myBills });
     return result;

@@ -69,11 +69,11 @@ export default ComposedComponent => {
                 this.props.callbackAdmin();
             });
             this.socket.on('bookingConfirmed', async (bill) => {
-                if (bill.userId === this.props.Auth.profile.userId)
+                if (bill.userId === this.props.Auth.user.userId)
                     PubSub.publish('bookingConfirmed');
             });
             this.socket.on('bookingRejected', async (bill) => {
-                if (bill.userId === this.props.Auth.profile.userId)
+                if (bill.userId === this.props.Auth.user.userId)
                     PubSub.publish('bookingRejected');
             });
 

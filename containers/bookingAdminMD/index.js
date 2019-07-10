@@ -59,9 +59,9 @@ class BookingAdmin extends React.Component {
     bookByAdmin = async () => {
         const { t } = this.props;
         const { bookingList, stadiumId, selectedDate, owner } = this.props.Booking;
-        const { idToken, profile } = this.props.Auth;
+        const { idToken, user } = this.props.Auth;
 
-        const bookAdminDTO = dataHandler.toBookingDTO(bookingList, profile.userId, owner, stadiumId, selectedDate);
+        const bookAdminDTO = dataHandler.toBookingDTO(bookingList, user.userId, owner, stadiumId, selectedDate);
 
         const result = await this.props.reserveByAdmin(idToken, bookAdminDTO);
 

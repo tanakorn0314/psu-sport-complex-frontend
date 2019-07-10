@@ -25,20 +25,20 @@ class Account extends React.Component {
 
     constructor(props) {
         super(props);
-        const { profile } = props.Auth;
+        const { user } = props.Auth;
         this.state = {
-            fname: profile.fname || '',
-            lname: profile.lname || '',
-            email: profile.email || '',
-            position: profile.position || ''
+            fname: user.fname || '',
+            lname: user.lname || '',
+            email: user.email || '',
+            position: user.position || ''
         }
     }
 
     render() {
         const { t } = this.props;
-        const { profile } = this.props.Auth;
+        const { user } = this.props.Auth;
 
-        const { phoneNumber, psuPassport } = profile;
+        const { phoneNumber, psuPassport } = user;
         const { fname, lname, email, position } = this.state;
 
         const inPSU = psuPassport.length > 0;
@@ -81,11 +81,11 @@ class Account extends React.Component {
     renderExpiresMember = () => {
         const { t } = this.props;
         const locale = i18n.language || 'en';
-        const { profile } = this.props.Auth;
+        const { user } = this.props.Auth;
         const { position } = this.state;
 
         if (position === 'member') {
-            const endText = moment(profile.memberEnd).locale(locale).format('DD MMM YYYY HH:mm');
+            const endText = moment(user.memberEnd).locale(locale).format('DD MMM YYYY HH:mm');
             return (
                 <Row title={t('memberExpires')}>
                     <Label>{endText}</Label>
@@ -98,9 +98,9 @@ class Account extends React.Component {
     handleChange = (key, value) => {
         this.setState({ [key]: value }, async () => {
             const { t } = this.props;
-            const { idToken, profile } = this.props.Auth;
+            const { idToken, user } = this.props.Auth;
             const dto = {
-                userId: profile.userId,
+                userId: user.userId,
                 ...this.state
             }
             const result = await UserService.updateUser(idToken, dto);
