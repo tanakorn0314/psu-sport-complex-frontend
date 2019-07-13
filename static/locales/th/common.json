@@ -224,5 +224,6 @@
     "upgrade to admin": "เปลี่ยนเป็นเจ้าหน้าที่",
     "secret invalid": "รหัสลับไม่ถูกต้อง",
     "cancel admin": "ยกเลิกการเป็นเจ้าหน้าที่",
-    "updateUserSuccess": "แก้ไขข้อมูลผู้ใช้สำเร็จ"
+    "updateUserSuccess": "แก้ไขข้อมูลผู้ใช้สำเร็จ",
+    "phone number in used": "หมายเลขโทรศัพท์ถูกใช้แล้ว"
 }

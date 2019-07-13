@@ -37,6 +37,7 @@ export const StyledContent = styled(Content)`
 `
 
 export const StyledFooter = styled(Footer)`
+    padding: 12px 0;
     text-align: center;
     background-color: ${cl.footer};
     font-family: 'db_chuanpim_psu_bd';

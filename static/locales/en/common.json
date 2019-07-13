@@ -225,5 +225,6 @@
     "upgrade to admin": "Upgrade to admin",
     "secret invalid": "Invalid secret",
     "cancel admin": "Cancel admin",
-    "updateUserSuccess": "Update user successfuly"
+    "updateUserSuccess": "Update user successfuly",
+    "phone number in used": "Phone number in used"
 }

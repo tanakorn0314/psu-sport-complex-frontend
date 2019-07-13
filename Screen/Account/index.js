@@ -30,7 +30,8 @@ class Account extends React.Component {
             fname: user.fname || '',
             lname: user.lname || '',
             email: user.email || '',
-            position: user.position || ''
+            position: user.position || '',
+            phoneNumber: user.phoneNumber || ''
         }
     }
 
@@ -38,26 +39,14 @@ class Account extends React.Component {
         const { t } = this.props;
         const { user } = this.props.Auth;
 
-        const { phoneNumber, psuPassport } = user;
-        const { fname, lname, email, position } = this.state;
-
-        const inPSU = psuPassport.length > 0;
-        const infoLabel = inPSU ? 'PSU Passport' : 'phoneNumber';
-        const info = inPSU ? psuPassport : phoneNumber;
+        const { psuPassport } = user;
+        const { fname, lname, email, position, phoneNumber } = this.state;
 
         return (
             <StyledWrapper>
                 <div className='title'><PageTitle msg='account' /></div>
                 <table style={{ width: '100%' }}>
                     <tbody>
-                        <Row title={t(infoLabel)} onClick={() => { Router.replace('/booking') }}>
-                            <Label>{info}</Label>
-                        </Row>
-                        <Row title={t('email')}>
-                            <EditableText editable={{ onChange: (val) => this.handleChange('email', val) }}>
-                                {email}
-                            </EditableText>
-                        </Row>
                         <Row title={t('firstname')}>
                             <EditableText editable={{ onChange: (val) => this.handleChange('fname', val) }}>
                                 {fname}
@@ -71,7 +60,24 @@ class Account extends React.Component {
                         <Row title={t('type')}>
                             <Label>{position}</Label>
                         </Row>
+                        {
+                            psuPassport.length > 0 && (
+                                <Row title='PSU Passport'>
+                                    <Label>{psuPassport}</Label>
+                                </Row>
+                            )
+                        }
                         {this.renderExpiresMember()}
+                        <Row title={t('email')}>
+                            <EditableText editable={{ onChange: (val) => this.handleChange('email', val) }}>
+                                {email}
+                            </EditableText>
+                        </Row>
+                        <Row title={t('phoneNumber')}>
+                            <EditableText editable={{ onChange: (val) => this.handleChange('phoneNumber', val) }}>
+                                {phoneNumber}
+                            </EditableText>
+                        </Row>
                     </tbody>
                 </table>
             </StyledWrapper>
@@ -95,13 +101,12 @@ class Account extends React.Component {
         return null
     }
 
-    handleChange = (key, value) => {
-        this.setState({ [key]: value }, async () => {
-            const { t } = this.props;
+    handleChange = async (key, value) => {
+        const { t } = this.props;
             const { idToken, user } = this.props.Auth;
             const dto = {
                 userId: user.userId,
-                ...this.state
+                [key]: value
             }
             const result = await UserService.updateUser(idToken, dto);
             if (result) {
@@ -117,9 +122,9 @@ class Account extends React.Component {
                         message: t('success'),
                         description: t('update user success')
                     })
+                    this.setState({ [key]: value });
                 }
             }
-        });
     }
 }
 
